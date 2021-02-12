@@ -28,10 +28,18 @@ contains
     !!  Test that the executing team has only one scheduler
     type(image_t) me
     type(result_t) result_
+    integer image
 
     call me%set_up()
+    if (me%scheduler()) then
+      do image=2,num_images()
+        call me%scheduler_assigns_task(compute_image=image)
+      end do
+    else
+      call me%wait_do_task_notify_ready
+    end if
 
-    result_ = succeed("")
+    result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", me%scheduler()))
 
   end function
 

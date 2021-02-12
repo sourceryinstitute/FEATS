@@ -27,14 +27,6 @@ contains
     I_am_scheduler = this_image() == scheduler_image
   end procedure
 
-  module procedure compute_tells_scheduler_im_ready
-
-    call assert(allocated(ready_for_next_task), "image_t%compute_tells_scheduler_im_ready: allocated(ready_for_next_task)")
-    call assert(self%scheduler(), "image_t%compute_tells_scheduler_im_ready: self%scheduler()")
-
-    event post(ready_for_next_task(this_image())[scheduler_image])
-  end procedure
-
   module procedure scheduler_assigns_task
 
     call assert(self%scheduler(), "image_t%scheduler_assigns_task: self%scheduler()")
@@ -43,11 +35,16 @@ contains
 
   end procedure
 
-  module procedure do_task
+  module procedure wait_do_task_notify_ready
 
-    call assert(.not. self%scheduler(), "image_t%do_task: .not. self%scheduler()")
+    call assert(.not. self%scheduler(), "image_t%wait_do_task_notify_ready: .not. self%scheduler()")
+    call assert(allocated(ready_for_next_task), "image_t%wait_do_task_notify_ready: allocated(ready_for_next_task)")
 
     event wait(task_assigned)
+
+    ! do task
+
+    event post(ready_for_next_task(this_image())[scheduler_image])
 
   end procedure
 

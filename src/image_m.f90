@@ -11,9 +11,9 @@ module image_m
     logical :: scheduler_ = .false.
   contains
     procedure :: set_up
-    procedure :: scheduler
-    procedure :: compute_tells_scheduler_im_ready
+    procedure, nopass :: scheduler
     procedure :: scheduler_assigns_task
+    procedure :: wait_do_task_notify_ready
   end type
 
   interface
@@ -26,19 +26,11 @@ module image_m
       class(image_t), intent(out) :: self
     end subroutine
 
-    pure module function scheduler(self) result(I_am_scheduler)
+    pure module function scheduler() result(I_am_scheduler)
       !! Result is .true. if the executing image is the scheduler image, .false. otherwise
       implicit none
-      class(image_t), intent(in) :: self
       logical I_am_scheduler
     end function
-
-    module subroutine compute_tells_scheduler_im_ready(self)
-      !! Compute image notifies scheduler image that compute image is ready to do a new task;
-      !! error terminate if called on scheduler image or if task-readiness list is unallocated on scheduler
-      implicit none
-      class(image_t), intent(in) :: self
-    end subroutine
 
     module subroutine scheduler_assigns_task(self, compute_image)
       !! Scheduler image posts a new task to the designated compute image;
@@ -48,7 +40,7 @@ module image_m
       integer, intent(in) :: compute_image
     end subroutine
 
-    module subroutine do_task(self)
+    module subroutine wait_do_task_notify_ready(self)
       !! Compute image does task; error terminate if called on scheduler image
       implicit none
       class(image_t), intent(in) :: self
