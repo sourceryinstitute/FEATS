@@ -1,5 +1,6 @@
 module image_m
   !! Compute-image/Scheduler-image abstraction
+  use dag_interface, only : dag
   implicit none
 
   private
@@ -8,6 +9,7 @@ module image_m
   type image_t
     !! Encapsulate compute/scheduler image identity and communication protocol
     private
+    type(dag) :: task_dependencies_
     logical :: scheduler_ = .false.
   contains
     procedure :: set_up

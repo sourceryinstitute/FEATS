@@ -1,12 +1,13 @@
-name = "sourcery"
+name = "FEATS"
 version = "1.0.0"
 license = "BSD"
 author = ["Damian Rouson"]
 maintainer = "damian@sourceryinstitute.org"
-copyright = "2020 Sourcery Institute"
+copyright = "2021 Sourcery Institute"
 
 [dependencies]
-dag = {git = "https://github.com/sourceryinstitute/sourcery", commit = "b5331415ec7fb9f78ee5acc7e0396d2ac15b68ff"}
+sourcery = {git = "https://github.com/sourceryinstitute/sourcery", tag = "21.02.24"}
+dag = {git = "https://github.com/sourceryinstitute/dag", tag = "1.0.0"}
 
 [dev-dependencies]
 vegetables = {git = "https://gitlab.com/everythingfunctional/vegetables", tag = "v7.0.2"}
