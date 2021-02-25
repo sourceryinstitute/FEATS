@@ -5,7 +5,7 @@
 [https://github.com/sourceryinstitute/FEATS/blob/master/README.md]:#
 <div align="center">
 
-[![Sourcery Institute][sourcery-institute logo]][Sourcery Institute]
+![Sourcery Institute][sourcery-institute logo]
 
 
 Framework for Extensible Asynchronous Task Scheduling (FEATS)
