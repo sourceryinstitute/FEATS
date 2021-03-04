@@ -1,11 +1,12 @@
 name = "FEATS"
-version = "1.0.0"
+version = "21.02.04"
 license = "BSD"
 author = ["Damian Rouson"]
 maintainer = "damian@sourceryinstitute.org"
-copyright = "2020 Sourcery Institute"
+copyright = "2021 Sourcery Institute"
 
 [dependencies]
+sourcery = {git = "https://github.com/sourceryinstitute/sourcery", tag = "21.02.24"}
 dag = {git = "https://github.com/sourceryinstitute/dag", tag = "21.02.24"}
 
 [dev-dependencies]

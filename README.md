@@ -5,7 +5,7 @@
 [https://github.com/sourceryinstitute/FEATS/blob/master/README.md]:#
 <div align="center">
 
-[![Sourcery Institute][sourcery-institute logo]][Sourcery, Inc.]
+![Sourcery Institute][sourcery-institute logo]
 
 
 Framework for Extensible Asynchronous Task Scheduling (FEATS)
@@ -86,6 +86,7 @@ to aid in development efforts.
 [Fortran 2018]: https://j3-fortran.org/doc/year/18/18-007r1.pdf
 
 [sourcery-institute logo]: http://www.sourceryinstitute.org/uploads/4/9/9/6/49967347/sourcery-logo-rgb-hi-rez-1.png
+
 [NASA Langley Research Center]: https://www.nasa.gov/langley
 
 [issues]: https://github.com/sourceryinstitute/FEATS/issues
