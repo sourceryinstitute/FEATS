@@ -31,6 +31,7 @@ contains
     integer image
 
     call me%set_up()
+    
     if (me%scheduler()) then
       do image=2,num_images()
         call me%scheduler_assigns_task(compute_image=image)
