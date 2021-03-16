@@ -26,21 +26,12 @@ contains
   end function
 
   function verify_image_set_up() result(result_)
-    !!  Test that the executing team has only one scheduler
+    !!  Test the setup of scheduler and compute images
     type(scheduler_t) scheduler
-    type(compute_t) compute
     type(result_t) result_
-    integer image
 
     call scheduler%set_up()
-
-    if (scheduler%is_this_image()) then
-      do image=1,num_images()
-        if (compute%is_this(image)) call scheduler%assign_task(compute_image=image)
-      end do
-    else
-      call compute%wait_do_task_notify_ready
-    end if
+    call scheduler%distribute_initial_tasks()
 
     result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", scheduler%is_this_image()))
 

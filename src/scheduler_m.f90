@@ -13,6 +13,7 @@ module scheduler_m
     type(dag_t) task_dependencies
   contains
     procedure :: is_this_image
+    procedure :: distribute_initial_tasks
   end type
 
   interface
@@ -23,6 +24,12 @@ module scheduler_m
       class(scheduler_t), intent(in) :: self
       logical scheduler_is_this_image
     end function
+
+    module subroutine distribute_initial_tasks(self)
+      !! Scheduler places tasks in each compute image's mailbox
+      implicit none
+      class(scheduler_t), intent(in) :: self
+    end subroutine
 
   end interface
 
