@@ -3,7 +3,8 @@ module image_test
    use vegetables, only: &
      result_t, test_item_t, & ! types
      describe, it, succeed ! functions
-   use image_m, only : image_t
+   use scheduler_m, only : scheduler_t
+   use compute_m, only : compute_t
    use iso_fortran_env, only : event_type
    implicit none
 
@@ -26,20 +27,22 @@ contains
 
   function verify_image_set_up() result(result_)
     !!  Test that the executing team has only one scheduler
-    type(image_t) me
+    type(scheduler_t) scheduler
+    type(compute_t) compute
     type(result_t) result_
     integer image
 
-    call me%set_up()
-    if (me%scheduler()) then
-      do image=2,num_images()
-        call me%scheduler_assigns_task(compute_image=image)
+    call scheduler%set_up()
+
+    if (scheduler%is_this_image()) then
+      do image=1,num_images()
+        if (compute%is_this(image)) call scheduler%assign_task(compute_image=image)
       end do
     else
-      call me%wait_do_task_notify_ready
+      call compute%wait_do_task_notify_ready
     end if
 
-    result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", me%scheduler()))
+    result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", scheduler%is_this_image()))
 
   end function
 

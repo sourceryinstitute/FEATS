@@ -7,12 +7,15 @@ contains
     subroutine run()
         use image_test, only: &
                 image_image => test_image
+        use task_test, only: &
+                task_task => test_task
         use vegetables, only: test_item_t, test_that, run_tests
 
         type(test_item_t) :: tests
-        type(test_item_t) :: individual_tests(1)
+        type(test_item_t) :: individual_tests(2)
 
         individual_tests(1) = image_image()
+        individual_tests(2) = task_task()
         tests = test_that(individual_tests)
 
         call run_tests(tests)

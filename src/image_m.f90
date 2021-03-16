@@ -1,50 +1,50 @@
 module image_m
   !! Compute-image/Scheduler-image abstraction
+  use iso_fortran_env, only : event_type
   implicit none
 
   private
   public :: image_t
 
   type image_t
-    !! Encapsulate compute/scheduler image identity and communication protocol
+    !! Encapsulate compute/scheduler communication protocol
     private
-    logical :: scheduler_ = .false.
+
+    integer :: scheduler_image_ = 1
   contains
     procedure :: set_up
-    procedure, nopass :: scheduler
-    procedure :: scheduler_assigns_task
+    procedure :: assign_task
+    procedure :: scheduler_image
     procedure :: wait_do_task_notify_ready
   end type
 
   interface
 
     module subroutine set_up(self)
-      !! Self-identify as a scheduler image or a compute image and synchronized
-      !! allocation of the scheduler image's event inbox array; synchronize;
-      !! error terminate if called more than once.
+      !! Synchronized allocation of the event_type inbox coarray
       implicit none
       class(image_t), intent(out) :: self
     end subroutine
 
-    pure module function scheduler() result(I_am_scheduler)
-      !! Result is .true. if the executing image is the scheduler image, .false. otherwise
-      implicit none
-      logical I_am_scheduler
-    end function
-
-    module subroutine scheduler_assigns_task(self, compute_image)
-      !! Scheduler image posts a new task to the designated compute image;
-      !! error terminate if called on compute image
+    module subroutine assign_task(self, compute_image)
+      !! Post a new task to the designated compute image
       implicit none
       class(image_t), intent(in) :: self
       integer, intent(in) :: compute_image
     end subroutine
 
     module subroutine wait_do_task_notify_ready(self)
-      !! Compute image does task; error terminate if called on scheduler image
+      !! Compute compute does task; error terminate if called on scheduler compute
       implicit none
       class(image_t), intent(in) :: self
     end subroutine
+
+    module function scheduler_image(self) result(image_number)
+      !! Get scheduler image number
+      implicit none
+      class(image_t), intent(in) :: self
+      integer image_number
+    end function
 
   end interface
 

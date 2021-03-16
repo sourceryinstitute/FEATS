@@ -41,10 +41,12 @@ Earlier versions might work as well.
 
 Downloading, building, and testing
 ----------------------------------
+To build and test a parallel run with 2 images, execute the following
+commands in a shell on Linux, macOS, or Windows Subsystem for Linux:
 ```
 git clone https://github.com/sourceryinstitute/FEATS
 cd FEATS
-fpm test
+fpm test --compiler caf --runner "cafrun -n 2"
 ```
 Please report any test failures or other [issues].
 
