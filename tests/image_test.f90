@@ -31,7 +31,14 @@ contains
     type(result_t) result_
 
     call scheduler%set_up()
-    call scheduler%distribute_initial_tasks()
+
+    if (scheduler%is_this_image()) then
+      call scheduler%distribute_initial_tasks
+    else
+      associate(compute => compute_t())
+        call compute%wait_do_task_notify_ready
+      end associate
+    end if
 
     result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", scheduler%is_this_image()))
 

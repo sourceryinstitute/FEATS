@@ -12,13 +12,9 @@ contains
     integer image
 
     associate(compute => compute_t())
-      if (self%is_this_image()) then
-        do image=1,num_images()
-          if (compute%is_this(image)) call self%assign_task(compute_image=image)
-        end do
-      else
-        call compute%wait_do_task_notify_ready
-      end if
+      do image=1, num_images()
+        if (compute%is_this(image)) call self%assign_task(compute_image=image)
+      end do
     end associate
   end procedure
 
