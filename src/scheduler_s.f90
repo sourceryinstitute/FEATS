@@ -9,16 +9,17 @@ contains
   end procedure
 
   module procedure distribute_initial_tasks
-    type(compute_t) compute
     integer image
 
-    if (self%is_this_image()) then
-      do image=1,num_images()
-        if (compute%is_this(image)) call self%assign_task(compute_image=image)
-      end do
-    else
-      call compute%wait_do_task_notify_ready
-    end if
+    associate(compute => compute_t())
+      if (self%is_this_image()) then
+        do image=1,num_images()
+          if (compute%is_this(image)) call self%assign_task(compute_image=image)
+        end do
+      else
+        call compute%wait_do_task_notify_ready
+      end if
+    end associate
   end procedure
 
 end submodule scheduler_s
