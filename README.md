@@ -52,8 +52,11 @@ Please report any test failures or other [issues].
 
 Acknowledgments
 ----------------
-We gratefully acknowledge support from [NASA Langley Research Center]
-under contract number 80NSSC20P2246.
+
+| | |
+|-|-|
+| We gratefully acknowledge support from [NASA Langley Research Center] under contract number 80NSSC20P2246.  | <img src="https://user-images.githubusercontent.com/13108868/112893191-304ce180-908f-11eb-8bea-e0cab5322aa8.png" alt="NASA logo" width="100">
+|
 
 Donate
 ------
