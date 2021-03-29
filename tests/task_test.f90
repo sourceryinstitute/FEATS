@@ -18,7 +18,7 @@ contains
     tests = describe( &
      "task class", &
      [it( &
-       "can be constructed and assignmed", &
+       "can be constructed and assigned", &
        verify_task_construction) &
        ])
 
