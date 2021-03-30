@@ -9,19 +9,12 @@ module image_m
     !! Encapsulate compute/scheduler communication protocol
     private
   contains
-    procedure, nopass :: assign_task
     procedure, nopass :: wait_do_task_notify_ready
     procedure, nopass :: is_scheduler
     procedure, nopass :: distribute_initial_tasks
   end type
 
   interface
-
-    module subroutine assign_task(compute_image)
-      !! Post a new task to the designated compute image
-      implicit none
-      integer, intent(in) :: compute_image
-    end subroutine
 
     module subroutine wait_do_task_notify_ready()
       !! Compute-image does task; error terminate if called on scheduler compute
