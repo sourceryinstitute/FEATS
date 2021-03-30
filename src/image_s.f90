@@ -24,12 +24,6 @@ contains
     event post(ready_for_next_task(this_image())[scheduler_image])
   end subroutine
 
-  pure function is_scheduler()  result(image_is_scheduler)
-    !! Result is .true. iff the executing image is the scheduler
-    logical image_is_scheduler
-    image_is_scheduler = this_image() == scheduler_image
-  end function
-
    subroutine distribute_initial_tasks
     !! Scheduler places tasks in each compute image's mailbox
     character(len=max_errmsg_len) :: message
@@ -44,7 +38,7 @@ contains
   end subroutine
 
   module procedure distribute_and_do_initial_tasks
-    if (is_scheduler()) then
+    if (this_image() == scheduler_image) then
       call distribute_initial_tasks
     else
       call wait_do_task_notify_ready
