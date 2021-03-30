@@ -1,36 +1,57 @@
 submodule(image_m) image_s
-  use assertions_interface, only : assert
+  use iso_fortran_env, only : event_type
+  use assertions_interface, only : assert, max_errmsg_len
   implicit none
 
-  type(event_type), allocatable :: ready_for_next_task_(:)[:]
-  type(event_type) task_assigned_[*]
+  type(event_type), allocatable :: ready_for_next_task(:)[:]
+  type(event_type) task_assigned[*]
+  integer task_identifier[*]
+
+  integer, parameter :: initial_team_scheduler = 1, success=0
+  integer :: scheduler_image = initial_team_scheduler
 
 contains
 
-  module procedure set_up
-    logical, save :: first_call = .true.
+  subroutine wait_do_task_notify_ready(task_item)
+    !! Compute-image does task
+    type(task_item_t), intent(in) :: task_item(:)
+    character(len=max_errmsg_len) :: message
+    integer status
 
-    call assert(first_call, "image_t%set_up: first_call")
+    if (.not. allocated(ready_for_next_task)) allocate(ready_for_next_task(num_images())[*], stat=status, errmsg=message)
+    call assert(status == success, "image_t%distribute_initial_tasks: stat == status")
 
-    first_call = .false.
-    allocate(ready_for_next_task_(num_images())[*])
+    event wait(task_assigned)
+    print *,"Image", this_image()," does task", task_identifier
+    call task_item(task_identifier)%do_work()
+    event post(ready_for_next_task(this_image())[scheduler_image])
+  end subroutine
 
-  end procedure
+   subroutine distribute_initial_tasks(task_item)
+    !! Scheduler places tasks in each compute image's mailbox
+    type(task_item_t), intent(in) :: task_item(:)
+    character(len=max_errmsg_len) :: message
+    integer image, status, i
 
-  module procedure assign_task
-    event post(task_assigned_[compute_image])
-  end procedure
+    if (.not. allocated(ready_for_next_task)) allocate(ready_for_next_task(num_images())[*], stat=status, errmsg=message)
+    call assert(status == success, "image_t%distribute_initial_tasks: stat == status")
 
-  module procedure wait_do_task_notify_ready
-    call assert(allocated(ready_for_next_task_), "image_t%wait_do_task_notify_ready: allocated(self%ready_for_next_task_)")
+    i = 0
+    do image=1, min(num_images(), size(task_item))
+      if (scheduler_image /= image) then
+        i = i + 1
+        task_identifier[image] = i
+        event post(task_assigned[image])
+      end if
+    end do
+  end subroutine
 
-    event wait(task_assigned_)
-    ! do task
-    event post(ready_for_next_task_(this_image())[self%scheduler_image_])
-  end procedure
-
-  module procedure scheduler_image
-    image_number = self%scheduler_image_
+  module procedure distribute_and_do_initial_tasks
+    if (this_image() == scheduler_image) then
+      call distribute_initial_tasks(task_item)
+    else
+      call wait_do_task_notify_ready(task_item)
+    end if
   end procedure
 
 end submodule image_s

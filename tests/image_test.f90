@@ -1,15 +1,20 @@
 module image_test
-   !! verify image set-up & protocol for task assignment, completion, & readiness notification
+   !! verify image protocol for task assignment, completion, & readiness notification
    use vegetables, only: &
      result_t, test_item_t, & ! types
      describe, it, succeed ! functions
-   use scheduler_m, only : scheduler_t
-   use compute_m, only : compute_t
-   use iso_fortran_env, only : event_type
+   use image_m, only : image_t
+   use task_item_m, only : task_item_t
+   use task_m, only : task_t
    implicit none
 
    private
    public :: test_image
+
+   type, extends(task_t) :: test_task_t
+   contains
+     procedure :: do_work
+   end type
 
 contains
 
@@ -19,31 +24,32 @@ contains
     tests = describe( &
      "image class", &
      [it( &
-       "set_up completes", &
-       verify_image_set_up) &
+       "distributes and does initial tasks", &
+       verify_initial_task_distribution) &
        ])
 
   end function
 
-  function verify_image_set_up() result(result_)
-    !!  Test that the executing team has only one scheduler
-    type(scheduler_t) scheduler
-    type(compute_t) compute
+  function verify_initial_task_distribution() result(result_)
+    !!  Test the setup of scheduler and compute images
+    type(image_t) image
     type(result_t) result_
-    integer image
+    type(task_item_t), allocatable :: task_item(:)
+    integer i
 
-    call scheduler%set_up()
+    allocate(task_item(num_images()))
+    do i = 1, size(task_item)
+      task_item(i) = task_item_t(test_task_t())
+    end do
 
-    if (scheduler%is_this_image()) then
-      do image=1,num_images()
-        if (compute%is_this(image)) call scheduler%assign_task(compute_image=image)
-      end do
-    else
-      call compute%wait_do_task_notify_ready
-    end if
+    call image%distribute_and_do_initial_tasks(task_item)
 
-    result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", scheduler%is_this_image()))
+    result_ = succeed("initial tasks distributed and done")
 
   end function
+
+  subroutine do_work(self)
+    class(test_task_t), intent(in) :: self
+  end subroutine
 
 end module image_test

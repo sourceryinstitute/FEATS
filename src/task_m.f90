@@ -3,24 +3,25 @@ module task_m
   implicit none
 
   private
+  public :: task_t
 
   integer, parameter :: no_work = 0
 
-  type, public :: task_t
+  type, abstract :: task_t
     !! encapsulate task identity and description
     private
     integer :: identifier_ = no_work
   contains
-    procedure :: do_work
+    procedure(do_work_interface), deferred :: do_work
   end type
 
-  interface
+  abstract interface
 
-    module subroutine do_work(this, verbose)
+    subroutine do_work_interface(self)
       !! complete the assigned task
+      import task_t
       implicit none
-      class(task_t), intent(in) :: this
-      logical, intent(in), optional :: verbose
+      class(task_t), intent(in) :: self
     end subroutine
 
   end interface
