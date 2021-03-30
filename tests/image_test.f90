@@ -1,5 +1,5 @@
 module image_test
-   !! verify image set-up & protocol for task assignment, completion, & readiness notification
+   !! verify image protocol for task assignment, completion, & readiness notification
    use vegetables, only: &
      result_t, test_item_t, & ! types
      describe, it, succeed ! functions
@@ -18,7 +18,7 @@ contains
     tests = describe( &
      "image class", &
      [it( &
-       "set_up completes", &
+       "distributes and does initial tasks", &
        verify_image_set_up) &
        ])
 
@@ -29,16 +29,13 @@ contains
     type(image_t) image
     type(result_t) result_
 
-    call image%set_up
-
     if (image%is_scheduler()) then
       call image%distribute_initial_tasks
+      result_ = succeed("scheduler assigned initial tasks")
     else
       call image%wait_do_task_notify_ready
+      result_ = succeed("compute image did its initial task")
     end if
-
-    result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", image%is_scheduler()))
-
   end function
 
 end module image_test

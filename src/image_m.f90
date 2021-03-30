@@ -9,7 +9,6 @@ module image_m
     !! Encapsulate compute/scheduler communication protocol
     private
   contains
-    procedure, nopass :: set_up
     procedure, nopass :: assign_task
     procedure, nopass :: wait_do_task_notify_ready
     procedure, nopass :: is_scheduler
@@ -17,11 +16,6 @@ module image_m
   end type
 
   interface
-
-    module subroutine set_up()
-      !! Synchronized allocation of the event_type inbox coarray
-      implicit none
-    end subroutine
 
     module subroutine assign_task(compute_image)
       !! Post a new task to the designated compute image
