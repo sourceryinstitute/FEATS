@@ -4,7 +4,6 @@ module image_test
      result_t, test_item_t, & ! types
      describe, it, succeed ! functions
    use image_m, only : image_t
-   use iso_fortran_env, only : event_type
    implicit none
 
    private
