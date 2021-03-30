@@ -17,11 +17,11 @@ module task_m
 
   abstract interface
 
-    subroutine do_work_interface(this)
+    subroutine do_work_interface(self)
       !! complete the assigned task
       import task_t
       implicit none
-      class(task_t), intent(in) :: this
+      class(task_t), intent(in) :: self
     end subroutine
 
   end interface

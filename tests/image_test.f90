@@ -38,7 +38,7 @@ contains
     integer i
 
     allocate(task_item(num_images()))
-    do concurrent(i = 1:size(task_item))
+    do i = 1, size(task_item)
       task_item(i) = task_item_t(test_task_t())
     end do
 
@@ -48,8 +48,8 @@ contains
 
   end function
 
-  subroutine do_work(this)
-    class(test_task_t), intent(in) :: this
+  subroutine do_work(self)
+    class(test_task_t), intent(in) :: self
   end subroutine
 
 end module image_test
