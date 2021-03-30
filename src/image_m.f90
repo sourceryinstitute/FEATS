@@ -1,6 +1,6 @@
 module image_m
   !! Compute-image/Scheduler-image abstraction
-  use task_m, only : task_t
+  use task_item_m, only : task_item_t
   implicit none
 
   private
@@ -15,11 +15,11 @@ module image_m
 
   interface
 
-    module subroutine distribute_and_do_initial_tasks(tasks)
+    module subroutine distribute_and_do_initial_tasks(task_item)
       !! Scheduler places tasks in each compute image's mailbox.
       !! Compute-image does task.
       implicit none
-      type(task_t), intent(in) :: tasks(:)
+      type(task_item_t), intent(in) :: task_item(:)
     end subroutine
 
   end interface
