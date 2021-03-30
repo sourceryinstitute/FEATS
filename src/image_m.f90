@@ -9,16 +9,15 @@ module image_m
     !! Encapsulate compute/scheduler communication protocol
     private
   contains
-    procedure :: distribute_and_do_initial_tasks
+    procedure, nopass :: distribute_and_do_initial_tasks
   end type
 
   interface
 
-    module subroutine distribute_and_do_initial_tasks(self)
+    module subroutine distribute_and_do_initial_tasks
       !! Scheduler places tasks in each compute image's mailbox.
       !! Compute-image does task.
       implicit none
-      class(image_t), intent(in) :: self
     end subroutine
 
   end interface
