@@ -12,7 +12,7 @@ module image_m
     procedure, nopass :: assign_task
     procedure, nopass :: wait_do_task_notify_ready
     procedure, nopass :: is_scheduler
-    procedure :: distribute_initial_tasks
+    procedure, nopass :: distribute_initial_tasks
   end type
 
   interface
@@ -34,10 +34,9 @@ module image_m
       logical image_is_scheduler
     end function
 
-    module subroutine distribute_initial_tasks(self)
+    module subroutine distribute_initial_tasks()
       !! Scheduler places tasks in each compute image's mailbox
       implicit none
-      class(image_t), intent(in) :: self
     end subroutine
 
   end interface

@@ -11,10 +11,6 @@ submodule(image_m) image_s
 
 contains
 
-  module procedure assign_task
-    event post(task_assigned[compute_image])
-  end procedure
-
   module procedure wait_do_task_notify_ready
     character(len=max_errmsg_len) :: message
     integer status
@@ -39,7 +35,7 @@ contains
     call assert(status == success, "image_t%distribute_initial_tasks: stat == status")
 
     do image=1, num_images()
-      if (scheduler_image_ /= image) call self%assign_task(compute_image=image)
+      if (scheduler_image_ /= image) event post(task_assigned[image])
     end do
   end procedure
 
