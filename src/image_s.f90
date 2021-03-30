@@ -7,7 +7,7 @@ submodule(image_m) image_s
   type(event_type) task_assigned[*]
 
   integer, parameter :: initial_team_scheduler = 1, success=0
-  integer :: scheduler_image_ = initial_team_scheduler
+  integer :: scheduler_image = initial_team_scheduler
 
 contains
 
@@ -20,11 +20,11 @@ contains
 
     event wait(task_assigned)
     ! do task
-    event post(ready_for_next_task(this_image())[scheduler_image_])
+    event post(ready_for_next_task(this_image())[scheduler_image])
   end procedure
 
   module procedure is_scheduler
-    image_is_scheduler = this_image() == scheduler_image_
+    image_is_scheduler = this_image() == scheduler_image
   end procedure
 
   module procedure distribute_initial_tasks
@@ -35,7 +35,7 @@ contains
     call assert(status == success, "image_t%distribute_initial_tasks: stat == status")
 
     do image=1, num_images()
-      if (scheduler_image_ /= image) event post(task_assigned[image])
+      if (scheduler_image /= image) event post(task_assigned[image])
     end do
   end procedure
 
