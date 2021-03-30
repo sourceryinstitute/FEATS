@@ -4,6 +4,7 @@ module image_test
      result_t, test_item_t, & ! types
      describe, it, succeed ! functions
    use image_m, only : image_t
+   use task_m, only : task_t
    implicit none
 
    private
@@ -27,8 +28,11 @@ contains
     !!  Test the setup of scheduler and compute images
     type(image_t) image
     type(result_t) result_
+    type(task_t), allocatable :: task_array(:)
 
-    call image%distribute_and_do_initial_tasks
+    allocate(task_array(num_images()))
+
+    call image%distribute_and_do_initial_tasks(task_array)
 
     result_ = succeed("initial tasks distributed and done")
 
