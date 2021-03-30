@@ -3,8 +3,7 @@ module image_test
    use vegetables, only: &
      result_t, test_item_t, & ! types
      describe, it, succeed ! functions
-   use scheduler_m, only : scheduler_t
-   use compute_m, only : compute_t
+   use image_m, only : image_t
    use iso_fortran_env, only : event_type
    implicit none
 
@@ -27,20 +26,18 @@ contains
 
   function verify_image_set_up() result(result_)
     !!  Test the setup of scheduler and compute images
-    type(scheduler_t) scheduler
+    type(image_t) image
     type(result_t) result_
 
-    call scheduler%set_up()
+    call image%set_up
 
-    if (scheduler%is_this_image()) then
-      call scheduler%distribute_initial_tasks
+    if (image%is_scheduler()) then
+      call image%distribute_initial_tasks
     else
-      associate(compute => compute_t())
-        call compute%wait_do_task_notify_ready
-      end associate
+      call image%wait_do_task_notify_ready
     end if
 
-    result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", scheduler%is_this_image()))
+    result_ = succeed(merge("scheduler assigned tasks", "compute image did task  ", image%is_scheduler()))
 
   end function
 
