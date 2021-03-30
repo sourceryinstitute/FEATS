@@ -10,9 +10,6 @@ module image_m
     private
   contains
     procedure :: distribute_and_do_initial_tasks
-    procedure, nopass, private :: wait_do_task_notify_ready
-    procedure, nopass, private :: is_scheduler
-    procedure, nopass, private :: distribute_initial_tasks
   end type
 
   interface
@@ -22,22 +19,6 @@ module image_m
       !! Compute-image does task.
       implicit none
       class(image_t), intent(in) :: self
-    end subroutine
-
-    module subroutine wait_do_task_notify_ready()
-      !! Compute-image does task
-      implicit none
-    end subroutine
-
-    pure module function is_scheduler() result(image_is_scheduler)
-      !! Result is .true. iff the executing image is the scheduler
-      implicit none
-      logical image_is_scheduler
-    end function
-
-    module subroutine distribute_initial_tasks()
-      !! Scheduler places tasks in each compute image's mailbox
-      implicit none
     end subroutine
 
   end interface

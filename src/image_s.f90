@@ -11,7 +11,8 @@ submodule(image_m) image_s
 
 contains
 
-  module procedure wait_do_task_notify_ready
+  subroutine wait_do_task_notify_ready
+    !! Compute-image does task
     character(len=max_errmsg_len) :: message
     integer status
 
@@ -21,13 +22,16 @@ contains
     event wait(task_assigned)
     ! do task
     event post(ready_for_next_task(this_image())[scheduler_image])
-  end procedure
+  end subroutine
 
-  module procedure is_scheduler
+  pure function is_scheduler()  result(image_is_scheduler)
+    !! Result is .true. iff the executing image is the scheduler
+    logical image_is_scheduler
     image_is_scheduler = this_image() == scheduler_image
-  end procedure
+  end function
 
-  module procedure distribute_initial_tasks
+   subroutine distribute_initial_tasks
+    !! Scheduler places tasks in each compute image's mailbox
     character(len=max_errmsg_len) :: message
     integer image, status
 
@@ -37,13 +41,13 @@ contains
     do image=1, num_images()
       if (scheduler_image /= image) event post(task_assigned[image])
     end do
-  end procedure
+  end subroutine
 
   module procedure distribute_and_do_initial_tasks
-    if (self%is_scheduler()) then
-      call self%distribute_initial_tasks
+    if (is_scheduler()) then
+      call distribute_initial_tasks
     else
-      call self%wait_do_task_notify_ready
+      call wait_do_task_notify_ready
     end if
   end procedure
 
