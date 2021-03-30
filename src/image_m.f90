@@ -9,15 +9,23 @@ module image_m
     !! Encapsulate compute/scheduler communication protocol
     private
   contains
-    procedure, nopass :: wait_do_task_notify_ready
-    procedure, nopass :: is_scheduler
-    procedure, nopass :: distribute_initial_tasks
+    procedure :: distribute_and_do_initial_tasks
+    procedure, nopass, private :: wait_do_task_notify_ready
+    procedure, nopass, private :: is_scheduler
+    procedure, nopass, private :: distribute_initial_tasks
   end type
 
   interface
 
+    module subroutine distribute_and_do_initial_tasks(self)
+      !! Scheduler places tasks in each compute image's mailbox.
+      !! Compute-image does task.
+      implicit none
+      class(image_t), intent(in) :: self
+    end subroutine
+
     module subroutine wait_do_task_notify_ready()
-      !! Compute-image does task; error terminate if called on scheduler compute
+      !! Compute-image does task
       implicit none
     end subroutine
 

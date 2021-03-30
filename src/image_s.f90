@@ -39,4 +39,12 @@ contains
     end do
   end procedure
 
+  module procedure distribute_and_do_initial_tasks
+    if (self%is_scheduler()) then
+      call self%distribute_initial_tasks
+    else
+      call self%wait_do_task_notify_ready
+    end if
+  end procedure
+
 end submodule image_s

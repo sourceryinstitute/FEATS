@@ -18,23 +18,21 @@ contains
      "image class", &
      [it( &
        "distributes and does initial tasks", &
-       verify_image_set_up) &
+       verify_initial_task_distribution) &
        ])
 
   end function
 
-  function verify_image_set_up() result(result_)
+  function verify_initial_task_distribution() result(result_)
     !!  Test the setup of scheduler and compute images
     type(image_t) image
     type(result_t) result_
 
-    if (image%is_scheduler()) then
-      call image%distribute_initial_tasks
-      result_ = succeed("scheduler assigned initial tasks")
-    else
-      call image%wait_do_task_notify_ready
-      result_ = succeed("compute image did its initial task")
-    end if
+    call image%distribute_and_do_initial_tasks
+
+    result_ = succeed("initial tasks distributed and done")
+
+
   end function
 
 end module image_test
