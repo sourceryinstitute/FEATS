@@ -1,5 +1,6 @@
 module task_m
-  !! define tasks for compute images to complete
+  !! Define an abstract interface to tasks that the scheduler
+  !! image assigns and that a compute image executes.
   implicit none
 
   private
@@ -8,9 +9,8 @@ module task_m
   integer, parameter :: no_work = 0
 
   type, abstract :: task_t
-    !! encapsulate task identity and description
+    !! encapsulate task work
     private
-    integer :: identifier_ = no_work
   contains
     procedure(do_work_interface), deferred :: do_work
   end type
