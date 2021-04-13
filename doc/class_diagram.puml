@@ -1,0 +1,20 @@
+@startuml
+Title "Classes in the Main Program"
+
+hide empty members
+
+abstract class task_t{
+  {abstract} do_work()
+}
+class task_item_t{
+  {abstract} task : task_t
+  do_work()
+}
+class image_t{
+  distribute_and_do_initial_tasks(task_item : task_item_t[])
+}
+
+task_item_t *-down- task_t
+image_t -> task_item_t : accepts
+
+@enduml
