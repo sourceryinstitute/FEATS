@@ -3,8 +3,7 @@ submodule(application_factory_m) application_factory_s
 
 contains
 
-    module procedure application_factory
-
+    module procedure factory_method
     end procedure
 
 end submodule application_factory_s
