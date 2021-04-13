@@ -1,5 +1,5 @@
 @startuml
-Title "Classes in the Main Program"
+Title "Classes in the FEATS Main Program"
 
 hide empty members
 
@@ -11,10 +11,28 @@ class task_item_t{
   do_work()
 }
 class image_t{
-  distribute_and_do_initial_tasks(task_item : task_item_t[])
+  distribute_and_do_initial_tasks(task_item : task_item_t(:)), dependency_matrix : logical(:,:)
 }
 
 task_item_t *-down- task_t
-image_t -> task_item_t : accepts
+task_item_t -left-> image_t : accepts
+
+class dag_t{
+  toposort(order : integer(:), istat : integer)
+  generate_dependency_matrix(mat : logical(:,:))
+}
+
+class application_t{
+  dag : dag_t
+  task_item : task_item_t(:)
+}
+
+class application_factory{
+  factory_method() : application_t
+}
+
+application_factory -left-> application_t : constructs
+application_t *-down- dag_t
+application_t *-down- task_item_t
 
 @enduml

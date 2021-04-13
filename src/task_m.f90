@@ -6,8 +6,6 @@ module task_m
   private
   public :: task_t
 
-  integer, parameter :: no_work = 0
-
   type, abstract :: task_t
     !! encapsulate task work
     private
