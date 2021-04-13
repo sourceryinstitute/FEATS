@@ -34,15 +34,9 @@ contains
     !!  Test the setup of scheduler and compute images
     type(image_t) image
     type(result_t) result_
-    type(task_item_t), allocatable :: task_item(:)
     integer i
 
-    allocate(task_item(num_images()))
-    do i = 1, size(task_item)
-      task_item(i) = task_item_t(test_task_t())
-    end do
-
-    call image%distribute_and_do_initial_tasks(task_item)
+    call image%distribute_and_do_initial_tasks([(task_item_t(test_task_t()), i = 1, num_images())])
 
     result_ = succeed("initial tasks distributed and done")
 

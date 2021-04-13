@@ -1,0 +1,38 @@
+@startuml
+Title "Classes in the FEATS Main Program"
+
+hide empty members
+
+abstract class task_t{
+  {abstract} do_work()
+}
+class task_item_t{
+  {abstract} task : task_t
+  do_work()
+}
+class image_t{
+  distribute_and_do_initial_tasks(task_item : task_item_t(:)), dependency_matrix : logical(:,:)
+}
+
+task_item_t *-down- task_t
+task_item_t -left-> image_t : accepts
+
+class dag_t{
+  toposort(order : integer(:), istat : integer)
+  generate_dependency_matrix(mat : logical(:,:))
+}
+
+class application_t{
+  dag : dag_t
+  task_item : task_item_t(:)
+}
+
+class application_factory{
+  factory_method() : application_t
+}
+
+application_factory -left-> application_t : constructs
+application_t *-down- dag_t
+application_t *-down- task_item_t
+
+@enduml
