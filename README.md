@@ -33,7 +33,7 @@ Prerequisites
 
 FEATS is being developed with the packages listed below.
 
-* Fortran Package Manager: [fpm] 0.1.3,
+* Fortran Package Manager: [fpm] 0.2.0,
 * GNU Compiler Collection [GCC] Fortran compiler: gfortran 10.2, and
 * [OpenCoarrays] 2.9.2.
 
@@ -55,14 +55,12 @@ Acknowledgments
 
 | | |
 |-|-|
-| We gratefully acknowledge support from [NASA Langley Research Center] under contract number 80NSSC20P2246.  | <img src="https://user-images.githubusercontent.com/13108868/112893191-304ce180-908f-11eb-8bea-e0cab5322aa8.png" alt="NASA logo" width="100">
-|
+| We gratefully acknowledge support from [NASA Langley Research Center] under contract number 80NSSC20P2246.  | <img src="https://user-images.githubusercontent.com/13108868/112893191-304ce180-908f-11eb-8bea-e0cab5322aa8.png" alt="NASA logo" width="100">|
 
 Donate
 ------
-If you find this software useful, please consider donating
-[your time](CONTRIBUTING.md) or
-[your money](http://bit.ly/donate-to-sourcery-institute)
+If you find this software useful, please consider donating code or
+[currency](http://bit.ly/donate-to-sourcery-institute).
 to aid in development efforts.
 
 ---
