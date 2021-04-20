@@ -7,7 +7,7 @@ copyright = "2021 Sourcery Institute"
 
 [dependencies]
 sourcery = {git = "https://github.com/sourceryinstitute/sourcery", tag = "21.02.24"}
-dag = {git = "https://github.com/sourceryinstitute/dag", tag = "21.02.24"}
+dag = {git = "https://github.com/sourceryinstitute/dag", tag = "21.04.20"}
 
 [dev-dependencies]
 vegetables = {git = "https://gitlab.com/everythingfunctional/vegetables", tag = "v7.0.2"}
