@@ -1,11 +1,10 @@
 program main
   !! Framework for Extensible Asynchronous Task Scheduling
-  use application_factory_m, only : application_factory_t
+  use application_m, only : application_t
   implicit none
-  type(application_factory_t) application_factory
 
-  associate(application => application_factory%factory_method())
+  !associate(application => application_t())
 
-  end associate
+  !end associate
 
 end program

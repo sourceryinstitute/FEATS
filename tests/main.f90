@@ -5,8 +5,8 @@ program main
     call run()
 contains
     subroutine run()
-        use application_factory_test, only: &
-                application_factory_application_factory => test_application_factory
+        use application_test, only: &
+                application_application => test_application
         use image_test, only: &
                 image_image => test_image
         use vegetables, only: test_item_t, test_that, run_tests
@@ -14,7 +14,7 @@ contains
         type(test_item_t) :: tests
         type(test_item_t) :: individual_tests(2)
 
-        individual_tests(1) = application_factory_application_factory()
+        individual_tests(1) = application_application()
         individual_tests(2) = image_image()
         tests = test_that(individual_tests)
 

@@ -11,21 +11,24 @@ class task_item_t{
   do_work()
 }
 class image_t{
-  distribute_and_do_initial_tasks(task_item : task_item_t(:)), dependency_matrix : logical(:,:)
+  distribute_and_do_initial_tasks(task_item : task_item_t[], dependency_matrix : logical[]
 }
 
 task_item_t *-down- task_t
 task_item_t -left-> image_t : accepts
 
 class dag_t{
-  toposort(order : integer(:), istat : integer)
-  generate_dependency_matrix(mat : logical(:,:))
+  toposort(order : integer[], istat : integer)
+  generate_dependency_matrix(mat : logical[])
 }
 
 class application_t{
   dag : dag_t
-  task_item : task_item_t(:)
+  task_item : task_item_t[]
+  application_t(dag_t :dag, task_item_t : tasks[]) : application_t
 }
+note left: inv: self%dag%get_num_edges()==size(self%task_item[])
+
 
 class application_factory{
   factory_method() : application_t
