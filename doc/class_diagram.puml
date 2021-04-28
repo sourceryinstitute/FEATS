@@ -3,39 +3,56 @@ Title "Classes in the FEATS Main Program"
 
 hide empty members
 
+class data_location_map_t{
+  task_numbers : integer[]
+  image_numbers : integer[]
+  location_of(task : integer) : integer
+}
+
+abstract class payload_t
+class payload_item_t{
+  abstract payload : payload_t
+}
+
+payload_item_t *-down- payload_t
+
+object mailbox{
+  payloads : payload_item_t[]
+}
+
+mailbox *-down- payload_item_t
+
 abstract class task_t{
-  {abstract} do_work()
+  {abstract} execute(input_locations : data_location_map_t, mailbox)
 }
 class task_item_t{
   {abstract} task : task_t
-  do_work()
+  execute(input_locations : data_location_map_t, mailbox)
 }
-class image_t{
-  distribute_and_do_initial_tasks(task_item : task_item_t[], dependency_matrix : logical[]
-}
+
+task_t -left-> data_location_map_t : accepts
+task_t -left-> mailbox : accepts
 
 task_item_t *-down- task_t
-task_item_t -left-> image_t : accepts
+task_item_t -left-> data_location_map_t : accepts
+task_item_t -left-> mailbox : accepts
 
 class dag_t{
-  toposort(order : integer[], istat : integer)
-  generate_dependency_matrix(mat : logical[])
 }
 
 class application_t{
   dag : dag_t
   task_item : task_item_t[]
-  application_t(dag_t :dag, task_item_t : tasks[]) : application_t
 }
-note left: inv: self%dag%get_num_edges()==size(self%task_item[])
-
-
-class application_factory{
-  factory_method() : application_t
-}
-
-application_factory -left-> application_t : constructs
+note right: inv: self%dag%get_num_edges()==size(self%task_item[])
 application_t *-down- dag_t
 application_t *-down- task_item_t
+
+
+class image_t{
+  run(application : application_t) : data_location_map_t
+}
+
+application_t -left-> image_t : accepts
 
 @enduml
