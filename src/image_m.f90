@@ -1,6 +1,7 @@
 module image_m
   !! Compute-image/Scheduler-image abstraction
-  use task_item_m, only : task_item_t
+  use application_m, only: application_t
+  use payload_item_m, only: payload_item_t
   implicit none
 
   private
@@ -9,18 +10,20 @@ module image_m
   type image_t
     !! Encapsulate compute/scheduler communication protocol
     private
+    type(payload_item_t), allocatable :: mailbox(:)[:]
   contains
-    procedure, nopass :: distribute_and_do_initial_tasks
+    private
+    procedure :: run
   end type
 
   interface
 
-    module subroutine distribute_and_do_initial_tasks(task_item)
-      !! Scheduler places tasks in each compute image's mailbox.
-      !! Compute-image does task.
+    module subroutine run(self, application, results_data)
       implicit none
-      type(task_item_t), intent(in) :: task_item(:)
-    end subroutine
+      class(image_t), intent(in) :: self
+      type(application_t), intent(in) :: application
+      type(results_data_t), intent(inout) :: results_data_t
+  end subroutine
 
   end interface
 

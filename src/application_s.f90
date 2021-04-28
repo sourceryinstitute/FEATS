@@ -1,6 +1,4 @@
 submodule(application_m) application_s
-  use dag_interface, only : dag_t
-  use task_item_m, only : task_item_t
   use assertions_interface, only : assert
   implicit none
 

@@ -4,12 +4,10 @@ submodule(task_item_m) task_item_s
 
 contains
 
-  module procedure do_work
-    call self%task%do_work
+  module procedure execute
   end procedure
 
   module procedure constructor
-    new_task_item%task = task
   end procedure
 
 end submodule task_item_s

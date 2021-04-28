@@ -1,5 +1,7 @@
 module task_item_m
   !! define tasks for compute images to complete
+  use input_location_map_m, only: input_location_map_t
+  use payload_item_m, only: payload_item_t
   use task_m, only : task_t
   implicit none
 
@@ -10,7 +12,7 @@ module task_item_m
     private
     class(task_t), allocatable :: task
   contains
-    procedure :: do_work
+    procedure :: execute
   end type
 
   interface task_item_t
@@ -25,10 +27,12 @@ module task_item_m
 
   interface
 
-    module subroutine do_work(self)
+    module subroutine execute(self, input_locations, mailbox)
       !! complete the assigned task
       implicit none
       class(task_item_t), intent(in) :: self
+      type(input_location_map_t), intent(in) :: input_locations
+      type(payload_item_t), intent(inout) :: mailbox(:)[:]
     end subroutine
 
   end interface
