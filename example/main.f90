@@ -2,15 +2,15 @@ program main
   !! Framework for Extensible Asynchronous Task Scheduling
   use application_factory_m, only : application_factory
   use image_m, only: image_t
-  use results_data_m, only: results_data_t
+  use mailbox_m, only: mailbox
   implicit none
 
   type(image_t) :: image
-  type(results_data_t) :: results
 
   associate(application => application_factory())
-    call image%run(application, results)
-    ! can access results if needed using
-    ! results%mailbox(task)[results%location_of(task)]
+    associate(results =>image%run(application))
+      ! can access results if needed using
+      ! mailbox(task)[results%location_of(task)]
+    end associate
   end associate
 end program

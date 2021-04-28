@@ -1,4 +1,4 @@
-submodule(input_location_map_m) input_location_map_s
+submodule(data_location_map_m) data_location_map_s
     implicit none
 contains
     module procedure constructor

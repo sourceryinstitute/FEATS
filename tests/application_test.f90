@@ -6,7 +6,7 @@ module application_test
    use application_m, only : application_t
    use dag_interface, only: dag_t
    use image_m, only: image_t
-   use results_data_m, only: results_data_t
+   use mailbox_m, only: mailbox
    use task_item_m, only: task_item_t
    implicit none
 
@@ -30,14 +30,13 @@ contains
   function verify_application_construction() result(result_)
     type(result_t) result_
 
-    type(results_data_t) :: results
-
     ! associate(application => application_factory())
-    !   call image%run(application, results)
+    !   associate(results => image%run(application))
+    !     result_ = &
+    !         assert_equals(3.1415, mailbox[results%location_of(3)]) &
+    !         .and. assert_equals(sqrt(2), mailbox[results%location_of(4)])
+    !   end associate
     ! end associate
-    ! result_ = &
-    !     assert_equals(3.1415, results%mailbox[results%location_of(3)]) &
-    !     .and. assert_equals(sqrt(2), results%mailbox[results%location_of(4)])
 
     result_ = succeed("application constructed")
 
