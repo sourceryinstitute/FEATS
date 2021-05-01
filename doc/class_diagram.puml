@@ -44,7 +44,7 @@ class application_t{
   dag : dag_t
   task_item : task_item_t[]
 }
-note right: inv: self%dag%get_num_edges()==size(self%task_item[])
+note right: **context** application_t **inv:** ""self%dag%get_num_edges() == size(self%task_item)""
 application_t *-down- dag_t
 application_t *-down- task_item_t
 
