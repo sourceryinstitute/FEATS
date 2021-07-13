@@ -1,7 +1,7 @@
 module task_item_m
   !! define tasks for compute images to complete
   use data_location_map_m, only: data_location_map_t
-  use payload_item_m, only: payload_item_t
+  use payload_m, only: payload_t
   use task_m, only : task_t
   implicit none
 
@@ -32,7 +32,7 @@ module task_item_m
       implicit none
       class(task_item_t), intent(in) :: self
       type(data_location_map_t), intent(in) :: input_locations
-      type(payload_item_t), intent(inout) :: mailbox(:)[*]
+      type(payload_t), intent(inout) :: mailbox(:)[*]
     end subroutine
 
   end interface

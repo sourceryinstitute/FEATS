@@ -8,7 +8,7 @@ program main
   type(image_t) :: image
 
   associate(application => application_factory())
-    associate(results =>image%run(application))
+    associate(results => image%run(application))
       ! can access results if needed using
       ! mailbox(task)[results%location_of(task)]
     end associate

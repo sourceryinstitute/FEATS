@@ -12,7 +12,7 @@ module image_m
     private
   contains
     private
-    procedure :: run
+    procedure, public :: run
   end type
 
   interface
@@ -21,7 +21,7 @@ module image_m
       implicit none
       class(image_t), intent(in) :: self
       type(application_t), intent(in) :: application
-      type(data_location_map_t), intent(inout) :: results_locations
+      type(data_location_map_t) :: results_locations
     end function
 
   end interface

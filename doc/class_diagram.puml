@@ -9,18 +9,15 @@ class data_location_map_t{
   location_of(task : integer) : integer
 }
 
-abstract class payload_t
-class payload_item_t{
-  abstract payload : payload_t
+class payload_t{
+  payload : character(len=:), allocatable
 }
-
-payload_item_t *-down- payload_t
 
 object mailbox{
-  payloads : payload_item_t[]
+  payloads : payload_t[]
 }
 
-mailbox *-down- payload_item_t
+mailbox *-down- payload_t
 
 abstract class task_t{
   {abstract} execute(input_locations : data_location_map_t, mailbox)
