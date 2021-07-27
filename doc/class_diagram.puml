@@ -10,7 +10,7 @@ class data_location_map_t{
 }
 
 class payload_t{
-  payload : character(len=:), allocatable
+  payload[] : character(len=1), allocatable
 }
 
 object mailbox{
