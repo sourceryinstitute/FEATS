@@ -15,6 +15,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v1
 
+    - uses: fortran-lang/setup-fpm@v3
+
     - name: Get Time
       id: time
       uses: nanzm/get-time-action@v1.0
@@ -35,7 +37,6 @@ jobs:
         --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-10 \
         --slave /usr/bingcov gcov /usr/bin/gcov-10
         if [ ! -d OpenCoarrays-2.9.2 ] ; then wget -P . https://github.com/sourceryinstitute/OpenCoarrays/releases/download/2.9.2/OpenCoarrays-2.9.2.tar.gz && tar -xf OpenCoarrays-2.9.2.tar.gz && cd OpenCoarrays-2.9.2 && TERM=xterm ./install.sh -y; fi
-        wget https://github.com/fortran-lang/fpm/releases/download/v0.2.0/fpm-0.2.0-linux-x86_64 && sudo cp fpm-0.2.0-linux-x86_64 /usr/local/bin/fpm && sudo chmod a+x /usr/local/bin/fpm
 
     - name: Build and test
       run: |
