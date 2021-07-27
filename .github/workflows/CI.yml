@@ -15,6 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v1
 
+    - name: Install fpm
     - uses: fortran-lang/setup-fpm@v3
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -32,7 +33,7 @@ jobs:
         path: "OpenCoarrays-2.9.2/"
         key: ${{ steps.time.outputs.time }}
 
-    - name: Install GFortran, OpenCoarrays,and fpm
+    - name: Install GFortran, OpenCoarrays
       run: |
         sudo apt install -y gfortran-${GCC_V} graphviz
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
