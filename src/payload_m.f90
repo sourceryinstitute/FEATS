@@ -5,25 +5,38 @@ module payload_m
 
     type :: payload_t
         private
-        character(len=:), allocatable :: payload_
+        character(len=1), allocatable :: payload_(:)
     contains
         private
-        procedure, public :: payload
+        procedure, public :: raw_payload
+        procedure, public :: string_payload
     end type
     
     interface payload_t
-        pure module function constructor(payload_) result(new_payload)
+        pure module function from_raw(payload) result(new_payload)
             implicit none
-            character(len=*), intent(in) :: payload_
+            character(len=1), intent(in) :: payload(:)
+            type(payload_t) :: new_payload
+        end function
+
+        pure module function from_string(payload) result(new_payload)
+            implicit none
+            character(len=*), intent(in) :: payload
             type(payload_t) :: new_payload
         end function
     end interface
     
     interface
-        pure module function payload(self)
+        pure module function raw_payload(self)
             implicit none
             class(payload_t), intent(in) :: self
-            character(len=:), allocatable :: payload
+            character(len=1), allocatable :: raw_payload(:)
+        end function
+
+        pure module function string_payload(self)
+            implicit none
+            class(payload_t), intent(in) :: self
+            character(len=:), allocatable :: string_payload
         end function
     end interface
 end module
