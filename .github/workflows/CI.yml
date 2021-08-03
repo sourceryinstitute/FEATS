@@ -9,11 +9,16 @@ jobs:
       fail-fast: false
 
     env:
-      GCC_V: 10
+      GCC_V: 11
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v1
+
+    - name: Install fpm
+    - uses: fortran-lang/setup-fpm@v3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Get Time
       id: time
@@ -28,14 +33,13 @@ jobs:
         path: "OpenCoarrays-2.9.2/"
         key: ${{ steps.time.outputs.time }}
 
-    - name: Install GFortran, OpenCoarrays,and fpm
+    - name: Install GFortran, OpenCoarrays
       run: |
         sudo apt install -y gfortran-${GCC_V} graphviz
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 \
-        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-10 \
-        --slave /usr/bingcov gcov /usr/bin/gcov-10
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
+        --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
+        --slave /usr/bingcov gcov /usr/bin/gcov-${GCC_V}
         if [ ! -d OpenCoarrays-2.9.2 ] ; then wget -P . https://github.com/sourceryinstitute/OpenCoarrays/releases/download/2.9.2/OpenCoarrays-2.9.2.tar.gz && tar -xf OpenCoarrays-2.9.2.tar.gz && cd OpenCoarrays-2.9.2 && TERM=xterm ./install.sh -y; fi
-        wget https://github.com/fortran-lang/fpm/releases/download/v0.2.0/fpm-0.2.0-linux-x86_64 && sudo cp fpm-0.2.0-linux-x86_64 /usr/local/bin/fpm && sudo chmod a+x /usr/local/bin/fpm
 
     - name: Build and test
       run: |
