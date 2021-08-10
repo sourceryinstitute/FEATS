@@ -55,6 +55,7 @@ contains
             call event_query (ready_for_next_task(i), ev_count)
             if (ev_count > 0) then
                 event wait (ready_for_next_task(i))
+                next_image = i
                 exit
             end if
         end do
