@@ -48,6 +48,18 @@ contains
         end associate
     end function
 
+    function find_next_image() result(next_image)
+        integer :: next_image, i, ev_count
+        
+        do i = 1, size(ready_for_next_task)
+            call event_query (ready_for_next_task(i), ev_count)
+            if (ev_count > 0) then
+                event wait (ready_for_next_task(i))
+                exit
+            end if
+        end do
+    end function
+
     function assign_task(dag) result(tasks_left)
         type(dag_t), intent(in) :: dag
         logical :: tasks_left
@@ -55,7 +67,8 @@ contains
         associate( &
                 next_task => find_next_task(dag), &
                 next_image => find_next_image())
-            call assign_task_to_image(next_task, next_image)
+            task_identifier[next_image] = next_task
+            event post (task_assigned[next_image])
         end associate
         if (.not.more_tasks(dag)) then
             call assign_completed_to_images()
