@@ -9,6 +9,7 @@ module task_item_m
   public :: task_item_t
 
   type task_item_t
+    !! A wrapper for a `class(task_t)` value, to facilitate constructing an array of tasks
     private
     class(task_t), allocatable :: task
   contains

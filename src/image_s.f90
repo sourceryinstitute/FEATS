@@ -11,6 +11,11 @@ submodule(image_m) image_s
     type(event_type), allocatable :: ready_for_next_task(:)[:]
     type(event_type) task_assigned[*]
     type(data_location_map_t), allocatable :: data_locations(:)[:]
+    !! Contains the mappings of where inputs were computed for a given task.
+    !!
+    !! Will only contain information on the scheduler image.
+    !! The map for a given task contains information on where it's inputs were computed.
+    !! That map is present at the index corresponding to that task's ID.
     integer task_identifier[*]
 contains
     module procedure run
@@ -50,7 +55,7 @@ contains
 
     function find_next_image() result(next_image)
         integer :: next_image, i, ev_count
-        
+
         do i = 1, size(ready_for_next_task)
             call event_query (ready_for_next_task(i), ev_count)
             if (ev_count > 0) then

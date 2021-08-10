@@ -8,6 +8,8 @@ module final_task_m
     public :: final_task_t
 
     type, extends(task_t) :: final_task_t
+        !! A signal to the compute images that all tasks have been completed,
+        !! and thus they can stop waiting for tasks to be assigned.
     contains
         procedure :: execute
         procedure :: is_final_task

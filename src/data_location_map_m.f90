@@ -4,6 +4,9 @@ module data_location_map_m
     public :: data_location_map_t
 
     type :: data_location_map_t
+        !! A mapping that describes for given task ID, on which image was it executed
+        !!
+        !! This provides a convenient way for task to inquire about which images its inputs are stored on
         private
         integer, allocatable :: task_numbers(:), image_numbers(:)
     contains

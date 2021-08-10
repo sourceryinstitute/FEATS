@@ -4,6 +4,12 @@ module payload_m
     public :: payload_t
 
     type :: payload_t
+        !! A raw buffer to facilitate data transfer between  images
+        !!
+        !! Facilitates view of the data as either a string or raw bytes.
+        !! Typical usage will be either to
+        !! * produce a string representation of the data, and then parse that string to recover the original data
+        !! * use the `transfer` function to copy the raw bytes of the data
         private
         character(len=1), allocatable :: payload_(:)
     contains
@@ -11,7 +17,7 @@ module payload_m
         procedure, public :: raw_payload
         procedure, public :: string_payload
     end type
-    
+
     interface payload_t
         pure module function from_raw(payload) result(new_payload)
             implicit none
@@ -25,7 +31,7 @@ module payload_m
             type(payload_t) :: new_payload
         end function
     end interface
-    
+
     interface
         pure module function raw_payload(self)
             implicit none
