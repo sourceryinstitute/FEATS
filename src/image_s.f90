@@ -16,7 +16,14 @@ submodule(image_m) image_s
     !! Will only contain information on the scheduler image.
     !! The map for a given task contains information on where it's inputs were computed.
     !! That map is present at the index corresponding to that task's ID.
+
     integer task_identifier[*]
+    !! The ID of the task currently assigned to this image.
+
+    integer, allocatable :: task_assignment_history(:)
+    !! Records which image did which task.
+    !! Index: task number. Value: image number.
+
 contains
     module procedure run
         logical :: tasks_left
@@ -73,6 +80,11 @@ contains
         associate( &
                 next_task => find_next_task(dag), &
                 next_image => find_next_image())
+            ! track where we're assigning this task to 
+            task_assignment_history(next_task) = next_image
+            ! put together data location map.
+            !data_locations(next_task) = data_location_map_t()
+            ! tell the image that it can proceed with the next task
             task_identifier[next_image] = next_task
             event post (task_assigned[next_image])
         end associate
