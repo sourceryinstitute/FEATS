@@ -24,14 +24,19 @@ submodule(image_m) image_s
     !! Records which image did which task.
     !! Index: task number. Value: image number.
 
+
+    integer, parameter :: scheduler_image = 1
+
 contains
     module procedure run
         logical :: tasks_left
 
         associate(n_tasks => size(application%tasks()), n_imgs => num_images())
             allocate(ready_for_next_task(n_imgs))
-            allocate(data_locations(n_tasks)
-            allocate(task_assignment_history(n_tasks))
+            allocate(data_locations(n_tasks))
+            allocate(mailbox(n_tasks))
+            if (this_image() == scheduler_image)  &
+                allocate(task_assignment_history(n_tasks))
         end associate
 
         tasks_left = .true.
@@ -39,7 +44,7 @@ contains
                 tasks => [application%tasks(), task_item_t(final_task_t())], &
                 dag => application%dag())
             do while (tasks_left)
-                if (this_image() == scheduler) then
+                if (this_image() == scheduler_image) then
                     tasks_left = assign_task(dag)
                 else
                     tasks_left = do_work(tasks)
