@@ -28,6 +28,12 @@ contains
     module procedure run
         logical :: tasks_left
 
+        associate(n_tasks => size(application%tasks()), n_imgs => num_images())
+            allocate(ready_for_next_task(n_imgs))
+            allocate(data_locations(n_tasks)
+            allocate(task_assignment_history(n_tasks))
+        end associate
+
         tasks_left = .true.
         associate( &
                 tasks => [application%tasks(), task_item_t(final_task_t())], &
