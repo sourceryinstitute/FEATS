@@ -1,13 +1,13 @@
-module application_factory_m
+module application_generator_m
     use application_m, only: application_t
     implicit none
     private
-    public :: application_factory
+    public :: generate_application
 
 contains
-    function application_factory() result(application)
+    function generate_application() result(application)
         type(application_t) :: application
-        
+
         associate(unused => application)
         end associate
     end function
