@@ -9,5 +9,12 @@ contains
     end procedure
 
     module procedure location_of
+        associate(which_task => findloc(array=self%task_numbers, value=task, dim=1))
+            if (which_task == 0) then
+                error stop "task not present in this map"
+            else
+                location_of = self%image_numbers(which_task)
+            end if
+        end associate
     end procedure
 end submodule
