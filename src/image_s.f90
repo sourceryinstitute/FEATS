@@ -26,11 +26,13 @@ submodule(image_m) image_s
 
 
     integer, parameter :: scheduler_image = 1
+    integer, parameter :: no_task_assigned = -1
 
 contains
     module procedure run
         logical :: tasks_left
 
+        task_identifier = no_task_assigned
         associate(n_tasks => size(application%tasks()), n_imgs => num_images())
             allocate(ready_for_next_task(n_imgs))
             allocate(data_locations(n_tasks))
@@ -75,10 +77,16 @@ contains
         integer :: next_image, i, ev_count
 
         do i = 1, size(ready_for_next_task)
+            if (i == scheduler_image) cycle ! no need to check the scheduler image
+
             call event_query (ready_for_next_task(i), ev_count)
             if (ev_count > 0) then
                 event wait (ready_for_next_task(i))
                 next_image = i
+                !task_just_completed = task_identifier[i]
+                !if (task_just_completed /= no_task_assigned) then
+                !    ! do something
+                !end if
                 exit
             end if
         end do
