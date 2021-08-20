@@ -17,7 +17,11 @@ contains
     end procedure
 
     module procedure raw_payload
-        raw_payload = self%payload_
+        if (allocated(self%payload_)) then
+            raw_payload = self%payload_
+        else
+            raw_payload = [character(len=1)::]
+        end if
     end procedure
 
     module procedure string_payload
