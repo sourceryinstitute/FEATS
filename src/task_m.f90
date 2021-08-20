@@ -31,12 +31,11 @@ module task_m
 
   interface
 
-    pure function is_final_task(self)
+    pure module function is_final_task(self)
         !! is this the final task?
-        import :: task_t
         implicit none
         class(task_t), intent(in) :: self
-        logical :: is_final_task_i
+        logical :: is_final_task
     end function
 
   end interface
