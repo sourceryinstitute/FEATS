@@ -24,6 +24,8 @@ submodule(image_m) image_s
     !! Records which image did which task.
     !! Index: task number. Value: image number.
 
+    logical, allocatable :: task_done(:)
+
 
     integer, parameter :: scheduler_image = 1
     integer, parameter :: no_task_assigned = -1
@@ -37,11 +39,15 @@ contains
             allocate(ready_for_next_task(n_imgs))
             allocate(data_locations(n_tasks))
             allocate(mailbox(n_tasks))
-            if (this_image() == scheduler_image)  &
+            if (this_image() == scheduler_image) then 
                 allocate(task_assignment_history(n_tasks))
+                allocate(task_done(n_tasks))
+                task_done = .false.
+            end if
         end associate
 
         tasks_left = .true.
+
         associate( &
                 tasks => [application%tasks(), task_item_t(final_task_t())], &
                 dag => application%dag())
@@ -83,10 +89,10 @@ contains
             if (ev_count > 0) then
                 event wait (ready_for_next_task(i))
                 next_image = i
-                !task_just_completed = task_identifier[i]
-                !if (task_just_completed /= no_task_assigned) then
-                !    ! do something
-                !end if
+                associate (task_just_completed => task_identifier[i])
+                    if (task_just_completed /= no_task_assigned) &
+                        task_done(task_just_completed) = .true.
+                end associate
                 exit
             end if
         end do
