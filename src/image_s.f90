@@ -39,7 +39,7 @@ contains
             allocate(ready_for_next_task(n_imgs))
             allocate(data_locations(n_tasks))
             allocate(mailbox(n_tasks))
-            if (this_image() == scheduler_image) then 
+            if (this_image() == scheduler_image) then
                 allocate(task_assignment_history(n_tasks))
                 allocate(task_done(n_tasks))
                 task_done = .false.
@@ -83,18 +83,17 @@ contains
     function find_next_image() result(next_image)
         integer :: next_image, i, ev_count
 
+        next_image = NO_IMAGE_READY
         do i = 1, size(ready_for_next_task)
             if (i == scheduler_image) cycle ! no need to check the scheduler image
 
             call event_query (ready_for_next_task(i), ev_count)
             if (ev_count > 0) then
-                event wait (ready_for_next_task(i))
                 next_image = i
                 associate (task_just_completed => task_identifier[i])
                     if (task_just_completed /= no_task_assigned) &
                         task_done(task_just_completed) = .true.
                 end associate
-                exit
             end if
         end do
     end function
@@ -103,20 +102,24 @@ contains
         type(dag_t), intent(in) :: dag
         logical :: tasks_left
 
-        associate( &
-                next_task => find_next_task(dag), &
-                next_image => find_next_image())
-            ! track where we're assigning this task to
-            task_assignment_history(next_task) = next_image
-            ! put together data location map.
-            !data_locations(next_task) = data_location_map_t()
-            ! tell the image that it can proceed with the next task
-            task_identifier[next_image] = next_task
-            event post (task_assigned[next_image])
-        end associate
-        if (.not.more_tasks(dag)) then
-            call assign_completed_to_images()
-            tasks_left = .false.
+        next_image = find_next_image()
+        if (next_image /= NO_IMAGE_READY) then
+            next_task = find_next_task()
+            if (next_task == NO_TASK_READY) then
+                tasks_left = .true.
+            else if (next_task == ALL_TASKS_DONE) then
+                call assign_completed_to_images()
+                tasks_left = .false
+            else
+                event wait (ready_for_next_task(next_image))
+                task_assignment_history(next_task) = next_image
+                ! put together data location map.
+                !data_locations(next_task) = data_location_map_t()
+                ! tell the image that it can proceed with the next task
+                task_identifier[next_image] = next_task
+                event post (task_assigned[next_image])
+                tasks_left = .true.
+            end if
         else
             tasks_left = .true.
         end if
