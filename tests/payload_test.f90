@@ -63,11 +63,13 @@ contains
         type(result_t) :: result_
 
         integer, parameter :: EXPECTED(*) = [1, 1, 2, 3, 5]
+        integer, allocatable :: expected_(:)
         integer :: i
         type(payload_t) :: payload
         integer, allocatable :: retrieved(:)
 
-        payload = payload_t(transfer(EXPECTED, payload%raw_payload()))
+        expected_ = EXPECTED
+        payload = payload_t(transfer(expected_, payload%raw_payload()))
 
         retrieved = transfer(payload%raw_payload(), retrieved)
 
