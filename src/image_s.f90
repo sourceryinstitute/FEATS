@@ -107,7 +107,7 @@ contains
 
         associate(next_image => find_next_image())
             if (next_image /= NO_IMAGE_READY) then
-                associate(next_task => find_next_task())
+                associate(next_task => find_next_task(dag))
                     if (next_task == NO_TASK_READY) then
                         tasks_left = .true.
                     else if (next_task == ALL_TASKS_DONE) then
@@ -130,12 +130,6 @@ contains
         end associate
     end function
 
-    function find_next_task() result(next_task)
-        integer :: next_task
-
-        next_task = ALL_TASKS_DONE
-    end function
-
     subroutine assign_completed_to_images()
         integer :: i
 
@@ -151,4 +145,50 @@ contains
             event post (task_assigned[i])
         end do
     end subroutine
+
+    pure function find_next_task ( dag ) Result ( next_task_to_run )
+!! find_next_task: search through the dag to find the next task where its dependents are complete
+!!
+!! possible outputs for next_task_to_run
+!!     - a positive integer signals the next task to run
+!!     - 'ALL_TASKS_DONE' signals all tasks are done
+!!     - 'NO_TASK_READY' signals that no tasks are ready to run
+!!
+      implicit none
+
+      type(dag_t), intent(in) :: dag
+      integer :: next_task_to_run
+
+      integer :: task, depends
+      integer, allocatable, dimension(:) :: dependents
+      logical :: done, all_done
+
+      all_done = .true.
+      next_task_to_run = NO_TASK_READY
+
+      do task = 1, size(task_done)
+         if ( task_done(task) ) then
+            cycle
+         else
+            all_done = .false.
+            dependents = dag%get_dependencies ( task )
+            done = .true.
+            do depends = 1, size(dependents)
+               done = done .and. task_done(depends)
+            end do
+            if ( done ) then
+               next_task_to_run = task
+               exit
+            else
+               cycle
+            end if
+         end if
+      end do
+
+
+      if ( all_done ) then
+         next_task_to_run = ALL_TASKS_DONE
+      end if
+
+    end function find_next_task
 end submodule
