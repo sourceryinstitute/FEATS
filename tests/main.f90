@@ -5,14 +5,17 @@ program main
     call run()
 contains
     subroutine run()
-        use application_test, only: &
-                application_application => test_application
+        use data_location_map_test, only: &
+                data_location_map_data_location_map => test_data_location_map
+        use payload_test, only: &
+                payload_payload => test_payload
         use vegetables, only: test_item_t, test_that, run_tests
 
         type(test_item_t) :: tests
-        type(test_item_t) :: individual_tests(1)
+        type(test_item_t) :: individual_tests(2)
 
-        individual_tests(1) = application_application()
+        individual_tests(1) = data_location_map_data_location_map()
+        individual_tests(2) = payload_payload()
         tests = test_that(individual_tests)
 
         call run_tests(tests)

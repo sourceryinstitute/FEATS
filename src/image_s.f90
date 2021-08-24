@@ -105,7 +105,7 @@ contains
         associate( &
                 next_task => find_next_task(dag), &
                 next_image => find_next_image())
-            ! track where we're assigning this task to 
+            ! track where we're assigning this task to
             task_assignment_history(next_task) = next_image
             ! put together data location map.
             !data_locations(next_task) = data_location_map_t()
