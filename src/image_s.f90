@@ -29,6 +29,8 @@ submodule(image_m) image_s
 
     integer, parameter :: scheduler_image = 1
     integer, parameter :: no_task_assigned = -1
+    integer, parameter :: NO_TASK_READY = 0
+    integer, parameter :: ALL_TASKS_DONE = -1
 
 contains
     module procedure run
@@ -120,4 +122,52 @@ contains
             tasks_left = .true.
         end if
     end function
+
+    pure function find_next_task ( dag, task_done ) Result ( next_task_to_run )
+!! find_next_task: search through the dag to find the next task where its dependents are complete
+!!
+!! possible outputs for next_task_to_run
+!!     - a positive integer signals the next task to run
+!!     - 'ALL_TASKS_DONE' signals all tasks are done
+!!     - 'NO_TASK_READY' signals that no tasks are ready to run
+!!
+      implicit none
+
+      type(dag_t), intent(in) :: dag
+      logical, dimension(:), intent(in) :: task_done
+      integer :: next_task_to_run
+
+      integer :: task, depends
+      integer, allocatable, dimension(:) :: dependents
+      logical :: done, all_done
+
+      all_done = .true.
+      next_task_to_run = NO_TASK_READY
+
+      do task = 1, size(task_done)
+         if ( task_done(task) ) then
+            cycle
+         else
+            all_done = .false.
+            dependents = dag%get_dependencies ( task )
+            done = .true.
+            do depends = 1, size(dependents)
+               done = done .and. task_done(depends)
+            end do
+            if ( done ) then
+               next_task_to_run = task
+               exit
+            else
+               cycle
+            end if
+         end if
+      end do
+
+
+      if ( all_done ) then
+         next_task_to_run = ALL_TASKS_DONE
+      end if
+
+    end function find_next_task
+
 end submodule
