@@ -71,6 +71,7 @@ contains
             if (.not.my_task%is_final_task()) then
                 call my_task%execute( &
                         data_locations(task_identifier)[scheduler_image], &
+                        task_identifier, &
                         mailbox)
                 tasks_left = .true.
             else

@@ -17,10 +17,11 @@ module final_task_m
 
     interface
 
-        module subroutine execute(self, input_locations, mailbox)
+        module subroutine execute(self, input_locations, task_number, mailbox)
             implicit none
             class(final_task_t), intent(in) :: self
             type(data_location_map_t), intent(in) :: input_locations
+            integer, intent(in) :: task_number
             type(payload_t), intent(inout) :: mailbox(:)[*]
         end subroutine
 
