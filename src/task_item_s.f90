@@ -12,4 +12,8 @@ contains
       new_task_item%task = task
   end procedure
 
+  module procedure is_final_task
+      is_final_task = self%task%is_final_task()
+  end procedure
+
 end submodule task_item_s

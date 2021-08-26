@@ -29,6 +29,9 @@ submodule(image_m) image_s
 
     integer, parameter :: scheduler_image = 1
     integer, parameter :: no_task_assigned = -1
+    integer, parameter :: NO_TASK_READY = -1
+    integer, parameter :: ALL_TASKS_DONE = -2
+    integer, parameter :: NO_IMAGE_READY = -1
 
 contains
     module procedure run
@@ -36,9 +39,9 @@ contains
 
         task_identifier = no_task_assigned
         associate(n_tasks => size(application%tasks()), n_imgs => num_images())
-            allocate(ready_for_next_task(n_imgs))
-            allocate(data_locations(n_tasks))
-            allocate(mailbox(n_tasks))
+            allocate(ready_for_next_task(n_imgs)[*])
+            allocate(data_locations(n_tasks)[*])
+            allocate(mailbox(n_tasks)[*])
             if (this_image() == scheduler_image) then
                 allocate(task_assignment_history(n_tasks))
                 allocate(task_done(n_tasks))
@@ -61,7 +64,7 @@ contains
         end associate
     end procedure
 
-    function do_work(tasks_left, tasks) result(tasks_left)
+    function do_work(tasks) result(tasks_left)
         type(task_item_t), intent(in) :: tasks(:)
         logical :: tasks_left
 
@@ -90,7 +93,7 @@ contains
             call event_query (ready_for_next_task(i), ev_count)
             if (ev_count > 0) then
                 next_image = i
-                associate (task_just_completed => task_identifier[i])
+                associate (task_just_completed => (task_identifier[i]))
                     if (task_just_completed /= no_task_assigned) &
                         task_done(task_just_completed) = .true.
                 end associate
@@ -102,26 +105,50 @@ contains
         type(dag_t), intent(in) :: dag
         logical :: tasks_left
 
-        next_image = find_next_image()
-        if (next_image /= NO_IMAGE_READY) then
-            next_task = find_next_task()
-            if (next_task == NO_TASK_READY) then
-                tasks_left = .true.
-            else if (next_task == ALL_TASKS_DONE) then
-                call assign_completed_to_images()
-                tasks_left = .false
+        associate(next_image => find_next_image())
+            if (next_image /= NO_IMAGE_READY) then
+                associate(next_task => find_next_task())
+                    if (next_task == NO_TASK_READY) then
+                        tasks_left = .true.
+                    else if (next_task == ALL_TASKS_DONE) then
+                        call assign_completed_to_images()
+                        tasks_left = .false.
+                    else
+                        event wait (ready_for_next_task(next_image))
+                        task_assignment_history(next_task) = next_image
+                        ! put together data location map.
+                        !data_locations(next_task) = data_location_map_t()
+                        ! tell the image that it can proceed with the next task
+                        task_identifier[next_image] = next_task
+                        event post (task_assigned[next_image])
+                        tasks_left = .true.
+                    end if
+                end associate
             else
-                event wait (ready_for_next_task(next_image))
-                task_assignment_history(next_task) = next_image
-                ! put together data location map.
-                !data_locations(next_task) = data_location_map_t()
-                ! tell the image that it can proceed with the next task
-                task_identifier[next_image] = next_task
-                event post (task_assigned[next_image])
                 tasks_left = .true.
             end if
-        else
-            tasks_left = .true.
-        end if
+        end associate
     end function
+
+    function find_next_task() result(next_task)
+        integer :: next_task
+
+        next_task = ALL_TASKS_DONE
+    end function
+
+    subroutine assign_completed_to_images()
+        integer :: i
+
+        do i = 1, size(ready_for_next_task)
+            if (i == scheduler_image) cycle ! don't wait on the scheduler image
+
+            event wait (ready_for_next_task(i))
+            associate (task_just_completed => (task_identifier[i]))
+                if (task_just_completed /= no_task_assigned) &
+                    task_done(task_just_completed) = .true.
+            end associate
+            task_identifier[i] = size(task_done) + 1
+            event post (task_assigned[i])
+        end do
+    end subroutine
 end submodule

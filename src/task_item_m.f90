@@ -14,6 +14,7 @@ module task_item_m
     class(task_t), allocatable :: task
   contains
     procedure :: execute
+    procedure :: is_final_task
   end type
 
   interface task_item_t
@@ -36,6 +37,13 @@ module task_item_m
       integer, intent(in) :: task_number
       type(payload_t), intent(inout) :: mailbox(:)[*]
     end subroutine
+
+    pure module function is_final_task(self)
+        !! is this the final task?
+        implicit none
+        class(task_item_t), intent(in) :: self
+        logical :: is_final_task
+    end function
 
   end interface
 
