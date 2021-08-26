@@ -9,10 +9,12 @@ module task_item_m
   public :: task_item_t
 
   type task_item_t
+    !! A wrapper for a `class(task_t)` value, to facilitate constructing an array of tasks
     private
     class(task_t), allocatable :: task
   contains
     procedure :: execute
+    procedure :: is_final_task
   end type
 
   interface task_item_t
@@ -27,13 +29,21 @@ module task_item_m
 
   interface
 
-    module subroutine execute(self, input_locations, mailbox)
+    module subroutine execute(self, input_locations, task_number, mailbox)
       !! complete the assigned task
       implicit none
       class(task_item_t), intent(in) :: self
       type(data_location_map_t), intent(in) :: input_locations
+      integer, intent(in) :: task_number
       type(payload_t), intent(inout) :: mailbox(:)[*]
     end subroutine
+
+    pure module function is_final_task(self)
+        !! is this the final task?
+        implicit none
+        class(task_item_t), intent(in) :: self
+        logical :: is_final_task
+    end function
 
   end interface
 

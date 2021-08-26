@@ -5,4 +5,7 @@ module mailbox_m
     public :: mailbox
 
     type(payload_t), allocatable :: mailbox(:)[:]
+    !! storage for communicating inputs/outputs between tasks
+    !!
+    !! tasks should not access this directly, as it is passed as an argument to `execute`
 end module

@@ -5,9 +5,15 @@ submodule(task_item_m) task_item_s
 contains
 
   module procedure execute
+      call self%task%execute(input_locations, task_number, mailbox)
   end procedure
 
   module procedure constructor
+      new_task_item%task = task
+  end procedure
+
+  module procedure is_final_task
+      is_final_task = self%task%is_final_task()
   end procedure
 
 end submodule task_item_s
