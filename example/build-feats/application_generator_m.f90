@@ -70,35 +70,40 @@ contains
       call module_dependencies%set_edges(data_location_map_s, [data_location_map_m])
       call module_dependencies%set_edges(image_s, [image_m])
       call module_dependencies%set_edges(task_item_s, [task_item_m])
+ 
+     block
+       integer i
+       character(len=*),                   parameter :: non_leaf_color = 'shape=square,fillcolor="SlateGray1",style=filled'
+       character(len=len(non_leaf_color)), parameter :: leaf_color     = 'shape=circle,fillcolor="cornsilk",style=filled'
+       integer, parameter :: leaf_nodes(*) = &
+         [application_generator_m, data_location_map_m, dag_interface, payload_m, &
+         assertions_interface, application_s, payload_s, data_location_map_s, image_s, task_item_s]
+       
+       do i = 1, num_vertices
+         associate(node_color => merge(leaf_color, non_leaf_color, any(i==leaf_nodes)))
+           call module_dependencies%set_vertex_info(i, attributes = node_color)
+         end associate
+       end do
 
-      block
-        integer i
-        character(len=*),                   parameter :: non_leaf_color = 'shape=square,fillcolor="SlateGray1",style=filled'
-        character(len=len(non_leaf_color)), parameter :: leaf_color     = 'shape=circle,fillcolor="cornsilk",style=filled'
-        integer, parameter :: leaf_nodes(*) = &
-          [application_generator_m, data_location_map_m, dag_interface, payload_m, &
-          assertions_interface, application_s, payload_s, data_location_map_s, image_s, task_item_s]
-        
-          do i = 1, num_vertices
-            associate(node_color => merge(leaf_color, non_leaf_color, any(i==leaf_nodes)))
-              call module_dependencies%set_vertex_info(i, attributes = node_color)
-            end associate
-          end do
+     end block
 
-      end block
+     block
+       character(len=*), parameter :: path = './output/'
+       character(len=*), parameter :: base_name= 'feats-dependencies'
+       character(len=*), parameter :: digraph_file = path // base_name // '.dot'
+       character(len=*), parameter :: output_file_arg = '-o ' // path // base_name // '.pdf'
 
-      block
-        character(len=*), parameter :: path = './output/'
-        character(len=*), parameter :: base_name= 'feats-dependencies'
-        character(len=*), parameter :: digraph_file = path // base_name // '.dot'
-        character(len=*), parameter :: output_file_arg = '-o ' // path // base_name // '.pdf'
+       print *, &
+         new_line('a'), &
+         "build-feats example: uncomment the save_digraph type-bound procedure call to see the assertion failure", &
+         new_line('a')
+    
+!       call module_dependencies%save_digraph(digraph_file, 'RL', 300)
 
-        call module_dependencies%save_digraph(digraph_file, 'RL', 300)
+!       call execute_command_line('dot -Tpdf ' // output_file_arg // ' ' // digraph_file)
+     end block
 
-        call execute_command_line('dot -Tpdf ' // output_file_arg // ' ' // digraph_file)
-      end block
-
-      application = application_t(module_dependencies, [ task_item_t :: ])
+!      application = application_t(module_dependencies, [ task_item_t :: ])
 
     end function
 
