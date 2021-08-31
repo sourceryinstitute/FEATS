@@ -88,17 +88,16 @@ contains
      end block
 
      block
-       character(len=*), parameter :: path = './output/'
        character(len=*), parameter :: base_name= 'feats-dependencies'
-       character(len=*), parameter :: digraph_file = path // base_name // '.dot'
-       character(len=*), parameter :: output_file_arg = '-o ' // path // base_name // '.pdf'
+       character(len=*), parameter :: digraph_file = base_name // '.dot'
+       character(len=*), parameter :: output_file_arg = '-o ' // base_name // '.pdf'
 
        print *, &
          new_line('a'), &
-         "build-feats example: uncomment the save_digraph type-bound procedure call to see the assertion failure", &
+         "example/build-feats : call module_dependencies%save_digraph(digraph_file, 'RL', 300)", &
          new_line('a')
     
-!       call module_dependencies%save_digraph(digraph_file, 'RL', 300)
+       call module_dependencies%save_digraph(digraph_file, 'RL', 300)
 
 !       call execute_command_line('dot -Tpdf ' // output_file_arg // ' ' // digraph_file)
      end block
