@@ -36,6 +36,7 @@ module application_generator_m
     use application_m, only: application_t
     use dag_interface, only : dag_t
     use task_item_m, only : task_item_t
+    use compile_or_link_m, only : compile_or_link_t
     use iso_fortran_env, only : error_unit
     implicit none
     private
@@ -90,20 +91,19 @@ contains
      block
        character(len=*), parameter :: base_name= 'feats-dependencies'
        character(len=*), parameter :: digraph_file = base_name // '.dot'
-       character(len=*), parameter :: output_file_arg = '-o ' // base_name // '.pdf'
+       character(len=*), parameter :: output_file = base_name // '.pdf'
 
-       print *, &
-         new_line('a'), &
-         "example/build-feats : call module_dependencies%save_digraph(digraph_file, 'RL', 300)", &
-         new_line('a')
-    
        call module_dependencies%save_digraph(digraph_file, 'RL', 300)
-
-!       call execute_command_line('dot -Tpdf ' // output_file_arg // ' ' // digraph_file)
+       call execute_command_line('dot -Tpdf -o ' // output_file // ' ' // digraph_file)
+       print *, new_line(''), " ----- application_generator(): module_depenencies DAG written to " // output_file
      end block
 
-!      application = application_t(module_dependencies, [ task_item_t :: ])
+     block
+       integer i
+       application = application_t(module_dependencies, [(task_item_t(compile_or_link_t()) ,i=1,num_vertices)])
+       print *, "----- application_generator(): application defined"
+     end block
 
-    end function
+   end function
 
 end module
