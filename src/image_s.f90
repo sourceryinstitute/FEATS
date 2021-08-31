@@ -104,6 +104,7 @@ contains
     function assign_task(dag) result(tasks_left)
         type(dag_t), intent(in) :: dag
         logical :: tasks_left
+        integer, allocatable, dimension(:) :: upstream_tasks, upstream_task_images
 
         associate(next_image => find_next_image())
             if (next_image /= NO_IMAGE_READY) then
@@ -116,8 +117,12 @@ contains
                     else
                         event wait (ready_for_next_task(next_image))
                         task_assignment_history(next_task) = next_image
-                        ! put together data location map.
-                        !data_locations(next_task) = data_location_map_t()
+
+                        ! put together data location map
+                        upstream_tasks       = dag%get_edges(next_task)
+                        upstream_task_images = task_assignment_history(upstream_tasks)
+                        data_locations(next_task) = data_location_map_t(upstream_tasks, upstream_task_images)
+
                         ! tell the image that it can proceed with the next task
                         task_identifier[next_image] = next_task
                         event post (task_assigned[next_image])
