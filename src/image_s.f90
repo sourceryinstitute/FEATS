@@ -1,6 +1,5 @@
 submodule(image_m) image_s
     use dag_interface, only: dag_t
-    use data_location_map_m, only: data_location_map_t
     use iso_fortran_env, only: event_type
     use final_task_m, only: final_task_t
     use mailbox_m, only: mailbox
@@ -72,10 +71,8 @@ contains
         event wait(task_assigned)
         associate(my_task => tasks(task_identifier))
             if (.not.my_task%is_final_task()) then
-                call my_task%execute( &
-                        data_locations(task_identifier)[scheduler_image], &
-                        task_identifier, &
-                        mailbox)
+                mailbox(task_identifier) = &
+                    my_task%execute(data_locations(task_identifier)[scheduler_image], task_identifier, mailbox)
                 tasks_left = .true.
             else
                 tasks_left = .false.

@@ -18,15 +18,16 @@ module task_m
 
   abstract interface
 
-    subroutine execute_i(self, input_locations, task_number, mailbox)
+    function execute_i(self, input_locations, task_number, mailbox) result(output)
       !! complete the assigned task
       import :: data_location_map_t, task_t, payload_t
       implicit none
       class(task_t), intent(in) :: self
       type(data_location_map_t), intent(in) :: input_locations
       integer, intent(in) :: task_number
-      type(payload_t), intent(inout) :: mailbox(:)[*]
-    end subroutine
+      type(payload_t), intent(in) :: mailbox(:)[*]
+      type(payload_t) :: output
+    end function
 
   end interface
 
