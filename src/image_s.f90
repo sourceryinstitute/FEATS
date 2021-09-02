@@ -2,7 +2,7 @@ submodule(image_m) image_s
     use dag_interface, only: dag_t
     use iso_fortran_env, only: event_type
     use final_task_m, only: final_task_t
-    use mailbox_m, only: mailbox
+    use mailbox_m, only: mailbox, mailbox_entry_can_be_freed
     use task_item_m, only: task_item_t
 
     implicit none
@@ -41,6 +41,8 @@ contains
             allocate(ready_for_next_task(n_imgs)[*])
             allocate(data_locations(n_tasks)[*])
             allocate(mailbox(n_tasks)[*])
+            allocate(mailbox_entry_can_be_freed(n_tasks)[*])
+            mailbox_entry_can_be_freed(n_tasks) = .false.
             if (this_image() == scheduler_image) then
                 allocate(task_assignment_history(n_tasks))
                 allocate(task_done(n_tasks))
@@ -102,6 +104,7 @@ contains
         type(dag_t), intent(in) :: dag
         logical :: tasks_left
         integer, allocatable, dimension(:) :: upstream_tasks, upstream_task_images
+        integer :: i
 
         associate(next_image => find_next_image())
             if (next_image /= NO_IMAGE_READY) then
@@ -114,12 +117,23 @@ contains
                     else
                         event wait (ready_for_next_task(next_image))
                         task_assignment_history(next_task) = next_image
+ 
+                        ! check which task the image just finished, that's task A
+                        ! for each task B upstream of A, walk through that task's downstream dependencies
+                        ! if they're all completed, the output data from B can be freed.
+                        upstream_tasks       = dag%get_edges(task_identifier[next_image])
+                        upstream_task_images = task_assignment_history(upstream_tasks)
+                        do i = 1, size(upstream_tasks)
+                            if (all(task_done(dag%get_dependencies(upstream_tasks(i))))) then
+                                mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.        
+                            end if
+                        end do
 
                         ! put together data location map
                         upstream_tasks       = dag%get_edges(next_task)
                         upstream_task_images = task_assignment_history(upstream_tasks)
                         data_locations(next_task) = data_location_map_t(upstream_tasks, upstream_task_images)
-
+                      
                         ! tell the image that it can proceed with the next task
                         task_identifier[next_image] = next_task
                         event post (task_assigned[next_image])
