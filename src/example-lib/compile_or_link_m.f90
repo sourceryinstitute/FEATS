@@ -18,13 +18,16 @@ module compile_or_link_m
 
   interface
 
-    module subroutine execute(self, input_locations, mailbox)
+    module function execute(self, input_locations, task_number, mailbox) result(output)
       !! complete the assigned task
       implicit none
       class(compile_or_link_t), intent(in) :: self
       type(data_location_map_t), intent(in) :: input_locations
-      type(payload_t), intent(inout) :: mailbox(:)[*]
-    end subroutine
+      integer, intent(in) :: task_number
+      type(payload_t), intent(in) :: mailbox(:)[*]
+      type(payload_t) :: output
+    end function
+
 
   end interface
 

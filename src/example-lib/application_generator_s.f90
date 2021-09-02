@@ -1,50 +1,10 @@
-module application_generator_m
-  !! Define a module_dependencies directed acyclic graph (DAG) 
-  !! to represent the following dependency tree:
-  !!
-  !! build_feats (main)
-  !! |-- application_generator_m
-  !! |-- image_m
-  !!     |-- data_location_map_m
-  !!     |-- application_m
-  !!         |-- dag_interface
-  !!         |-- task_item_m
-  !!             |-- data_location_map_m
-  !!             |-- payload_m
-  !!             |-- task_m
-  !!                 |-- data_location_map_m
-  !!                 |-- payload_m
-  !!         
-  !! mailbox_m
-  !! |-- payload_m
-  !! 
-  !! application_s
-  !! |-- application_m
-  !! |-- assertions_interface (external)
-  !! 
-  !! payload_s
-  !! |-- payload_m
-  !! 
-  !! data_location_map_s
-  !! |-- data_location_map_m
-  !! 
-  !! image_s
-  !! |-- image_m
-  !! 
-  !! task_item_s
-  !! |-- task_item_m
-    use application_m, only: application_t
-    use dag_interface, only : dag_t
-    use task_item_m, only : task_item_t
-    use compile_or_link_m, only : compile_or_link_t
-    use iso_fortran_env, only : error_unit
-    implicit none
-    private
-    public :: application_generator
+submodule(application_generator_m) application_generator_s
+  implicit none
 
 contains
-    function application_generator() result(application)
-      type(application_t) :: application
+
+    module procedure application_generator
+
       type(dag_t) :: module_dependencies
 
       enum, bind(C)
@@ -104,6 +64,6 @@ contains
        print *, "----- application_generator(): application defined"
      end block
 
-   end function
+   end procedure
 
-end module
+end submodule application_generator_s

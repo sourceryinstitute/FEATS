@@ -17,3 +17,8 @@ vegetables = {git = "https://gitlab.com/everythingfunctional/vegetables", tag = 
 name="unit"
 source-dir="tests"
 main="main.f90"
+
+[[example]]
+name="build-feats"
+source-dir="example/build-feats"
+main="build-feats.f90"
