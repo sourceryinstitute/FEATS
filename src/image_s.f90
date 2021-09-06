@@ -71,7 +71,15 @@ contains
 
         event post(ready_for_next_task(this_image())[scheduler_image])
         event wait(task_assigned)
-        associate(my_task => tasks(task_identifier))
+    
+        !! It's probably better to introduce this only after some more testing -- HS
+        !free_unneeded_memory: do concurrent(integer :: l = 0,size(mailbox))
+        !    if(mailbox_entry_can_be_freed(i)) then
+        !        deallocate(mailbox(i)%payload_)
+        !    end if
+        !end do free_unneeded_memory
+        
+        do_assigned_task: associate(my_task => tasks(task_identifier))
             if (.not.my_task%is_final_task()) then
                 mailbox(task_identifier) = &
                     my_task%execute(data_locations(task_identifier)[scheduler_image], task_identifier, mailbox)
@@ -79,7 +87,7 @@ contains
             else
                 tasks_left = .false.
             end if
-        end associate
+        end associate do_assigned_task
     end function
 
     function find_next_image() result(next_image)
