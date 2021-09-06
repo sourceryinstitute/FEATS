@@ -12,6 +12,7 @@ module data_location_map_m
     contains
         private
         procedure, public :: location_of
+        procedure, public :: get_task_numbers
     end type
 
     interface data_location_map_t
@@ -28,6 +29,11 @@ module data_location_map_m
             class(data_location_map_t), intent(in) :: self
             integer, intent(in) :: task
             integer :: location_of
+        end function
+        module function get_task_numbers(self)
+            implicit none
+            class(data_location_map_t), intent(in) :: self
+            integer, allocatable, dimension(:) :: get_task_numbers
         end function
     end interface
 end module

@@ -17,4 +17,8 @@ contains
             end if
         end associate
     end procedure
+
+    module procedure get_task_numbers
+        get_task_numbers = self%task_numbers
+    end procedure
 end submodule

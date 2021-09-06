@@ -11,7 +11,7 @@ module payload_m
         !! * produce a string representation of the data, and then parse that string to recover the original data
         !! * use the `transfer` function to copy the raw bytes of the data
         private
-        character(len=1), allocatable :: payload_(:)
+        character(len=1), allocatable, public :: payload_(:)
     contains
         private
         procedure, public :: raw_payload

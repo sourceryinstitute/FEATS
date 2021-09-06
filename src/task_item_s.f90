@@ -5,7 +5,7 @@ submodule(task_item_m) task_item_s
 contains
 
   module procedure execute
-      output = self%task%execute(input_locations, task_number, mailbox)
+      output = self%task%execute(task_number, input_tasknumbers, input_payloads)
   end procedure
 
   module procedure constructor

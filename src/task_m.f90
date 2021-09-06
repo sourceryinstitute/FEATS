@@ -1,7 +1,6 @@
 module task_m
   !! Define an abstract interface to tasks that the scheduler
   !! image assigns and that a compute image executes.
-  use data_location_map_m, only: data_location_map_t
   use payload_m, only: payload_t
   implicit none
 
@@ -18,14 +17,14 @@ module task_m
 
   abstract interface
 
-    function execute_i(self, input_locations, task_number, mailbox) result(output)
+    function execute_i(self, task_number, input_tasknumbers, input_payloads) result(output)
       !! complete the assigned task
-      import :: data_location_map_t, task_t, payload_t
+      import :: task_t, payload_t
       implicit none
       class(task_t), intent(in) :: self
-      type(data_location_map_t), intent(in) :: input_locations
       integer, intent(in) :: task_number
-      type(payload_t), intent(in) :: mailbox(:)[*]
+      integer, intent(in) :: input_tasknumbers(:)
+      type(payload_t), intent(in) :: input_payloads(:)
       type(payload_t) :: output
     end function
 

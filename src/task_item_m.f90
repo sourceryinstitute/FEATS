@@ -29,13 +29,13 @@ module task_item_m
 
   interface
 
-    module function execute(self, input_locations, task_number, mailbox) result(output)
+    module function execute(self, task_number, input_tasknumbers, input_payloads) result(output)
       !! complete the assigned task
       implicit none
       class(task_item_t), intent(in) :: self
-      type(data_location_map_t), intent(in) :: input_locations
       integer, intent(in) :: task_number
-      type(payload_t), intent(in) :: mailbox(:)[*]
+      integer, intent(in) :: input_tasknumbers(:)
+      type(payload_t), intent(in) :: input_payloads(:)
       type(payload_t) :: output
     end function
 

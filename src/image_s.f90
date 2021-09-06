@@ -3,6 +3,7 @@ submodule(image_m) image_s
     use iso_fortran_env, only: event_type
     use final_task_m, only: final_task_t
     use mailbox_m, only: mailbox, mailbox_entry_can_be_freed
+    use payload_m, only: payload_t
     use task_item_m, only: task_item_t
 
     implicit none
@@ -73,16 +74,37 @@ contains
         event wait(task_assigned)
     
         !! It's probably better to introduce this only after some more testing -- HS
-        !free_unneeded_memory: do concurrent(integer :: l = 0,size(mailbox))
+        !free_unneeded_memory: do concurrent(integer :: l = 0:size(mailbox))
         !    if(mailbox_entry_can_be_freed(i)) then
         !        deallocate(mailbox(i)%payload_)
+        !        mailbox_entry_can_be_freed(i) = .false.
         !    end if
         !end do free_unneeded_memory
-        
-        do_assigned_task: associate(my_task => tasks(task_identifier))
+
+        do_assigned_task: associate(my_task    => tasks(task_identifier))
             if (.not.my_task%is_final_task()) then
-                mailbox(task_identifier) = &
-                    my_task%execute(data_locations(task_identifier)[scheduler_image], task_identifier, mailbox)
+                block 
+                    integer, allocatable         :: input_tasknumbers(:)
+                    type(payload_t), allocatable :: input_payloads(:) 
+                    type(data_location_map_t)    :: input_locs
+                    integer :: l
+
+                    input_locs = data_locations(task_identifier)[scheduler_image]
+                    input_tasknumbers = input_locs%get_task_numbers()
+                    allocate(input_payloads(size(input_tasknumbers)))
+
+                    fetch_input_payloads: do concurrent(l = 1:size(input_tasknumbers))
+                        associate( which_img => input_locs%location_of(input_tasknumbers(l)), &
+                                   which_idx => input_tasknumbers(l) )
+                            ! gcc bug workaround: access payload_ directly. TODO: remove if bug fixed
+                            input_payloads(l)%payload_ = mailbox(which_idx)[which_img]%payload_
+                        end associate
+                    end do fetch_input_payloads
+
+                    ! execute task, store result
+                    mailbox(task_identifier) = my_task%execute(task_identifier, input_tasknumbers, input_payloads)
+
+                end block
                 tasks_left = .true.
             else
                 tasks_left = .false.
