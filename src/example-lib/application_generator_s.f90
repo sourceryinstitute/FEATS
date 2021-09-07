@@ -14,12 +14,45 @@ contains
         payload_m, task_m, mailbox_m, assertions_interface, application_s, payload_s, data_location_map_s, image_s, task_item_s
       end enum
 
+      type module_name_t
+        character(len=:), allocatable :: module_name
+      end type
+
+      type(module_name_t), allocatable :: name_list(:)
+
       integer, parameter :: num_vertices = size([ &
         build_feats,   application_generator_m, image_m, data_location_map_m, application_m, dag_interface, task_item_m, & 
         payload_m, task_m, mailbox_m, assertions_interface, application_s, payload_s, data_location_map_s, image_s, task_item_s &
       ])
 
+      allocate(name_list(num_vertices))
+
+      name_list(build_feats)             = module_name_t("build_feats")
+      name_list(application_generator_m) = module_name_t("application_generator_m")
+      name_list(image_m                ) = module_name_t("image_m")
+      name_list(data_location_map_m    ) = module_name_t("data_location_map_m")
+      name_list(application_m          ) = module_name_t("application_m")
+      name_list(dag_interface          ) = module_name_t("dag_interface")
+      name_list(task_item_m            ) = module_name_t("task_item_m")
+      name_list(payload_m              ) = module_name_t("payload_m")
+      name_list(task_m                 ) = module_name_t("task_m")
+      name_list(mailbox_m              ) = module_name_t("mailbox_m")
+      name_list(assertions_interface   ) = module_name_t("assertions_interface")
+      name_list(application_s          ) = module_name_t("application_s")
+      name_list(payload_s              ) = module_name_t("payload_s")
+      name_list(data_location_map_s    ) = module_name_t("data_location_map_s")
+      name_list(image_s                ) = module_name_t("image_s")
+      name_list(task_item_s            ) = module_name_t("task_item_s")
+
       call module_dependencies%set_vertices(num_vertices)
+      block 
+        integer i
+
+        do i = 1, num_vertices
+          call module_dependencies%set_vertex_info(i, label=name_list(i)%module_name)
+        end do
+
+      end block
       call module_dependencies%set_edges(build_feats, [application_generator_m, image_m])   
       call module_dependencies%set_edges(image_m, [data_location_map_m, application_m])
       call module_dependencies%set_edges(application_m, [dag_interface, task_item_m])
