@@ -1,7 +1,7 @@
 module payload_m
     implicit none
     private
-    public :: payload_t
+    public :: payload_t, task_result_t
 
     type :: payload_t
         !! A raw buffer to facilitate data transfer between  images
@@ -16,6 +16,12 @@ module payload_m
         private
         procedure, public :: raw_payload
         procedure, public :: string_payload
+    end type
+
+    type :: task_result_t
+        !! Stores a payload along with the id of the task that produced it. 
+        integer         :: task_id
+        type(payload_t) :: payload
     end type
 
     interface payload_t

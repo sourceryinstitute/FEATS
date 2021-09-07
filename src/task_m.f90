@@ -1,7 +1,7 @@
 module task_m
   !! Define an abstract interface to tasks that the scheduler
   !! image assigns and that a compute image executes.
-  use payload_m, only: payload_t
+  use payload_m, only: payload_t, task_result_t
   implicit none
 
   private
@@ -17,14 +17,13 @@ module task_m
 
   abstract interface
 
-    function execute_i(self, task_number, input_tasknumbers, input_payloads) result(output)
+    function execute_i(self, task_number, upstream_task_results) result(output)
       !! complete the assigned task
-      import :: task_t, payload_t
+      import :: task_t, payload_t, task_result_t
       implicit none
       class(task_t), intent(in) :: self
       integer, intent(in) :: task_number
-      integer, intent(in) :: input_tasknumbers(:)
-      type(payload_t), intent(in) :: input_payloads(:)
+      class(task_result_t), intent(in) :: upstream_task_results(:)
       type(payload_t) :: output
     end function
 

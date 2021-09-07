@@ -1,7 +1,7 @@
 module image_m
   !! Compute-image/Scheduler-image abstraction
   use application_m, only: application_t
-  use data_location_map_m, only: data_location_map_t
+  use payload_m, only: payload_t, task_result_t
   implicit none
 
   private
@@ -17,11 +17,11 @@ module image_m
 
   interface
 
-    module function run(self, application) result(results_locations)
+    module function run(self, application) result(results)
       implicit none
       class(image_t), intent(in) :: self
       type(application_t), intent(in) :: application
-      type(data_location_map_t) :: results_locations
+      type(task_result_t), allocatable :: results(:)
     end function
 
   end interface

@@ -3,24 +3,17 @@ submodule(image_m) image_s
     use iso_fortran_env, only: event_type
     use final_task_m, only: final_task_t
     use mailbox_m, only: mailbox, mailbox_entry_can_be_freed
-    use payload_m, only: payload_t
     use task_item_m, only: task_item_t
 
     implicit none
 
     type(event_type), allocatable :: ready_for_next_task(:)[:]
     type(event_type) task_assigned[*]
-    type(data_location_map_t), allocatable :: data_locations(:)[:]
-    !! Contains the mappings of where inputs were computed for a given task.
-    !!
-    !! Will only contain information on the scheduler image.
-    !! The map for a given task contains information on where it's inputs were computed.
-    !! That map is present at the index corresponding to that task's ID.
 
     integer task_identifier[*]
     !! The ID of the task currently assigned to this image.
 
-    integer, allocatable :: task_assignment_history(:)
+    integer, allocatable :: task_assignment_history(:)[:]
     !! Records which image did which task.
     !! Index: task number. Value: image number.
 
@@ -34,18 +27,20 @@ submodule(image_m) image_s
     integer, parameter :: NO_IMAGE_READY = -1
 
 contains
+
+
     module procedure run
         logical :: tasks_left
 
         task_identifier = no_task_assigned
         associate(n_tasks => size(application%tasks()), n_imgs => num_images())
             allocate(ready_for_next_task(n_imgs)[*])
-            allocate(data_locations(n_tasks)[*])
             allocate(mailbox(n_tasks)[*])
             allocate(mailbox_entry_can_be_freed(n_tasks)[*])
             mailbox_entry_can_be_freed(n_tasks) = .false.
+            allocate(task_assignment_history(n_tasks)[*])
+            task_assignment_history = NO_IMAGE_READY
             if (this_image() == scheduler_image) then
-                allocate(task_assignment_history(n_tasks))
                 allocate(task_done(n_tasks))
                 task_done = .false.
             end if
@@ -60,14 +55,15 @@ contains
                 if (this_image() == scheduler_image) then
                     tasks_left = assign_task(dag)
                 else
-                    tasks_left = do_work(tasks)
+                    tasks_left = do_work(tasks, dag)
                 end if
             end do
         end associate
     end procedure
 
-    function do_work(tasks) result(tasks_left)
+    function do_work(tasks, dag) result(tasks_left)
         type(task_item_t), intent(in) :: tasks(:)
+        type(dag_t),       intent(in) :: dag
         logical :: tasks_left
 
         event post(ready_for_next_task(this_image())[scheduler_image])
@@ -84,25 +80,27 @@ contains
         do_assigned_task: associate(my_task    => tasks(task_identifier))
             if (.not.my_task%is_final_task()) then
                 block 
-                    integer, allocatable         :: input_tasknumbers(:)
-                    type(payload_t), allocatable :: input_payloads(:) 
-                    type(data_location_map_t)    :: input_locs
+                    integer, allocatable         :: upstream_task_nums(:)
+                    integer, allocatable         :: upstream_task_imagenums(:)
+                    type(task_result_t), allocatable :: upstream_task_results(:) 
                     integer :: l
 
-                    input_locs = data_locations(task_identifier)[scheduler_image]
-                    input_tasknumbers = input_locs%get_task_numbers()
-                    allocate(input_payloads(size(input_tasknumbers)))
+                    ! figure out which images have our input data, and retrive those payloads
+                    upstream_task_nums      = dag%get_edges(task_identifier)
+                    upstream_task_imagenums = task_assignment_history(upstream_task_nums)[scheduler_image]
 
-                    fetch_input_payloads: do concurrent(l = 1:size(input_tasknumbers))
-                        associate( which_img => input_locs%location_of(input_tasknumbers(l)), &
-                                   which_idx => input_tasknumbers(l) )
-                            ! gcc bug workaround: access payload_ directly. TODO: remove if bug fixed
-                            input_payloads(l)%payload_ = mailbox(which_idx)[which_img]%payload_
+                    allocate(upstream_task_results(size(upstream_task_nums)))
+
+                    fetch_input_payloads: do concurrent(l = 1:size(upstream_task_nums))
+                        associate( which_img     => upstream_task_imagenums(l), &
+                                   which_taskidx => upstream_task_nums(l) )
+                            ! gfortran bug workaround: access payload_ directly. TODO: remove if bug fixed
+                            upstream_task_results(l)%payload%payload_ = mailbox(which_taskidx)[which_img]%payload_
                         end associate
                     end do fetch_input_payloads
 
                     ! execute task, store result
-                    mailbox(task_identifier) = my_task%execute(task_identifier, input_tasknumbers, input_payloads)
+                    mailbox(task_identifier) = my_task%execute(task_identifier, upstream_task_results)
 
                 end block
                 tasks_left = .true.
@@ -159,10 +157,6 @@ contains
                             end if
                         end do
 
-                        ! put together data location map
-                        upstream_tasks       = dag%get_edges(next_task)
-                        upstream_task_images = task_assignment_history(upstream_tasks)
-                        data_locations(next_task) = data_location_map_t(upstream_tasks, upstream_task_images)
                       
                         ! tell the image that it can proceed with the next task
                         task_identifier[next_image] = next_task

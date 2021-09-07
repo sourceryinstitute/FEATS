@@ -1,7 +1,6 @@
 module task_item_m
   !! define tasks for compute images to complete
-  use data_location_map_m, only: data_location_map_t
-  use payload_m, only: payload_t
+  use payload_m, only: payload_t, task_result_t
   use task_m, only : task_t
   implicit none
 
@@ -29,13 +28,12 @@ module task_item_m
 
   interface
 
-    module function execute(self, task_number, input_tasknumbers, input_payloads) result(output)
+    module function execute(self, task_number, upstream_task_results) result(output)
       !! complete the assigned task
       implicit none
       class(task_item_t), intent(in) :: self
       integer, intent(in) :: task_number
-      integer, intent(in) :: input_tasknumbers(:)
-      type(payload_t), intent(in) :: input_payloads(:)
+      class(task_result_t), intent(in) :: upstream_task_results(:)
       type(payload_t) :: output
     end function
 
