@@ -1,7 +1,8 @@
 module task_item_m
   !! define tasks for compute images to complete
-  use payload_m, only: payload_t, task_result_t
+  use payload_m, only: payload_t
   use task_m, only : task_t
+  use task_payload_map_m, only: task_payload_map_t
   implicit none
 
   private
@@ -33,7 +34,7 @@ module task_item_m
       implicit none
       class(task_item_t), intent(in) :: self
       integer, intent(in) :: task_number
-      class(task_result_t), intent(in) :: upstream_task_results(:)
+      class(task_payload_map_t), intent(in) :: upstream_task_results
       type(payload_t) :: output
     end function
 
