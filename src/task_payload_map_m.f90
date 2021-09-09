@@ -1,5 +1,5 @@
 module task_payload_map_m
-    use payload_m, only: payload_t
+    use payload_m, only: payload_t, maybe_payload_t
     implicit none
     private
     public :: task_payload_map_t
@@ -35,7 +35,7 @@ module task_payload_map_m
             implicit none
             class(task_payload_map_t), intent(in) :: self
             integer, intent(in) :: taskid
-            type(payload_t) :: p
+            type(maybe_payload_t) :: p
         end function
     end interface
 end module

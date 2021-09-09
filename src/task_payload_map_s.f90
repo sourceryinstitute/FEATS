@@ -9,9 +9,9 @@ contains
     module procedure get_payload
         associate(idx => findloc(array=self%task_ids_, value=taskid, dim=1))
             if (idx == 0) then
-                error stop "task_payload_map_t%get_payload: key error"
+                p=maybe_payload_t()
             else
-                p=self%payloads_(idx)
+                p=maybe_payload_t(self%payloads_(idx))
             end if
         end associate
     end procedure

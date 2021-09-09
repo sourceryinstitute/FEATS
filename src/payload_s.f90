@@ -35,4 +35,22 @@ contains
         end associate
     end procedure
 
+    module procedure no_payload
+        m%has_payload_ = .false.
+    end procedure
+
+    module procedure some_payload
+        m%has_payload_ = .true.
+        m%payload_ = p
+    end procedure
+
+    module procedure check
+        check = self%has_payload_
+    end procedure
+
+    module procedure get
+        if(.not. self%check()) error stop "maybe_payload_t%get: no payload" 
+        get = self%payload_
+    end procedure
+
 end submodule
