@@ -1,5 +1,5 @@
 module application_m
-  use dag_interface, only : dag_t
+  use dag_m, only : dag_t
   use task_item_m, only : task_item_t
   implicit none
 

@@ -1,5 +1,5 @@
 submodule(image_m) image_s
-    use dag_interface, only: dag_t
+    use dag_m, only: dag_t
     use iso_fortran_env, only: event_type
     use final_task_m, only: final_task_t
     use mailbox_m, only: mailbox
@@ -116,7 +116,7 @@ contains
                         task_assignment_history(next_task) = next_image
 
                         ! put together data location map
-                        upstream_tasks       = dag%get_edges(next_task)
+                        upstream_tasks       = dag%dependencies_for(next_task)
                         upstream_task_images = task_assignment_history(upstream_tasks)
                         data_locations(next_task) = data_location_map_t(upstream_tasks, upstream_task_images)
 
@@ -173,7 +173,7 @@ contains
             cycle
          else
             all_done = .false.
-            dependents = dag%get_dependencies ( task )
+            dependents = dag%dependencies_for( task )
             done = .true.
             do depends = 1, size(dependents)
                done = done .and. task_done(depends)
