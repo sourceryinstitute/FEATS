@@ -1,5 +1,5 @@
 submodule(image_m) image_s
-    use dag_interface, only: dag_t
+    use dag_m, only: dag_t
     use iso_fortran_env, only: event_type
     use final_task_m, only: final_task_t
     use mailbox_m, only: mailbox, mailbox_entry_can_be_freed
@@ -84,7 +84,7 @@ contains
                     integer, allocatable :: upstream_task_imagenums(:)
 
                     ! figure out which images have our input data
-                    upstream_task_nums      = dag%get_edges(task_identifier)
+                    upstream_task_nums      = dag%dependencies_for(task_identifier)
                     upstream_task_imagenums = task_assignment_history(upstream_task_nums)[scheduler_image]
 
                     ! execute task, store result
@@ -138,10 +138,10 @@ contains
                         ! check which task the image just finished, that's task A
                         ! for each task B upstream of A, walk through that task's downstream dependencies
                         ! if they're all completed, the output data from B can be freed.
-                        upstream_tasks       = dag%get_edges(task_identifier[next_image])
+                        upstream_tasks       = dag%dependencies_for(task_identifier[next_image])
                         upstream_task_images = task_assignment_history(upstream_tasks)
                         do i = 1, size(upstream_tasks)
-                            if (all(task_done(dag%get_dependencies(upstream_tasks(i))))) then
+                            if (all(task_done(dag%depends_on(upstream_tasks(i))))) then
                                 mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.        
                             end if
                         end do
@@ -176,7 +176,8 @@ contains
     end subroutine
 
     pure function find_next_task ( dag ) Result ( next_task_to_run )
-!! find_next_task: search through the dag to find the next task where its dependents are complete
+!! find_next_task: search through the dag to find the next task where its 
+!! dependencies are complete
 !!
 !! possible outputs for next_task_to_run
 !!     - a positive integer signals the next task to run
@@ -189,7 +190,7 @@ contains
       integer :: next_task_to_run
 
       integer :: task, depends
-      integer, allocatable, dimension(:) :: dependents
+      integer, allocatable, dimension(:) :: dependencies
       logical :: done, all_done
 
       all_done = .true.
@@ -200,10 +201,10 @@ contains
             cycle
          else
             all_done = .false.
-            dependents = dag%get_dependencies ( task )
+            dependencies = dag%dependencies_for ( task )
             done = .true.
-            do depends = 1, size(dependents)
-               done = done .and. task_done(depends)
+            do depends = 1, size(dependencies)
+               done = done .and. task_done(dependencies(depends))
             end do
             if ( done ) then
                next_task_to_run = task

@@ -5,7 +5,7 @@ submodule(application_m) application_s
 contains
 
   module procedure construct
-    call assert(size(tasks)==dag%get_num_vertices(), "application(construct): size(tasks)==dag%get_num_vertices()")
+    call assert(size(tasks)==dag%num_vertices(), "application(construct): size(tasks)==dag%num_vertices()")
     application%dag_ = dag
     application%tasks_ = tasks
   end procedure
