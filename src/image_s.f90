@@ -80,27 +80,16 @@ contains
         do_assigned_task: associate(my_task    => tasks(task_identifier))
             if (.not.my_task%is_final_task()) then
                 block 
-                    integer, allocatable         :: upstream_task_nums(:)
-                    integer, allocatable         :: upstream_task_imagenums(:)
-                    type(payload_t), allocatable :: upstream_payloads(:)
-                    integer :: l
+                    integer, allocatable :: upstream_task_nums(:)
+                    integer, allocatable :: upstream_task_imagenums(:)
 
-                    ! figure out which images have our input data, and retrive those payloads
+                    ! figure out which images have our input data
                     upstream_task_nums      = dag%get_edges(task_identifier)
                     upstream_task_imagenums = task_assignment_history(upstream_task_nums)[scheduler_image]
-                    allocate(upstream_payloads(size(upstream_task_nums)))
-
-                    fetch_input_payloads: do concurrent(l = 1:size(upstream_task_nums))
-                        associate( which_img     => upstream_task_imagenums(l), &
-                                   which_taskidx => upstream_task_nums(l) )
-                            ! gfortran bug workaround: access payload_ directly. TODO: remove if bug fixed
-                            upstream_payloads(l)%payload_ = mailbox(which_taskidx)[which_img]%payload_
-                        end associate
-                    end do fetch_input_payloads
 
                     ! execute task, store result
                     mailbox(task_identifier) = &
-                        my_task%execute(task_identifier, task_payload_map_t(upstream_task_nums, upstream_payloads))
+                        my_task%execute(task_identifier, task_payload_map_t(upstream_task_nums, upstream_task_imagenums))
 
                 end block
                 tasks_left = .true.
