@@ -141,13 +141,16 @@ contains
                         ! check which task the image just finished, that's task A
                         ! for each task B upstream of A, walk through that task's downstream dependencies
                         ! if they're all completed, the output data from B can be freed.
-                        ! upstream_tasks       = dag%dependencies_for(task_identifier[next_image])
-                        ! upstream_task_images = task_assignment_history(upstream_tasks)
-                        ! do i = 1, size(upstream_tasks)
-                        !     if (all(task_done(dag%depends_on(upstream_tasks(i))))) then
-                        !         mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.        
-                        !     end if
-                        ! end do
+                        i = task_identifier[next_image]
+                        if (i /= NO_TASK_READY) then
+                            upstream_tasks       = dag%dependencies_for(i)
+                            upstream_task_images = task_assignment_history(upstream_tasks)
+                            do i = 1, size(upstream_tasks)
+                                if (all(task_done(dag%depends_on(upstream_tasks(i))))) then
+                                    mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.        
+                                end if
+                            end do
+                        end if
 
                       
                         ! tell the image that it can proceed with the next task
