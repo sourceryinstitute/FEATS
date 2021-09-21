@@ -117,8 +117,12 @@ contains
         integer, intent(in) :: task_number
         type(task_payload_map_t), intent(in) :: upstream_task_results
         type(payload_t) :: output
-        
-        call put_line("Executing task number: " // to_string(task_number))
+
+        real :: rand
+
+        call put_line("Executing task number: " // to_string(task_number) // " on image number: " // to_string(this_image()))
+        call random_number(rand)
+        call sleep(int(rand * 10))
         call put_line("Compiling: " // self%to_compile)
     end function
 end module
