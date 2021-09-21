@@ -24,7 +24,7 @@ module task_m
       implicit none
       class(task_t), intent(in) :: self
       integer, intent(in) :: task_number
-      class(task_payload_map_t), intent(in) :: upstream_task_results
+      type(task_payload_map_t), intent(in) :: upstream_task_results
       type(payload_t) :: output
     end function
 

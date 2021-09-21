@@ -31,6 +31,8 @@ contains
 
     module procedure run
         logical :: tasks_left
+        type(task_item_t), allocatable :: tasks(:)
+        type(dag_t) :: dag
 
         task_identifier = no_task_assigned
         associate(n_tasks => size(application%tasks()), n_imgs => num_images())
@@ -48,17 +50,16 @@ contains
 
         tasks_left = .true.
 
-        associate( &
-                tasks => [application%tasks(), task_item_t(final_task_t())], &
-                dag => application%dag())
-            do while (tasks_left)
-                if (this_image() == scheduler_image) then
-                    tasks_left = assign_task(dag)
-                else
-                    tasks_left = do_work(tasks, dag)
-                end if
-            end do
-        end associate
+        tasks = [application%tasks(), task_item_t(final_task_t())]
+        dag = application%dag()
+        do while (tasks_left)
+            if (this_image() == scheduler_image) then
+                tasks_left = assign_task(dag)
+            else
+                tasks_left = do_work(tasks, dag)
+            end if
+        end do
+        results = task_payload_map_t([integer::], [integer::])
     end procedure
 
     function do_work(tasks, dag) result(tasks_left)
@@ -138,13 +139,13 @@ contains
                         ! check which task the image just finished, that's task A
                         ! for each task B upstream of A, walk through that task's downstream dependencies
                         ! if they're all completed, the output data from B can be freed.
-                        upstream_tasks       = dag%dependencies_for(task_identifier[next_image])
-                        upstream_task_images = task_assignment_history(upstream_tasks)
-                        do i = 1, size(upstream_tasks)
-                            if (all(task_done(dag%depends_on(upstream_tasks(i))))) then
-                                mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.        
-                            end if
-                        end do
+                        ! upstream_tasks       = dag%dependencies_for(task_identifier[next_image])
+                        ! upstream_task_images = task_assignment_history(upstream_tasks)
+                        ! do i = 1, size(upstream_tasks)
+                        !     if (all(task_done(dag%depends_on(upstream_tasks(i))))) then
+                        !         mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.        
+                        !     end if
+                        ! end do
 
                       
                         ! tell the image that it can proceed with the next task
