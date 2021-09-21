@@ -198,7 +198,7 @@ contains
       next_task_to_run = NO_TASK_READY
 
       do task = 1, size(task_done)
-         if ( task_done(task) ) then
+         if ( task_done(task) .or. task_assignment_history(task) /= NO_IMAGE_READY ) then
             cycle
          else
             all_done = .false.
