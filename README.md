@@ -16,38 +16,55 @@ Framework for Extensible Asynchronous Task Scheduling (FEATS)
 [![GitHub release][release img]](https://github.com/sourceryinstitute/FEATS/releases/latest)
 [![Download as PDF][pdf img]](https://md2pdf.herokuapp.com/sourceryinstitute/FEATS/blob/master/README.pdf)
 
-[Overview](#overview) | [Downloads](#downloads) | [Prerequisites](#prerequisites) | [Installation](#installation) |
-[Contributing](#contributing) | [Acknowledgments](#acknowledgments) | [Donate](#donate)
+[Overview](#overview) | [Getting Started](#getting-started) | [Documentation](#documentation) | [Dependencies](#dependencies) | [Acknowledgments](#acknowledgments) | [Donate](#donate)
 
 </div>
 
 Overview
 --------
-
 FEATS is a project to develop a parallel [Fortran 2018] asynchronous, task-scheduling
 framework for use in a range of applications.  Our initial target application will be
-[OLTARIS].
+[OLTARIS].  The aim is to assign one image per team of images the role of scheduler
+with the remaining images serving as compute images.  The scheduler hands out tasks
+in an order that respects a directed acyclic graph (DAG) of task dependencies.  
 
-Prerequisites
--------------
+Getting Started
+---------------
+Please see the [example] directory for a demonstration use case in which FEATS traverses
+a DAG that describes the module dependencies within FEATS itself and reports on task
+completion at each step.  In this simple example, the task completion is simply printing
+what file could have been compiled at the corresponding step.  No actual compiling happens,
+but this use case describes what would happen if FEATS were to be used to enable the
+ Fortran Package Manager [`fpm`] to perform parallel builds.
 
-FEATS is being developed with the packages listed below.
-
-* Fortran Package Manager: [fpm] 0.2.0,
-* GNU Compiler Collection [GCC] Fortran compiler: gfortran 10.2, and
-* [OpenCoarrays] 2.9.2.
-
-Earlier versions might work as well.
-
-Downloading, building, and testing
-----------------------------------
-To build and test a parallel run with 2 images, execute the following
-commands in a shell on Linux, macOS, or Windows Subsystem for Linux:
+With `fpm`, the GNU Fortran compiler ([`gfortran`]), and [OpenCoarrays] installed, build 
+FEATS and run the example program by executing the following command in a `bash`-like 
+shell:
 ```
 git clone https://github.com/sourceryinstitute/FEATS
 cd FEATS
-fpm test --compiler caf --runner "cafrun -n 2"
+fpm run --example --compiler caf --runner "cafrun -n 4" 
 ```
+Change `4` above to the number of images that you would like to launch in parallel.
+
+Documentation
+-------------
+Please visit the [FEATS GitHub Pages site] to see HTML documentation generated 
+with [`ford`].
+
+Dependencies
+-------------
+The [`fpm.toml`] manifest describes the FEATS user and developer dependencies
+and directs `fpm` to download and build the dependency packages automatically.  
+
+Testing
+-------
+To build and execute the FEATS test suite, run the following command in a
+`bash`-like shell:
+```
+fpm test --compiler caf --runner "cafrun -n 4"
+```
+
 Please report any test failures or other [issues].
 
 Acknowledgments
@@ -60,8 +77,7 @@ Acknowledgments
 Donate
 ------
 If you find this software useful, please consider donating code or
-[currency](http://bit.ly/donate-to-sourcery-institute).
-to aid in development efforts.
+[currency](http://bit.ly/donate-to-sourcery-institute) to aid in development efforts.
 
 ---
 
@@ -81,11 +97,14 @@ to aid in development efforts.
 [Acknowledgments]: #acknowledgments
 [Donate]: #donate
 
-[fpm]: https://github.com/fortran-lang/fpm
-[GCC]: https://gcc.gnu.org
+[`fpm`]: https://github.com/fortran-lang/fpm
+[`fpm.toml`]: ./fpm.toml
+[`gfortran`]: https://gcc.gnu.org
 [OpenCoarrays]: https://github.com/sourceryinstitute/opencoarrays
 [OLTARIS]: https://oltaris.nasa.gov
-
+[example]: ./example
+[FEATS GitHub Pages site]: https://sourceryinstitute.github.io/FEATS/
+[`ford`]: https://github.com/Fortran-FOSS-Programmers/ford
 [Fortran 2018]: https://j3-fortran.org/doc/year/18/18-007r1.pdf
 
 [sourcery-institute logo]: http://www.sourceryinstitute.org/uploads/4/9/9/6/49967347/sourcery-logo-rgb-hi-rez-1.png
