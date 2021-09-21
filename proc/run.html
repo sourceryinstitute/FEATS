@@ -295,56 +295,53 @@ module procedure run <small>module module function run(self, application) result
 <!-- proc~run -->
 <g id="proc~~run~~CallsGraph_node1" class="node">
 <title>proc~run</title>
-<polygon fill="none" stroke="black" points="54,-87 0,-87 0,-63 54,-63 54,-87"/>
-<text text-anchor="middle" x="27" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50">run</text>
-</g>
-<!-- proc~assign_task -->
-<g id="proc~~run~~CallsGraph_node2" class="node">
-<title>proc~assign_task</title>
-<g id="a_proc~~run~~CallsGraph_node2"><a xlink:href=".././proc/assign_task.html" xlink:title="assign_task">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="163,-108 90,-108 90,-84 163,-84 163,-108"/>
-<text text-anchor="middle" x="126.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_task</text>
-</a>
-</g>
-</g>
-<!-- proc~run&#45;&gt;proc~assign_task -->
-<g id="proc~~run~~CallsGraph_edge1" class="edge">
-<title>proc~run&#45;&gt;proc~assign_task</title>
-<path fill="none" stroke="#ff0000" d="M54.13,-80.63C62.08,-82.34 71.06,-84.27 79.9,-86.18"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="79.25,-89.62 89.77,-88.3 80.73,-82.78 79.25,-89.62"/>
+<polygon fill="none" stroke="black" points="54,-45 0,-45 0,-21 54,-21 54,-45"/>
+<text text-anchor="middle" x="27" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50">run</text>
 </g>
 <!-- proc~do_work -->
-<g id="proc~~run~~CallsGraph_node3" class="node">
+<g id="proc~~run~~CallsGraph_node2" class="node">
 <title>proc~do_work</title>
-<g id="a_proc~~run~~CallsGraph_node3"><a xlink:href=".././proc/do_work.html" xlink:title="do_work">
+<g id="a_proc~~run~~CallsGraph_node2"><a xlink:href=".././proc/do_work.html" xlink:title="do_work">
 <polygon fill="#d94e8f" stroke="#d94e8f" points="155,-66 98,-66 98,-42 155,-42 155,-66"/>
 <text text-anchor="middle" x="126.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">do_work</text>
 </a>
 </g>
 </g>
 <!-- proc~run&#45;&gt;proc~do_work -->
-<g id="proc~~run~~CallsGraph_edge2" class="edge">
+<g id="proc~~run~~CallsGraph_edge1" class="edge">
 <title>proc~run&#45;&gt;proc~do_work</title>
-<path fill="none" stroke="#ff0000" d="M54.13,-69.37C64.49,-67.14 76.61,-64.53 87.89,-62.1"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="88.9,-65.46 97.94,-59.94 87.42,-58.62 88.9,-65.46"/>
+<path fill="none" stroke="#ff0000" d="M54.13,-38.63C64.49,-40.86 76.61,-43.47 87.89,-45.9"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="87.42,-49.38 97.94,-48.06 88.9,-42.54 87.42,-49.38"/>
 </g>
-<!-- proc~assign_completed_to_images -->
-<g id="proc~~run~~CallsGraph_node5" class="node">
-<title>proc~assign_completed_to_images</title>
-<g id="a_proc~~run~~CallsGraph_node5"><a xlink:href=".././proc/assign_completed_to_images.html" xlink:title="assign_completed_to_images">
-<polygon fill="#d9534f" stroke="#d9534f" points="368,-108 199,-108 199,-84 368,-84 368,-108"/>
-<text text-anchor="middle" x="283.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_completed_to_images</text>
+<!-- proc~assign_task -->
+<g id="proc~~run~~CallsGraph_node3" class="node">
+<title>proc~assign_task</title>
+<g id="a_proc~~run~~CallsGraph_node3"><a xlink:href=".././proc/assign_task.html" xlink:title="assign_task">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="163,-24 90,-24 90,0 163,0 163,-24"/>
+<text text-anchor="middle" x="126.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_task</text>
 </a>
 </g>
 </g>
-<!-- proc~assign_task&#45;&gt;proc~assign_completed_to_images -->
+<!-- proc~run&#45;&gt;proc~assign_task -->
+<g id="proc~~run~~CallsGraph_edge2" class="edge">
+<title>proc~run&#45;&gt;proc~assign_task</title>
+<path fill="none" stroke="#ff0000" d="M54.13,-27.37C62.08,-25.66 71.06,-23.73 79.9,-21.82"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="80.73,-25.22 89.77,-19.7 79.25,-18.38 80.73,-25.22"/>
+</g>
+<!-- upstream_task_nums -->
+<g id="proc~~run~~CallsGraph_node4" class="node">
+<title>upstream_task_nums</title>
+<polygon fill="#777777" stroke="#777777" points="345.5,-108 221.5,-108 221.5,-84 345.5,-84 345.5,-108"/>
+<text text-anchor="middle" x="283.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upstream_task_nums</text>
+</g>
+<!-- proc~do_work&#45;&gt;upstream_task_nums -->
 <g id="proc~~run~~CallsGraph_edge3" class="edge">
-<title>proc~assign_task&#45;&gt;proc~assign_completed_to_images</title>
-<path fill="none" stroke="#ff0000" d="M163.06,-96C170.92,-96 179.6,-96 188.59,-96"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="188.84,-99.5 198.84,-96 188.84,-92.5 188.84,-99.5"/>
+<title>proc~do_work&#45;&gt;upstream_task_nums</title>
+<path fill="none" stroke="#ff0000" d="M155.27,-62.43C168.48,-66.37 184.52,-71.05 199,-75 206.89,-77.15 215.23,-79.34 223.46,-81.46"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="222.85,-84.92 233.41,-83.99 224.58,-78.13 222.85,-84.92"/>
 </g>
 <!-- upstream_task_imagenums -->
-<g id="proc~~run~~CallsGraph_node4" class="node">
+<g id="proc~~run~~CallsGraph_node5" class="node">
 <title>upstream_task_imagenums</title>
 <polygon fill="#777777" stroke="#777777" points="362.5,-66 204.5,-66 204.5,-42 362.5,-42 362.5,-66"/>
 <text text-anchor="middle" x="283.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upstream_task_imagenums</text>
@@ -352,20 +349,23 @@ module procedure run <small>module module function run(self, application) result
 <!-- proc~do_work&#45;&gt;upstream_task_imagenums -->
 <g id="proc~~run~~CallsGraph_edge4" class="edge">
 <title>proc~do_work&#45;&gt;upstream_task_imagenums</title>
-<path fill="none" stroke="#00ffff" d="M155.21,-54C166.42,-54 180.04,-54 194.16,-54"/>
-<polygon fill="#00ffff" stroke="#00ffff" points="194.49,-57.5 204.49,-54 194.49,-50.5 194.49,-57.5"/>
+<path fill="none" stroke="#ff0000" d="M155.21,-54C166.42,-54 180.04,-54 194.16,-54"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="194.49,-57.5 204.49,-54 194.49,-50.5 194.49,-57.5"/>
 </g>
-<!-- upstream_task_nums -->
+<!-- proc~assign_completed_to_images -->
 <g id="proc~~run~~CallsGraph_node6" class="node">
-<title>upstream_task_nums</title>
-<polygon fill="#777777" stroke="#777777" points="345.5,-24 221.5,-24 221.5,0 345.5,0 345.5,-24"/>
-<text text-anchor="middle" x="283.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upstream_task_nums</text>
+<title>proc~assign_completed_to_images</title>
+<g id="a_proc~~run~~CallsGraph_node6"><a xlink:href=".././proc/assign_completed_to_images.html" xlink:title="assign_completed_to_images">
+<polygon fill="#d9534f" stroke="#d9534f" points="368,-24 199,-24 199,0 368,0 368,-24"/>
+<text text-anchor="middle" x="283.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_completed_to_images</text>
+</a>
 </g>
-<!-- proc~do_work&#45;&gt;upstream_task_nums -->
+</g>
+<!-- proc~assign_task&#45;&gt;proc~assign_completed_to_images -->
 <g id="proc~~run~~CallsGraph_edge5" class="edge">
-<title>proc~do_work&#45;&gt;upstream_task_nums</title>
-<path fill="none" stroke="#00ffff" d="M155.27,-45.57C168.48,-41.63 184.52,-36.95 199,-33 206.89,-30.85 215.23,-28.66 223.46,-26.54"/>
-<polygon fill="#00ffff" stroke="#00ffff" points="224.58,-29.87 233.41,-24.01 222.85,-23.08 224.58,-29.87"/>
+<title>proc~assign_task&#45;&gt;proc~assign_completed_to_images</title>
+<path fill="none" stroke="#00ffff" d="M163.06,-12C170.92,-12 179.6,-12 188.59,-12"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="188.84,-15.5 198.84,-12 188.84,-8.5 188.84,-15.5"/>
 </g>
 </g>
 </svg>
@@ -601,7 +601,7 @@ module procedure run <small>module module function run(self, application) result
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-             on 2021-09-21 20:25  
+             on 2021-09-21 22:02  
             
           </p>
         </div>
