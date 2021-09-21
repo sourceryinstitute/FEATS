@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+   
+   <meta name="description" content="Framework for Extensible Asynchronous Task Scheduling (FEATS)">
+    
+    <meta name="author" content="Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson" >
+    <link rel="icon" href="./favicon.png">
+
+    <title> FEATS </title>
+
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/pygments.css" rel="stylesheet">
+    <link href="./css/font-awesome.min.css" rel="stylesheet">
+    <link href="./css/local.css" rel="stylesheet">
+    
+    <link  href="./tipuesearch/tipuesearch.css" rel="stylesheet">
+    
+    
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <script src="./js/jquery-2.1.3.min.js"></script>
+    <script src="./js/svg-pan-zoom.min.js"></script>
+
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="./index.html">FEATS </a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+        
+            <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
+              <a href="#" class="dropdown-toggle"
+              data-toggle="dropdown" role="button"
+              aria-haspopup="true"
+     aria-expanded="false">Contents <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          
+              
+            <li><a href="./lists/files.html">Source Files</a></li>
+        
+        
+        
+            <li><a href="./lists/modules.html">Modules</a></li>
+        
+            
+                                
+            <li><a href="./lists/procedures.html">Procedures</a></li>
+        
+        
+            <li><a href="./lists/absint.html">Abstract Interfaces</a></li>
+               
+            <li><a href="./lists/types.html">Derived Types</a></li>
+        
+               
+        
+        
+            </ul>
+        
+            </li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/files.html">Source Files</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/modules.html">Modules</a></li>
+
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/procedures.html">Procedures</a></li>
+
+
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/absint.html">Abstract Interfaces</a></li>
+                             
+<li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
+
+
+
+
+          </ul>
+        
+        <form action="./search.html" class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
+        </div>
+<!--
+        <button type="submit" class="btn btn-default">Submit</button>
+-->
+        </form>
+        
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+    
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <p>Framework for Extensible Asynchronous Task Scheduling (FEATS)</p>
+        	 
+	<p> Find us on&hellip;</p>
+        <p>
+			 
+          <a class="btn btn-lg btn-primary" href="https://github.com/sourceryinstitute/feats" role="button">GitHub</a>
+			 
+			 
+			 
+			 
+			 
+	         
+			 
+          <a class="btn btn-lg btn-danger" style="float:right" href="https://github.com/sourceryinstitute/feats" role="button">Download the Source</a>
+			 
+        </p>
+      </div>
+
+      <div class="row" id='text'>
+		  
+        <div class="col-md-8">
+		  
+          <h1>FEATS</h1>
+          <p><a name="top"> </a></p>
+<div align="center">
+
+![Sourcery Institute][sourcery-institute logo]
+
+
+Framework for Extensible Asynchronous Task Scheduling (FEATS)
+=============================================================
+
+[![Release Downloads][download img]][Releases]
+[![GitHub license][license img]](./LICENSE)
+[![GitHub release][release img]](https://github.com/sourceryinstitute/FEATS/releases/latest)
+[![Download as PDF][pdf img]](https://md2pdf.herokuapp.com/sourceryinstitute/FEATS/blob/master/README.pdf)
+
+[Overview](#overview) | [Downloads](#downloads) | [Prerequisites](#prerequisites) | [Installation](#installation) |
+[Contributing](#contributing) | [Acknowledgments](#acknowledgments) | [Donate](#donate)
+
+</div>
+
+<h2 id="overview">Overview</h2>
+<p>FEATS is a project to develop a parallel <a href="https://j3-fortran.org/doc/year/18/18-007r1.pdf">Fortran 2018</a> asynchronous, task-scheduling
+framework for use in a range of applications.  Our initial target application will be
+<a href="https://oltaris.nasa.gov">OLTARIS</a>.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>FEATS is being developed with the packages listed below.</p>
+<ul>
+<li>Fortran Package Manager: <a href="https://github.com/fortran-lang/fpm">fpm</a> 0.2.0,</li>
+<li>GNU Compiler Collection <a href="https://gcc.gnu.org">GCC</a> Fortran compiler: gfortran 10.2, and</li>
+<li><a href="https://github.com/sourceryinstitute/opencoarrays">OpenCoarrays</a> 2.9.2.</li>
+</ul>
+<p>Earlier versions might work as well.</p>
+<h2 id="downloading-building-and-testing">Downloading, building, and testing</h2>
+<p>To build and test a parallel run with 2 images, execute the following
+commands in a shell on Linux, macOS, or Windows Subsystem for Linux:</p>
+<div class="codehilite"><pre><span></span>git clone https://github.com/sourceryinstitute/FEATS
+cd FEATS
+fpm test --compiler caf --runner &quot;cafrun -n 2&quot;
+</pre></div>
+
+<p>Please report any test failures or other <a href="https://github.com/sourceryinstitute/FEATS/issues">issues</a>.</p>
+<h2 id="acknowledgments">Acknowledgments</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>We gratefully acknowledge support from <a href="https://www.nasa.gov/langley">NASA Langley Research Center</a> under contract number 80NSSC20P2246.</td>
+<td><img src="https://user-images.githubusercontent.com/13108868/112893191-304ce180-908f-11eb-8bea-e0cab5322aa8.png" alt="NASA logo" width="100"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="donate">Donate</h2>
+<p>If you find this software useful, please consider donating code or
+<a href="http://bit.ly/donate-to-sourcery-institute">currency</a>.
+to aid in development efforts.</p>
+<hr>
+<div align="center">
+
+[![GitHub forks](https://img.shields.io/github/forks/sourceryinstitute/FEATS.svg?style=social&label=Fork)](https://github.com/sourceryinstitute/FEATS/fork)
+[![GitHub stars](https://img.shields.io/github/stars/sourceryinstitute/FEATS.svg?style=social&label=Star)](https://github.com/sourceryinstitute/FEATS)
+[![GitHub watchers](https://img.shields.io/github/watchers/sourceryinstitute/FEATS.svg?style=social&label=Watch)](https://github.com/sourceryinstitute/FEATS)
+
+</div>
+        </div>
+		  
+        <div class="col-md-4">
+	  <div class="well">
+          <h2>Developer Info</h2>
+          <h4>Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson</h4>
+          
+          
+			   
+            <div class="text-center"><div class="btn-group" role="group">
+              
+              
+              
+              <a class="btn btn-lg btn-primary" href="https://github.com/sourceryinstitute"><i class="fa fa-github fa-lg"></i></a>
+              
+              
+				  
+              
+              
+              
+              
+            </div></div>
+            
+       </div>
+       </div>
+       
+      </div>
+      
+      
+      
+      
+      
+      
+		
+        
+      <div class="row">
+        
+        <div class="col-xs-6 col-sm-3">
+              <h3>Source Files</h3>
+              <ul>
+                    <li><a href='./sourcefile/application_m.f90.html'>application_m.f90</a></li>
+                  
+                    <li><a href='./sourcefile/application_s.f90.html'>application_s.f90</a></li>
+                  
+                    <li><a href='./sourcefile/final_task_m.f90.html'>final_task_m.f90</a></li>
+                  
+                    <li><a href='./sourcefile/final_task_s.f90.html'>final_task_s.f90</a></li>
+                  
+                    <li><a href='./sourcefile/image_m.f90.html'>image_m.f90</a></li>
+                  
+                    <li><a href='./sourcefile/image_s.f90.html'>image_s.f90</a></li>
+                  
+                    <li><a href='./sourcefile/mailbox_m.f90.html'>mailbox_m.f90</a></li>
+                  
+                    <li><a href='./sourcefile/payload_m.f90.html'>payload_m.f90</a></li>
+                  
+                    <li><a href='./sourcefile/payload_s.f90.html'>payload_s.f90</a></li>
+                  
+                    <li><a href='./sourcefile/task_item_m.f90.html'>task_item_m.f90</a></li>
+                  </ul>
+          </div>
+        
+          
+		  <div class="col-xs-6 col-sm-3">
+              <h3>Modules</h3>
+              <ul>
+                    <li><a href='./module/application_m.html'>application_m</a></li>
+                  
+                    <li><a href='./module/final_task_m.html'>final_task_m</a></li>
+                  
+                    <li><a href='./module/image_m.html'>image_m</a></li>
+                  
+                    <li><a href='./module/mailbox_m.html'>mailbox_m</a></li>
+                  
+                    <li><a href='./module/payload_m.html'>payload_m</a></li>
+                  
+                    <li><a href='./module/task_item_m.html'>task_item_m</a></li>
+                  
+                    <li><a href='./module/task_m.html'>task_m</a></li>
+                  
+                    <li><a href='./module/task_payload_map_m.html'>task_payload_map_m</a></li>
+                  </ul>
+          </div>
+          
+          
+		  <div class="col-xs-6 col-sm-3">
+              <h3>Procedures</h3>
+              <ul>
+                    <li><a href='./interface/application_t.html'>application_t</a></li>
+                  
+                    <li><a href='./proc/assign_completed_to_images.html'>assign_completed_to_images</a></li>
+                  
+                    <li><a href='./proc/assign_task.html'>assign_task</a></li>
+                  
+                    <li><a href='./interface/dag.html'>dag</a></li>
+                  
+                    <li><a href='./proc/do_work.html'>do_work</a></li>
+                  
+                    <li><a href='./interface/execute.html'>execute</a></li>
+                  
+                    <li><a href='./interface/execute~2.html'>execute</a></li>
+                  
+                    <li><a href='./proc/find_next_image.html'>find_next_image</a></li>
+                  
+                    <li><a href='./proc/find_next_task.html'>find_next_task</a></li>
+                  
+                    <li><a href='./interface/get_raw_payload.html'>get_raw_payload</a></li>
+                  </ul>
+          </div>
+          
+          
+		  <div class="col-xs-6 col-sm-3">
+              <h3>Derived Types</h3>
+              <ul>
+                    <li><a href='./type/application_t.html'>application_t</a></li>
+                  
+                    <li><a href='./type/final_task_t.html'>final_task_t</a></li>
+                  
+                    <li><a href='./type/image_t.html'>image_t</a></li>
+                  
+                    <li><a href='./type/payload_t.html'>payload_t</a></li>
+                  
+                    <li><a href='./type/task_item_t.html'>task_item_t</a></li>
+                  
+                    <li><a href='./type/task_payload_map_t.html'>task_payload_map_t</a></li>
+                  
+                    <li><a href='./type/task_t.html'>task_t</a></li>
+                  </ul>
+          </div>
+          
+      </div>
+      
+
+    <hr>    
+    </div> <!-- /container -->
+    <footer>
+      <div class="container">
+      <div class="row">
+        <div class="col-xs-6 col-md-6"><p>FEATS was developed by Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson<br>&copy; 2021 
+                                          </p>
+        </div>
+        <div class="col-xs-6 col-md-6">
+          <p class="text-right">
+            Documentation generated by 
+            <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
+             on 2021-09-21 19:54  
+            
+          </p>
+        </div>
+      </div>
+      <br>
+      </div> <!-- /container -->    
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<!--
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+-->
+    <script src="./js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="./js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- MathJax JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } },
+        jax: ['input/TeX','input/MathML','output/HTML-CSS'],
+        extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
+      });
+    </script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+    <script src="./tipuesearch/tipuesearch_content.js"></script>
+    <script src="./tipuesearch/tipuesearch_set.js"></script>
+    <script src="./tipuesearch/tipuesearch.js"></script>
+    
+    
+  </body>
+</html>
