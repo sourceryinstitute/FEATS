@@ -11,7 +11,6 @@
 Framework for Extensible Asynchronous Task Scheduling (FEATS)
 =============================================================
 
-[![Release Downloads][download img]][Releases]
 [![GitHub license][license img]](./LICENSE)
 [![GitHub release][release img]](https://github.com/sourceryinstitute/FEATS/releases/latest)
 [![Download as PDF][pdf img]](https://md2pdf.herokuapp.com/sourceryinstitute/FEATS/blob/master/README.pdf)
