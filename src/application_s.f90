@@ -1,5 +1,5 @@
 submodule(application_m) application_s
-  use assertions_interface, only : assert
+  use assert_m, only : assert
   implicit none
 
 contains
