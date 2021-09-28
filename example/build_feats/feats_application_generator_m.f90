@@ -1,4 +1,4 @@
-module application_generator_m
+module feats_application_generator_m
     use application_m, only: application_t
     use dag_m, only : dag_t
     use iso_varying_string, only: varying_string, operator(//), put_line, var_str
