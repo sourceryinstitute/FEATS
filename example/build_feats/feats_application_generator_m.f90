@@ -1,4 +1,4 @@
-module application_generator_m
+module feats_application_generator_m
     use application_m, only: application_t
     use dag_m, only : dag_t
     use iso_varying_string, only: varying_string, operator(//), put_line, var_str
@@ -48,26 +48,26 @@ contains
             ]
         associate( &
               assert_m        => findloc(names, "assert_m",        dim=1) &
-            , dag_m           => findloc(names, "dag_m",           dim=1) & 
-            , payload_m       => findloc(names, "payload_m",       dim=1) & 
-            , compile_m       => findloc(names, "compile_m",       dim=1) & 
-            , data_loc_map_m  => findloc(names, "data_loc_map_m",  dim=1) & 
-            , task_m          => findloc(names, "task_m",          dim=1) & 
-            , task_item_m     => findloc(names, "task_item_m",     dim=1) & 
-            , app_m           => findloc(names, "app_m",           dim=1) & 
-            , app_generator_m => findloc(names, "app_generator_m", dim=1) & 
-            , image_m         => findloc(names, "image_m",         dim=1) & 
-            , main            => findloc(names, "main",            dim=1) & 
-            , task_item_s     => findloc(names, "task_item_s",     dim=1) & 
-            , compile_s       => findloc(names, "compile_s",       dim=1) & 
-            , app_generator_s => findloc(names, "app_generator_s", dim=1) & 
-            , data_loc_map_s  => findloc(names, "data_loc_map_s",  dim=1) & 
-            , payload_s       => findloc(names, "payload_s",       dim=1) & 
-            , app_s           => findloc(names, "app_s",           dim=1) & 
-            , mailbox_m       => findloc(names, "mailbox_m",       dim=1) & 
-            , image_s         => findloc(names, "image_s",         dim=1) & 
-            , final_task_m    => findloc(names, "final_task_m",    dim=1) & 
-            , final_task_s    => findloc(names, "final_task_s",    dim=1) & 
+            , dag_m           => findloc(names, "dag_m",           dim=1) &
+            , payload_m       => findloc(names, "payload_m",       dim=1) &
+            , compile_m       => findloc(names, "compile_m",       dim=1) &
+            , data_loc_map_m  => findloc(names, "data_loc_map_m",  dim=1) &
+            , task_m          => findloc(names, "task_m",          dim=1) &
+            , task_item_m     => findloc(names, "task_item_m",     dim=1) &
+            , app_m           => findloc(names, "app_m",           dim=1) &
+            , app_generator_m => findloc(names, "app_generator_m", dim=1) &
+            , image_m         => findloc(names, "image_m",         dim=1) &
+            , main            => findloc(names, "main",            dim=1) &
+            , task_item_s     => findloc(names, "task_item_s",     dim=1) &
+            , compile_s       => findloc(names, "compile_s",       dim=1) &
+            , app_generator_s => findloc(names, "app_generator_s", dim=1) &
+            , data_loc_map_s  => findloc(names, "data_loc_map_s",  dim=1) &
+            , payload_s       => findloc(names, "payload_s",       dim=1) &
+            , app_s           => findloc(names, "app_s",           dim=1) &
+            , mailbox_m       => findloc(names, "mailbox_m",       dim=1) &
+            , image_s         => findloc(names, "image_s",         dim=1) &
+            , final_task_m    => findloc(names, "final_task_m",    dim=1) &
+            , final_task_s    => findloc(names, "final_task_s",    dim=1) &
         )
 
             block
@@ -111,7 +111,7 @@ contains
             end block
         end associate
     end function
-    
+
     function compile_task_execute(self, task_number, upstream_task_results) result(output)
         class(compile_task_t), intent(in) :: self
         integer, intent(in) :: task_number
@@ -120,9 +120,12 @@ contains
 
         real :: rand
 
-        call put_line("Executing task number: " // to_string(task_number) // " on image number: " // to_string(this_image()))
+        call put_line( &
+                "Executing task number: " // to_string(task_number) &
+                // ", compiling: " // self%to_compile &
+                // " on image number: " // to_string(this_image()))
         call random_number(rand)
         call sleep(int(rand * 10))
-        call put_line("Compiling: " // self%to_compile)
+        call put_line("Finished Compiling: " // self%to_compile)
     end function
 end module

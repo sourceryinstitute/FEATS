@@ -16,3 +16,13 @@ vegetables = {git = "https://gitlab.com/everythingfunctional/vegetables", tag = 
 name="unit"
 source-dir="tests"
 main="main.f90"
+
+[[example]]
+name="build_feats"
+source-dir="example/build_feats"
+main="main.f90"
+
+[[example]]
+name="quadratic_solver"
+source-dir="example/quadratic_solver"
+main="main.f90"
