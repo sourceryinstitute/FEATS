@@ -2,7 +2,7 @@ submodule(image_m) image_s
     use dag_m, only: dag_t
     use iso_fortran_env, only: event_type
     use final_task_m, only: final_task_t
-    use mailbox_m, only: mailbox, mailbox_entry_can_be_freed
+    use mailbox_m, only: payload_list_t, mailbox, mailbox_entry_can_be_freed
     use task_item_m, only: task_item_t
 
     implicit none
@@ -37,7 +37,9 @@ contains
         task_identifier = no_task_assigned
         associate(n_tasks => size(application%tasks()), n_imgs => num_images())
             allocate(ready_for_next_task(n_imgs)[*])
-            allocate(mailbox(n_tasks)[*])
+            allocate(mailbox[*])
+            allocate(mailbox%payloads(n_tasks))
+            sync all
             allocate(mailbox_entry_can_be_freed(n_tasks)[*])
             mailbox_entry_can_be_freed(n_tasks) = .false.
             allocate(task_assignment_history(n_tasks)[*])
@@ -69,7 +71,7 @@ contains
 
         event post(ready_for_next_task(this_image())[scheduler_image])
         event wait(task_assigned)
-    
+
         !! It's probably better to introduce this only after some more testing -- HS
         !free_unneeded_memory: do concurrent(integer :: l = 0:size(mailbox))
         !    if(mailbox_entry_can_be_freed(i)) then
@@ -80,7 +82,7 @@ contains
 
         do_assigned_task: associate(my_task    => tasks(task_identifier))
             if (.not.my_task%is_final_task()) then
-                block 
+                block
                     integer, allocatable :: upstream_task_nums(:)
                     integer, allocatable :: upstream_task_imagenums(:)
                     integer :: i
@@ -91,7 +93,7 @@ contains
                         [(task_assignment_history(upstream_task_nums(i))[scheduler_image], i = 1, size(upstream_task_nums))]
 
                     ! execute task, store result
-                    mailbox(task_identifier) = &
+                    mailbox%payloads(task_identifier) = &
                         my_task%execute(task_identifier, task_payload_map_t(upstream_task_nums, upstream_task_imagenums))
 
                 end block
@@ -137,7 +139,7 @@ contains
                     else
                         event wait (ready_for_next_task(next_image))
                         task_assignment_history(next_task) = next_image
- 
+
                         ! check which task the image just finished, that's task A
                         ! for each task B upstream of A, walk through that task's downstream dependencies
                         ! if they're all completed, the output data from B can be freed.
@@ -147,12 +149,12 @@ contains
                             upstream_task_images = task_assignment_history(upstream_tasks)
                             do i = 1, size(upstream_tasks)
                                 if (all(task_done(dag%depends_on(upstream_tasks(i))))) then
-                                    mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.        
+                                    mailbox_entry_can_be_freed(upstream_tasks(i))[upstream_task_images(i)] = .true.
                                 end if
                             end do
                         end if
 
-                      
+
                         ! tell the image that it can proceed with the next task
                         task_identifier[next_image] = next_task
                         event post (task_assigned[next_image])
@@ -182,7 +184,7 @@ contains
     end subroutine
 
     pure function find_next_task ( dag ) Result ( next_task_to_run )
-!! find_next_task: search through the dag to find the next task where its 
+!! find_next_task: search through the dag to find the next task where its
 !! dependencies are complete
 !!
 !! possible outputs for next_task_to_run
