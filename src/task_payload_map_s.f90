@@ -5,12 +5,12 @@ submodule(task_payload_map_m) task_payload_map_s
 contains
     module procedure get_task_ids
         ids = self%task_ids_
-    end procedure 
+    end procedure
 
     module procedure constructor
         if (size(task_ids) /= size(image_nums)) then
             error stop "task_payload_map_t%constructor: mismatched argument lengths"
-        end if 
+        end if
         new_map%task_ids_   = task_ids
         new_map%image_nums_ = image_nums
     end procedure
@@ -26,7 +26,7 @@ contains
                 end if
             else
                 associate( img => self%image_nums_(idx) )
-                    pl = mailbox(taskid)[img]%payload_ ! work around gfortran bug: direcly access payload_
+                    pl = mailbox[img]%payloads(taskid)%payload_ ! work around gfortran bug: direcly access payload_
                 end associate
             end if
         end associate
@@ -39,7 +39,7 @@ contains
             call self%get_raw_payload(taskid, raw, key_error)
         else
             call self%get_raw_payload(taskid, raw)
-        end if 
+        end if
         allocate(character(len=size(raw)) :: pl)
         do concurrent (i = 1 : size(raw))
             pl(i:i) = raw(i)
