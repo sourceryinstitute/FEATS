@@ -11,7 +11,7 @@ module payload_m
         !! * produce a string representation of the data, and then parse that string to recover the original data
         !! * use the `transfer` function to copy the raw bytes of the data
         private
-        integer(1), allocatable, public :: payload_(:)
+        character(len=1), allocatable, public :: payload_(:)
     contains
         private
         procedure, public :: raw_payload
@@ -21,7 +21,7 @@ module payload_m
     interface payload_t
         pure module function from_raw(payload) result(new_payload)
             implicit none
-            integer(1), intent(in) :: payload(:)
+            character(len=1), intent(in) :: payload(:)
             type(payload_t) :: new_payload
         end function
 
@@ -36,7 +36,7 @@ module payload_m
         pure module function raw_payload(self)
             implicit none
             class(payload_t), intent(in) :: self
-            integer(1), allocatable :: raw_payload(:)
+            character(len=1), allocatable :: raw_payload(:)
         end function
 
         pure module function string_payload(self)

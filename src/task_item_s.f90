@@ -5,7 +5,7 @@ submodule(task_item_m) task_item_s
 contains
 
   module procedure execute
-      output = self%task%execute(arguments)
+      output = self%task%execute(task_number, upstream_task_results)
   end procedure
 
   module procedure constructor
