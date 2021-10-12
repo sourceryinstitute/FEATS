@@ -7,32 +7,20 @@ contains
 
     module procedure from_string
         integer :: i
-
-        associate(length => len(payload))
-            allocate(new_payload%payload_(length))
-            do concurrent (i = 1 : length)
-                new_payload%payload_(i) = payload(i:i)
-            end do
-        end associate
+        new_payload%payload_ = transfer(payload,[integer(1)::])
     end procedure
 
     module procedure raw_payload
         if (allocated(self%payload_)) then
             raw_payload = self%payload_
         else
-            raw_payload = [character(len=1)::]
+            raw_payload = [integer(1)::]
         end if
     end procedure
 
     module procedure string_payload
         integer :: i
-
-        associate(length => size(self%payload_))
-            allocate(character(len=length) :: string_payload)
-            do concurrent (i = 1 : length)
-                string_payload(i:i) = self%payload_(i)
-            end do
-        end associate
+        string_payload=transfer(self%payload_,string_payload)
     end procedure
 
 end submodule
