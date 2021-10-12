@@ -136,7 +136,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 4.3% of total for source files.">22 statements</a>
+    title=" 4.8% of total for source files.">25 statements</a>
      </li> 
      
      
@@ -356,23 +356,27 @@
 <a name="ln-7"></a>
 <a name="ln-8"></a><span class="k">    module procedure </span><span class="n">from_string</span>
 <a name="ln-9"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span>
-<a name="ln-10"></a>        <span class="n">new_payload</span><span class="p">%</span><span class="n">payload_</span> <span class="o">=</span> <span class="nb">transfer</span><span class="p">(</span><span class="n">payload</span><span class="p">,[</span><span class="kt">integer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="kd">::</span><span class="p">])</span>
+<a name="ln-10"></a>        <span class="n">new_payload</span><span class="p">%</span><span class="n">payload_</span> <span class="o">=</span> <span class="nb">transfer</span><span class="p">(</span><span class="n">payload</span><span class="p">,[</span><span class="kt">integer</span><span class="p">(</span><span class="n">int8</span><span class="p">)</span><span class="kd">::</span><span class="p">])</span>
 <a name="ln-11"></a>    <span class="k">end procedure</span>
 <a name="ln-12"></a>
-<a name="ln-13"></a><span class="k">    module procedure </span><span class="n">raw_payload</span>
-<a name="ln-14"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">payload_</span><span class="p">))</span> <span class="k">then</span>
-<a name="ln-15"></a><span class="k">            </span><span class="n">raw_payload</span> <span class="o">=</span> <span class="n">self</span><span class="p">%</span><span class="n">payload_</span>
-<a name="ln-16"></a>        <span class="k">else</span>
-<a name="ln-17"></a><span class="k">            </span><span class="n">raw_payload</span> <span class="o">=</span> <span class="p">[</span><span class="kt">integer</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="kd">::</span><span class="p">]</span>
-<a name="ln-18"></a>        <span class="k">end if</span>
-<a name="ln-19"></a><span class="k">    end procedure</span>
-<a name="ln-20"></a>
-<a name="ln-21"></a><span class="k">    module procedure </span><span class="n">string_payload</span>
-<a name="ln-22"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span>
-<a name="ln-23"></a>        <span class="n">string_payload</span><span class="o">=</span><span class="nb">transfer</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">payload_</span><span class="p">,</span><span class="n">string_payload</span><span class="p">)</span>
-<a name="ln-24"></a>    <span class="k">end procedure</span>
-<a name="ln-25"></a>
-<a name="ln-26"></a><span class="k">end submodule</span>
+<a name="ln-13"></a><span class="k">    module procedure </span><span class="n">empty_payload</span>
+<a name="ln-14"></a>        <span class="n">empty_payload</span><span class="p">%</span><span class="n">payload_</span>  <span class="o">=</span> <span class="p">[</span><span class="mi">0_int8</span><span class="p">]</span>
+<a name="ln-15"></a>    <span class="k">end procedure</span>
+<a name="ln-16"></a>
+<a name="ln-17"></a><span class="k">    module procedure </span><span class="n">raw_payload</span>
+<a name="ln-18"></a>        <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">payload_</span><span class="p">))</span> <span class="k">then</span>
+<a name="ln-19"></a><span class="k">            </span><span class="n">raw_payload</span> <span class="o">=</span> <span class="n">self</span><span class="p">%</span><span class="n">payload_</span>
+<a name="ln-20"></a>        <span class="k">else</span>
+<a name="ln-21"></a><span class="k">            </span><span class="n">raw_payload</span> <span class="o">=</span> <span class="p">[</span><span class="kt">integer</span><span class="p">(</span><span class="n">int8</span><span class="p">)</span><span class="kd">::</span><span class="p">]</span>
+<a name="ln-22"></a>        <span class="k">end if</span>
+<a name="ln-23"></a><span class="k">    end procedure</span>
+<a name="ln-24"></a>
+<a name="ln-25"></a><span class="k">    module procedure </span><span class="n">string_payload</span>
+<a name="ln-26"></a>        <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i</span>
+<a name="ln-27"></a>        <span class="n">string_payload</span><span class="o">=</span><span class="nb">transfer</span><span class="p">(</span><span class="n">self</span><span class="p">%</span><span class="n">payload_</span><span class="p">,</span><span class="n">string_payload</span><span class="p">)</span>
+<a name="ln-28"></a>    <span class="k">end procedure</span>
+<a name="ln-29"></a>
+<a name="ln-30"></a><span class="k">end submodule</span>
 </pre></div>
 
     </section>
@@ -392,7 +396,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-             on 2021-10-12 14:47  
+             on 2021-10-12 15:07  
             
           </p>
         </div>

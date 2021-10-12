@@ -1,7 +1,9 @@
 module payload_m
+    use iso_fortran_env, only: int8
+
     implicit none
     private
-    public :: payload_t
+    public :: payload_t, empty_payload
 
     type :: payload_t
         !! A raw buffer to facilitate data transfer between  images
@@ -11,7 +13,7 @@ module payload_m
         !! * produce a string representation of the data, and then parse that string to recover the original data
         !! * use the `transfer` function to copy the raw bytes of the data
         private
-        integer(1), allocatable, public :: payload_(:)
+        integer(int8), allocatable, public :: payload_(:)
     contains
         private
         procedure, public :: raw_payload
@@ -21,7 +23,7 @@ module payload_m
     interface payload_t
         pure module function from_raw(payload) result(new_payload)
             implicit none
-            integer(1), intent(in) :: payload(:)
+            integer(int8), intent(in) :: payload(:)
             type(payload_t) :: new_payload
         end function
 
@@ -30,13 +32,20 @@ module payload_m
             character(len=*), intent(in) :: payload
             type(payload_t) :: new_payload
         end function
+
+        module procedure empty_payload
     end interface
 
     interface
+        pure module function empty_payload()
+            implicit none
+            type(payload_t) :: empty_payload
+        end function
+
         pure module function raw_payload(self)
             implicit none
             class(payload_t), intent(in) :: self
-            integer(1), allocatable :: raw_payload(:)
+            integer(int8), allocatable :: raw_payload(:)
         end function
 
         pure module function string_payload(self)
