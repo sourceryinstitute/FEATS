@@ -93,11 +93,11 @@ contains
                     upstream_task_imagenums = &
                         [(task_assignment_history(upstream_task_nums(i))[scheduler_image], i = 1, size(upstream_task_nums))]
 
-                    arguments = [ ( payload_t(mailbox[upstream_image_nums(i)]%payloads(upstream_task_nums(i))%payload_), &
+                    arguments = [ ( payload_t(mailbox[upstream_task_imagenums(i)]%payloads(upstream_task_nums(i))%payload_), &
                                     i = 1, size(upstream_task_nums) ) ]
 
                     ! execute task, store result
-                    mailbox(task_identifier) = &
+                    mailbox%payloads(task_identifier) = &
                         my_task%execute(arguments)
 
                 end block
