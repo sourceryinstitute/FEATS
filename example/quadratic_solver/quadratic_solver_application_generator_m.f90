@@ -250,5 +250,7 @@ contains
       answers = transfer(arguments(1)%raw_payload(), answers)
 
       print *, answers
+
+      output = payload_t()
     end function
 end module

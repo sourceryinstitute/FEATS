@@ -2,7 +2,7 @@ module feats_application_generator_m
     use application_m, only: application_t
     use dag_m, only : dag_t
     use iso_varying_string, only: varying_string, operator(//), put_line, var_str
-    use payload_m, only: payload_t
+    use payload_m, only: payload_t, empty_payload
     use strff, only: to_string
     use task_payload_map_m, only: task_payload_map_t
     use task_m, only: task_t
@@ -125,5 +125,7 @@ contains
         call random_number(rand)
         call sleep(int(rand * 10))
         call put_line("Finished Compiling: " // self%to_compile)
+
+        output = empty_payload()
     end function
 end module
