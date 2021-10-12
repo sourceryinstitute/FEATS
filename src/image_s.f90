@@ -86,15 +86,19 @@ contains
                     integer, allocatable :: upstream_task_nums(:)
                     integer, allocatable :: upstream_task_imagenums(:)
                     integer :: i
+                    type(payload_t), allocatable :: arguments(:)
 
                     ! figure out which images have our input data
                     upstream_task_nums      = dag%dependencies_for(task_identifier)
                     upstream_task_imagenums = &
                         [(task_assignment_history(upstream_task_nums(i))[scheduler_image], i = 1, size(upstream_task_nums))]
 
+                    arguments = [ ( payload_t(mailbox(upstream_task_nums(i))[upstream_image_nums(i)]%payload_), &
+                                    i = 1, size(upstream_task_nums) ) ]
+
                     ! execute task, store result
-                    mailbox%payloads(task_identifier) = &
-                        my_task%execute(task_identifier, task_payload_map_t(upstream_task_nums, upstream_task_imagenums))
+                    mailbox(task_identifier) = &
+                        my_task%execute(arguments)
 
                 end block
                 tasks_left = .true.
