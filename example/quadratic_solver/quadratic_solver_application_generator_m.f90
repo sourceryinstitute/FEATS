@@ -35,50 +35,36 @@ module quadratic_solver_application_generator_m
     end type
 
     type, extends(task_t) :: b_squared_t
-        private
-        integer :: b_task_id
     contains
         procedure :: execute => b_squared_execute
     end type
 
     type, extends(task_t) :: four_ac_t
-        private
-        integer :: a_task_id, c_task_id
     contains
         procedure :: execute => four_ac_execute
     end type
 
     type, extends(task_t) :: square_root_t
-      private
-      integer :: b_squared_task_id, four_a_c_task_id
     contains
         procedure :: execute => square_root_execute
     end type
 
     type, extends(task_t) :: minus_b_pm_square_root_t
-      private
-      integer :: b_task_id, square_root_task_id
     contains
       procedure :: execute => minus_b_pm_square_root_execute
     end type
 
     type, extends(task_t) :: two_a_t
-      private
-      integer :: a_task_id
     contains
       procedure :: execute => two_a_execute
     end type
 
     type, extends(task_t) :: division_t
-      private
-      integer :: two_a_task_id, minus_b_pm_square_root_task_id
     contains
       procedure :: execute => division_execute
     end type
 
     type, extends(task_t) :: printer_t
-      private
-      integer :: division_task_id
     contains
       procedure :: execute => printer_execute
     end type
@@ -132,159 +118,137 @@ contains
                       , vertex_t([b_squared, four_ac], name_string(square_root), var_str(branch)) &
                       , vertex_t([b, square_root], name_string(minus_b_pm_square_root), var_str(branch)) &
                       , vertex_t([a], name_string(two_a), var_str(branch)) &
-                      , vertex_t([minus_b_pm_square_root, two_a], name_string(division), var_str(branch)) &
+                      , vertex_t([two_a, minus_b_pm_square_root], name_string(division), var_str(branch)) &
                       , vertex_t([division], name_string(print), var_str(root)) &
                   ])
               tasks = &
               [ task_item_t(a_t(2.0)) &
               , task_item_t(b_t(-5.0)) &
               , task_item_t(c_t(1.0)) &
-              , task_item_t(b_squared_t(b_task_id = b)) &
-              , task_item_t(four_ac_t(a_task_id = a, c_task_id = c)) &
-              , task_item_t(square_root_t(b_squared_task_id = b_squared, four_a_c_task_id = four_ac)) &
-              , task_item_t(minus_b_pm_square_root_t(b_task_id = b, square_root_task_id = square_root)) &
-              , task_item_t(two_a_t(a_task_id = a)) &
-              , task_item_t(division_t(minus_b_pm_square_root_task_id = minus_b_pm_square_root, two_a_task_id = two_a)) &
-              , task_item_t(printer_t(division_task_id = division)) &
+              , task_item_t(b_squared_t()) &
+              , task_item_t(four_ac_t()) &
+              , task_item_t(square_root_t()) &
+              , task_item_t(minus_b_pm_square_root_t()) &
+              , task_item_t(two_a_t()) &
+              , task_item_t(division_t()) &
+              , task_item_t(printer_t()) &
               ]
               application = application_t(solver, tasks)
           end block
         end associate
     end function
 
-    function a_execute(self, task_number, upstream_task_results) result(output)
+    function a_execute(self, arguments) result(output)
         class(a_t), intent(in) :: self
-        integer, intent(in) :: task_number
-        type(task_payload_map_t), intent(in) :: upstream_task_results
+        type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
         output = payload_t(transfer(self%a, output%raw_payload()))
     end function
 
-    function b_execute(self, task_number, upstream_task_results) result(output)
+    function b_execute(self, arguments) result(output)
         class(b_t), intent(in) :: self
-        integer, intent(in) :: task_number
-        type(task_payload_map_t), intent(in) :: upstream_task_results
+        type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
         output = payload_t(transfer(self%b, output%raw_payload()))
     end function
 
-    function c_execute(self, task_number, upstream_task_results) result(output)
+    function c_execute(self, arguments) result(output)
         class(c_t), intent(in) :: self
-        integer, intent(in) :: task_number
-        type(task_payload_map_t), intent(in) :: upstream_task_results
+        type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
         output = payload_t(transfer(self%c, output%raw_payload()))
     end function
 
-    function b_squared_execute(self, task_number, upstream_task_results) result(output)
+    function b_squared_execute(self, arguments) result(output)
         class(b_squared_t), intent(in) :: self
-        integer, intent(in) :: task_number
-        type(task_payload_map_t), intent(in) :: upstream_task_results
+        type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        character(len=1), allocatable :: b_payload(:)
         real :: b
 
-        call upstream_task_results%get_raw_payload(self%b_task_id, b_payload)
-        b = transfer(b_payload, b)
+        b = transfer(arguments(1)%raw_payload(), b)
+
         output = payload_t(transfer(square(b), output%raw_payload()))
     end function
 
-    function four_ac_execute(self, task_number, upstream_task_results) result(output)
+    function four_ac_execute(self, arguments) result(output)
       class(four_ac_t), intent(in) :: self
-      integer, intent(in) :: task_number
-      type(task_payload_map_t), intent(in) :: upstream_task_results
+      type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      character(len=1), allocatable :: a_payload(:), c_payload(:)
       real :: a, c
 
-      call upstream_task_results%get_raw_payload(self%a_task_id, a_payload)
-      call upstream_task_results%get_raw_payload(self%c_task_id, c_payload)
-      a = transfer(a_payload, a)
-      c = transfer(c_payload, c)
+      a = transfer(arguments(1)%raw_payload(), a)
+      c = transfer(arguments(2)%raw_payload(), c)
+
       output = payload_t(transfer(4*a*c, output%raw_payload()))
     end function
 
-    function square_root_execute(self, task_number, upstream_task_results) result(output)
+    function square_root_execute(self, arguments) result(output)
       class(square_root_t), intent(in) :: self
-      integer, intent(in) :: task_number
-      type(task_payload_map_t), intent(in) :: upstream_task_results
+      type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      character(len=1), allocatable :: b_squared_payload(:), four_ac_payload(:)
       real :: b_squared, four_a_c
 
-        call upstream_task_results%get_raw_payload(self%b_squared_task_id, b_squared_payload)
-        call upstream_task_results%get_raw_payload(self%four_a_c_task_id, four_ac_payload)
-        b_squared = transfer(b_squared_payload, b_squared)
-        four_a_c = transfer(four_ac_payload, four_a_c)
+        b_squared = transfer(arguments(1)%raw_payload(), b_squared)
+        four_a_c = transfer(arguments(2)%raw_payload(), four_a_c)
+
         associate(discriminant => b_squared - four_a_c)
           output = payload_t(transfer([sqrt(discriminant), -sqrt(discriminant)], output%raw_payload()))
         end associate
     end function
 
-    function minus_b_pm_square_root_execute(self, task_number, upstream_task_results) result(output)
+    function minus_b_pm_square_root_execute(self, arguments) result(output)
       class(minus_b_pm_square_root_t), intent(in) :: self
-      integer, intent(in) :: task_number
-      type(task_payload_map_t), intent(in) :: upstream_task_results
+      type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      character(len=1), allocatable :: b_payload(:), square_root_payload(:)
       real :: b, square_root(2)
 
-        call upstream_task_results%get_raw_payload(self%b_task_id, b_payload)
-        call upstream_task_results%get_raw_payload(self%square_root_task_id, square_root_payload)
-        b = transfer(b_payload, b)
-        square_root = transfer(square_root_payload, square_root)
+        b = transfer(arguments(1)%raw_payload(), b)
+        square_root = transfer(arguments(2)%raw_payload(), square_root)
 
         output = payload_t(transfer(-b + square_root, output%raw_payload()))
     end function
 
-    function two_a_execute(self, task_number, upstream_task_results) result(output)
+    function two_a_execute(self, arguments) result(output)
       class(two_a_t), intent(in) :: self
-      integer, intent(in) :: task_number
-      type(task_payload_map_t), intent(in) :: upstream_task_results
+      type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      character(len=1), allocatable :: a_payload(:)
       real :: a
 
-      call upstream_task_results%get_raw_payload(self%a_task_id, a_payload)
-      a = transfer(a_payload, a)
+      a = transfer(arguments(1)%raw_payload(), a)
+
       output = payload_t(transfer(2*a, output%raw_payload()))
     end function
 
-    function division_execute(self, task_number, upstream_task_results) result(output)
+    function division_execute(self, arguments) result(output)
       class(division_t), intent(in) :: self
-      integer, intent(in) :: task_number
-      type(task_payload_map_t), intent(in) :: upstream_task_results
+      type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      character(len=1), allocatable :: two_a_payload(:), b_pm_square_root_payload(:)
       real :: two_a, b_pm_square_root(2)
 
-        call upstream_task_results%get_raw_payload(self%two_a_task_id, two_a_payload)
-        call upstream_task_results%get_raw_payload(self%minus_b_pm_square_root_task_id, b_pm_square_root_payload)
-        two_a = transfer(two_a_payload, two_a)
-        b_pm_square_root = transfer(b_pm_square_root_payload, b_pm_square_root)
+        two_a = transfer(arguments(1)%raw_payload(), two_a)
+        b_pm_square_root = transfer(arguments(2)%raw_payload(), b_pm_square_root)
+
         output = payload_t(transfer(b_pm_square_root / two_a, output%raw_payload()))
     end function
 
-    function printer_execute(self, task_number, upstream_task_results) result(output)
+    function printer_execute(self, arguments) result(output)
       class(printer_t), intent(in) :: self
-      integer, intent(in) :: task_number
-      type(task_payload_map_t), intent(in) :: upstream_task_results
+      type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      character(len=1), allocatable :: answers_payload(:)
       real :: answers(2)
 
-      call upstream_task_results%get_raw_payload(self%division_task_id, answers_payload)
-      answers = transfer(answers_payload, answers)
+      answers = transfer(arguments(1)%raw_payload(), answers)
+
       print *, answers
     end function
 end module
