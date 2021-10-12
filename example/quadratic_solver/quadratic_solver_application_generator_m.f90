@@ -6,7 +6,6 @@ module quadratic_solver_application_generator_m
     use payload_m, only: payload_t
     use task_m, only: task_t
     use task_item_m, only: task_item_t
-    use task_payload_map_m, only: task_payload_map_t
     use vertex_m, only: vertex_t
 
     implicit none

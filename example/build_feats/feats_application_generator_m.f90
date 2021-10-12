@@ -4,7 +4,6 @@ module feats_application_generator_m
     use iso_varying_string, only: varying_string, operator(//), put_line, var_str
     use payload_m, only: payload_t, empty_payload
     use strff, only: to_string
-    use task_payload_map_m, only: task_payload_map_t
     use task_m, only: task_t
     use task_item_m, only: task_item_t
     use vertex_m, only : vertex_t

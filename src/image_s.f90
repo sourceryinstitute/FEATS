@@ -61,7 +61,7 @@ contains
                 tasks_left = do_work(tasks, dag)
             end if
         end do
-        results = task_payload_map_t([integer::], [integer::])
+        results = feats_result_map_t()
     end procedure
 
     function do_work(tasks, dag) result(tasks_left)
