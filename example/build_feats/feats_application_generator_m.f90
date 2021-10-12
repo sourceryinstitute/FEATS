@@ -112,17 +112,15 @@ contains
         end associate
     end function
 
-    function compile_task_execute(self, task_number, upstream_task_results) result(output)
+    function compile_task_execute(self, arguments) result(output)
         class(compile_task_t), intent(in) :: self
-        integer, intent(in) :: task_number
-        type(task_payload_map_t), intent(in) :: upstream_task_results
+        type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
         real :: rand
 
         call put_line( &
-                "Executing task number: " // to_string(task_number) &
-                // ", compiling: " // self%to_compile &
+                "Compiling: " // self%to_compile &
                 // " on image number: " // to_string(this_image()))
         call random_number(rand)
         call sleep(int(rand * 10))
