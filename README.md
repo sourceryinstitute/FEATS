@@ -21,40 +21,34 @@ Framework for Extensible Asynchronous Task Scheduling (FEATS)
 
 Overview
 --------
-FEATS is a project to develop a parallel [Fortran 2018] asynchronous, task-scheduling
-framework for use in a range of applications.  Our initial target application will be
-[OLTARIS].  The aim is to assign one image per team of images the role of scheduler
-with the remaining images serving as compute images.  The scheduler hands out tasks
-in an order that respects a directed acyclic graph (DAG) of task dependencies.  
+FEATS is a project to develop a parallel [Fortran 2018] asynchronous, task-scheduling framework for use in a range of applications.
+The goal is that an application developer need only define their tasks and dependencies between them,
+and the framework takes care of executing the in an efficient manner and performing the communications necessary to provide the output of previous tasks to the next task(s) that need it.
 
 Getting Started
 ---------------
-Please see the [example] directory for a demonstration use case in which FEATS traverses
-a DAG that describes the module dependencies within FEATS itself and reports on task
-completion at each step.  In this simple example, the task completion is simply printing
-what file could have been compiled at the corresponding step.  No actual compiling happens,
-but this use case describes what would happen if FEATS were to be used to enable the
- Fortran Package Manager [`fpm`] to perform parallel builds.
+Please see the [example] directory for a demonstration use case in which FEATS traverses a DAG that describes the module dependencies within FEATS itself and reports on task completion at each step.
+In this simple example, the task completion is simply printing what file could have been compiled at the corresponding step.
+No actual compiling happens, but this use case describes what would happen if FEATS were to be used to enable the Fortran Package Manager [`fpm`] to perform parallel builds.
 
-With `fpm`, the GNU Fortran compiler ([`gfortran`]), and [OpenCoarrays] installed, build 
-FEATS and run the example program by executing the following command in a `bash`-like 
-shell:
+With `fpm`, the GNU Fortran compiler ([`gfortran`]), and [OpenCoarrays] installed,
+build FEATS and run the example program by executing the following command in a `bash`-like shell:
 ```
 git clone https://github.com/sourceryinstitute/FEATS
 cd FEATS
-fpm run --example --compiler caf --runner "cafrun -n 4" 
+fpm run --example --compiler caf --runner "cafrun -n 4"
 ```
 Change `4` above to the number of images that you would like to launch in parallel.
 
 Documentation
 -------------
-Please visit the [FEATS GitHub Pages site] to see HTML documentation generated 
+Please visit the [FEATS GitHub Pages site] to see HTML documentation generated
 with [`ford`].
 
 Dependencies
 -------------
 The [`fpm.toml`] manifest describes the FEATS user and developer dependencies
-and directs `fpm` to download and build the dependency packages automatically.  
+and directs `fpm` to download and build the dependency packages automatically.
 
 Testing
 -------
