@@ -30,7 +30,7 @@ jobs:
       id: cache-opencoarrays
       uses: actions/cache@v2
       with:
-        path: "OpenCoarrays-2.10.1/"
+        path: "OpenCoarrays-2.10.0/"
         key: ${{ steps.time.outputs.time }}
 
     - name: Install GFortran, OpenCoarrays
@@ -39,9 +39,9 @@ jobs:
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-${GCC_V} 100 \
         --slave /usr/bin/gfortran gfortran /usr/bin/gfortran-${GCC_V} \
         --slave /usr/bingcov gcov /usr/bin/gcov-${GCC_V}
-        if [ ! -d OpenCoarrays-2.10.1 ] ; then wget -P . https://github.com/sourceryinstitute/OpenCoarrays/releases/download/2.10.1/OpenCoarrays-2.10.1.tar.gz && tar -xf OpenCoarrays-2.10.1.tar.gz && cd OpenCoarrays-2.10.1 && TERM=xterm ./install.sh -y; fi
+        if [ ! -d OpenCoarrays-2.10.0 ] ; then wget -P . https://github.com/sourceryinstitute/OpenCoarrays/releases/download/2.10.0/OpenCoarrays-2.10.0.tar.gz && tar -xf OpenCoarrays-2.10.0.tar.gz && cd OpenCoarrays-2.10.0 && TERM=xterm ./install.sh -y; fi
 
     - name: Build and test
       run: |
-        source OpenCoarrays-2.10.1/prerequisites/installations/opencoarrays/2.10.1/setup.sh
+        source OpenCoarrays-2.10.0/prerequisites/installations/opencoarrays/2.10.0/setup.sh
         fpm test --compiler caf --runner "cafrun -n 2"
