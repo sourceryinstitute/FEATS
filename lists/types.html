@@ -4,24 +4,18 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="Framework for Extensible Asynchronous Task Scheduling (FEATS)">
-    
     <meta name="author" content="Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson" >
     <link rel="icon" href="../favicon.png">
 
-    <title>
-All Types &ndash; FEATS
+    <title>All Types &ndash; FEATS
 </title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -50,58 +44,27 @@ All Types &ndash; FEATS
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -110,13 +73,11 @@ All Types &ndash; FEATS
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
       <div class="row">
         <div class="col-lg-12" id='text'>
 			 <h1>Derived Types</h1>
@@ -124,24 +85,15 @@ All Types &ndash; FEATS
 			 <thead>
 			 <tr><th>Type</th><th>Location</th><th>Extends</th><th>Description</th></tr>
 			 </thead><tbody>
-			 
 			   <tr><td><a href='../type/application_t.html'>application_t</a></td><td><a href='../module/application_m.html'>application_m</a></td><td>None</td><td><p>A complete representation of an application that can be executed by FEATS</p></td></tr>
-			 
 			   <tr><td><a href='../type/feats_result_map_t.html'>feats_result_map_t</a></td><td><a href='../module/feats_result_map_m.html'>feats_result_map_m</a></td><td>None</td><td></td></tr>
-			 
 			   <tr><td><a href='../type/final_task_t.html'>final_task_t</a></td><td><a href='../module/final_task_m.html'>final_task_m</a></td><td><a href='../type/task_t.html'>task_t</a></td><td><p>A signal to the compute images that all tasks have been completed,
 and thus they can stop waiting for tasks to be assigned.</p></td></tr>
-			 
 			   <tr><td><a href='../type/image_t.html'>image_t</a></td><td><a href='../module/image_m.html'>image_m</a></td><td>None</td><td><p>Encapsulate compute/scheduler communication protocol</p></td></tr>
-			 
 			   <tr><td><a href='../type/payload_list_t.html'>payload_list_t</a></td><td><a href='../module/mailbox_m.html'>mailbox_m</a></td><td>None</td><td></td></tr>
-			 
 			   <tr><td><a href='../type/payload_t.html'>payload_t</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>None</td><td><p>A raw buffer to facilitate data transfer between  images</p><a href="../type/payload_t.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
-			 
 			   <tr><td><a href='../type/task_item_t.html'>task_item_t</a></td><td><a href='../module/task_item_m.html'>task_item_m</a></td><td>None</td><td><p>A wrapper for a <code>class(task_t)</code> value, to facilitate constructing an array of tasks</p></td></tr>
-			 
 			   <tr><td><a href='../type/task_t.html'>task_t</a></td><td><a href='../module/task_m.html'>task_m</a></td><td>None</td><td><p>encapsulate task work</p></td></tr>
-			 
 			 </tbody></table>
              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -149,122 +101,122 @@ and thus they can stop waiting for tasks to be assigned.</p></td></tr>
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: type~~graph~~TypeGraph Pages: 1 -->
-<svg id="typegraphTypeGraph" width="384pt" height="174pt"
- viewBox="0.00 0.00 384.00 174.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="type~~graph~~TypeGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 170)">
+<svg id="typegraphTypeGraph" width="384pt" height="242pt"
+ viewBox="0.00 0.00 384.00 242.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="type~~graph~~TypeGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 238)">
 <title>type~~graph~~TypeGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-170 380,-170 380,4 -4,4"/>
-<!-- type~payload_list_t -->
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-238 380,-238 380,4 -4,4"/>
+<!-- type~final_task_t -->
 <g id="type~~graph~~TypeGraph_node1" class="node">
-<title>type~payload_list_t</title>
-<g id="a_type~~graph~~TypeGraph_node1"><a xlink:href=".././type/payload_list_t.html" xlink:title="payload_list_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="362.5,-24 277.5,-24 277.5,0 362.5,0 362.5,-24"/>
-<text text-anchor="middle" x="320" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">payload_list_t</text>
-</a>
-</g>
-</g>
-<!-- type~payload_t -->
-<g id="type~~graph~~TypeGraph_node8" class="node">
-<title>type~payload_t</title>
-<g id="a_type~~graph~~TypeGraph_node8"><a xlink:href=".././type/payload_t.html" xlink:title="payload_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="179.5,-24 115.5,-24 115.5,0 179.5,0 179.5,-24"/>
-<text text-anchor="middle" x="147.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">payload_t</text>
-</a>
-</g>
-</g>
-<!-- type~payload_list_t&#45;&gt;type~payload_t -->
-<g id="type~~graph~~TypeGraph_edge1" class="edge">
-<title>type~payload_list_t&#45;&gt;type~payload_t</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M277.29,-12C250.66,-12 216.28,-12 189.74,-12"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="189.62,-8.5 179.62,-12 189.62,-15.5 189.62,-8.5"/>
-<text text-anchor="middle" x="224" y="-14.4" font-family="Helvetica,sans-Serif" font-size="9.50">payloads</text>
-</g>
-<!-- type~task_item_t -->
-<g id="type~~graph~~TypeGraph_node2" class="node">
-<title>type~task_item_t</title>
-<g id="a_type~~graph~~TypeGraph_node2"><a xlink:href=".././type/task_item_t.html" xlink:title="task_item_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="184,-108 111,-108 111,-84 184,-84 184,-108"/>
-<text text-anchor="middle" x="147.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_item_t</text>
+<title>type~final_task_t</title>
+<g id="a_type~~graph~~TypeGraph_node1"><a xlink:href=".././type/final_task_t.html" xlink:title="final_task_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="183.5,-108 111.5,-108 111.5,-84 183.5,-84 183.5,-108"/>
+<text text-anchor="middle" x="147.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">final_task_t</text>
 </a>
 </g>
 </g>
 <!-- type~task_t -->
-<g id="type~~graph~~TypeGraph_node6" class="node">
+<g id="type~~graph~~TypeGraph_node4" class="node">
 <title>type~task_t</title>
-<g id="a_type~~graph~~TypeGraph_node6"><a xlink:href=".././type/task_t.html" xlink:title="task_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-133 0,-133 0,-109 54,-109 54,-133"/>
-<text text-anchor="middle" x="27" y="-118.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_t</text>
-</a>
-</g>
-</g>
-<!-- type~task_item_t&#45;&gt;type~task_t -->
-<g id="type~~graph~~TypeGraph_edge2" class="edge">
-<title>type~task_item_t&#45;&gt;type~task_t</title>
-<path fill="none" stroke="#ffbf00" stroke-dasharray="5,2" d="M110.95,-103.5C96.1,-106.63 78.88,-110.27 63.99,-113.41"/>
-<polygon fill="#ffbf00" stroke="#ffbf00" points="63.17,-110 54.11,-115.49 64.62,-116.85 63.17,-110"/>
-<text text-anchor="middle" x="82.5" y="-113.4" font-family="Helvetica,sans-Serif" font-size="9.50">task</text>
-</g>
-<!-- type~final_task_t -->
-<g id="type~~graph~~TypeGraph_node3" class="node">
-<title>type~final_task_t</title>
-<g id="a_type~~graph~~TypeGraph_node3"><a xlink:href=".././type/final_task_t.html" xlink:title="final_task_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="183.5,-150 111.5,-150 111.5,-126 183.5,-126 183.5,-150"/>
-<text text-anchor="middle" x="147.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">final_task_t</text>
+<g id="a_type~~graph~~TypeGraph_node4"><a xlink:href=".././type/task_t.html" xlink:title="task_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="54,-87 0,-87 0,-63 54,-63 54,-87"/>
+<text text-anchor="middle" x="27" y="-72.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_t</text>
 </a>
 </g>
 </g>
 <!-- type~final_task_t&#45;&gt;type~task_t -->
-<g id="type~~graph~~TypeGraph_edge3" class="edge">
+<g id="type~~graph~~TypeGraph_edge1" class="edge">
 <title>type~final_task_t&#45;&gt;type~task_t</title>
-<path fill="none" stroke="#7fff00" d="M111.27,-132.95C96.41,-130.81 79.13,-128.34 64.17,-126.19"/>
-<polygon fill="#7fff00" stroke="#7fff00" points="64.65,-122.72 54.25,-124.77 63.65,-129.65 64.65,-122.72"/>
+<path fill="none" stroke="#ff0000" d="M111.27,-89.76C96.41,-87.12 79.13,-84.06 64.17,-81.41"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.71,-77.95 54.25,-79.65 63.49,-84.84 64.71,-77.95"/>
 </g>
-<!-- type~feats_result_map_t -->
-<g id="type~~graph~~TypeGraph_node4" class="node">
-<title>type~feats_result_map_t</title>
-<g id="a_type~~graph~~TypeGraph_node4"><a xlink:href=".././type/feats_result_map_t.html" xlink:title="feats_result_map_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="376,-124 264,-124 264,-100 376,-100 376,-124"/>
-<text text-anchor="middle" x="320" y="-109.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">feats_result_map_t</text>
-</a>
-</g>
-</g>
-<!-- type~image_t -->
-<g id="type~~graph~~TypeGraph_node5" class="node">
-<title>type~image_t</title>
-<g id="a_type~~graph~~TypeGraph_node5"><a xlink:href=".././type/image_t.html" xlink:title="image_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="347.5,-166 292.5,-166 292.5,-142 347.5,-142 347.5,-166"/>
-<text text-anchor="middle" x="320" y="-151.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">image_t</text>
+<!-- type~payload_t -->
+<g id="type~~graph~~TypeGraph_node2" class="node">
+<title>type~payload_t</title>
+<g id="a_type~~graph~~TypeGraph_node2"><a xlink:href=".././type/payload_t.html" xlink:title="payload_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="179.5,-150 115.5,-150 115.5,-126 179.5,-126 179.5,-150"/>
+<text text-anchor="middle" x="147.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">payload_t</text>
 </a>
 </g>
 </g>
 <!-- type~application_t -->
-<g id="type~~graph~~TypeGraph_node7" class="node">
+<g id="type~~graph~~TypeGraph_node3" class="node">
 <title>type~application_t</title>
-<g id="a_type~~graph~~TypeGraph_node7"><a xlink:href=".././type/application_t.html" xlink:title="application_t">
-<polygon fill="#5cb85c" stroke="#5cb85c" points="360.5,-82 279.5,-82 279.5,-58 360.5,-58 360.5,-82"/>
-<text text-anchor="middle" x="320" y="-67.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">application_t</text>
+<g id="a_type~~graph~~TypeGraph_node3"><a xlink:href=".././type/application_t.html" xlink:title="application_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="360.5,-45 279.5,-45 279.5,-21 360.5,-21 360.5,-45"/>
+<text text-anchor="middle" x="320" y="-30.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">application_t</text>
+</a>
+</g>
+</g>
+<!-- type~task_item_t -->
+<g id="type~~graph~~TypeGraph_node7" class="node">
+<title>type~task_item_t</title>
+<g id="a_type~~graph~~TypeGraph_node7"><a xlink:href=".././type/task_item_t.html" xlink:title="task_item_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="184,-66 111,-66 111,-42 184,-42 184,-66"/>
+<text text-anchor="middle" x="147.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_item_t</text>
 </a>
 </g>
 </g>
 <!-- type~application_t&#45;&gt;type~task_item_t -->
-<g id="type~~graph~~TypeGraph_edge5" class="edge">
+<g id="type~~graph~~TypeGraph_edge3" class="edge">
 <title>type~application_t&#45;&gt;type~task_item_t</title>
-<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M279.46,-76.03C254.01,-79.91 220.85,-84.97 194.27,-89.02"/>
-<polygon fill="#7f00ff" stroke="#7f00ff" points="193.42,-85.61 184.06,-90.58 194.47,-92.53 193.42,-85.61"/>
-<text text-anchor="middle" x="224" y="-90.4" font-family="Helvetica,sans-Serif" font-size="9.50">tasks_</text>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M279.46,-37.87C254.01,-41 220.85,-45.09 194.27,-48.36"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="193.56,-44.92 184.06,-49.62 194.41,-51.87 193.56,-44.92"/>
+<text text-anchor="middle" x="224" y="-50.4" font-family="Helvetica,sans-Serif" font-size="9.50">tasks_</text>
 </g>
 <!-- dag_t -->
 <g id="type~~graph~~TypeGraph_node9" class="node">
 <title>dag_t</title>
-<polygon fill="#5cb85c" stroke="#5cb85c" points="174.5,-66 120.5,-66 120.5,-42 174.5,-42 174.5,-66"/>
-<text text-anchor="middle" x="147.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dag_t</text>
+<polygon fill="#5cb85c" stroke="#5cb85c" points="174.5,-24 120.5,-24 120.5,0 174.5,0 174.5,-24"/>
+<text text-anchor="middle" x="147.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dag_t</text>
 </g>
 <!-- type~application_t&#45;&gt;dag_t -->
-<g id="type~~graph~~TypeGraph_edge4" class="edge">
+<g id="type~~graph~~TypeGraph_edge2" class="edge">
 <title>type~application_t&#45;&gt;dag_t</title>
-<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M279.31,-63.29C268.53,-61.67 256.84,-60.09 246,-59 225.75,-56.96 203.04,-55.73 184.64,-55.01"/>
-<polygon fill="#7f00ff" stroke="#7f00ff" points="184.74,-51.51 174.62,-54.64 184.49,-58.5 184.74,-51.51"/>
-<text text-anchor="middle" x="224" y="-61.4" font-family="Helvetica,sans-Serif" font-size="9.50">dag_</text>
+<path fill="none" stroke="#7fff00" stroke-dasharray="5,2" d="M279.39,-23.8C268.61,-21.59 256.9,-19.45 246,-18 225.81,-15.32 203.11,-13.83 184.69,-13.01"/>
+<polygon fill="#7fff00" stroke="#7fff00" points="184.8,-9.51 174.67,-12.61 184.52,-16.51 184.8,-9.51"/>
+<text text-anchor="middle" x="224" y="-20.4" font-family="Helvetica,sans-Serif" font-size="9.50">dag_</text>
+</g>
+<!-- type~payload_list_t -->
+<g id="type~~graph~~TypeGraph_node5" class="node">
+<title>type~payload_list_t</title>
+<g id="a_type~~graph~~TypeGraph_node5"><a xlink:href=".././type/payload_list_t.html" xlink:title="payload_list_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="362.5,-150 277.5,-150 277.5,-126 362.5,-126 362.5,-150"/>
+<text text-anchor="middle" x="320" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">payload_list_t</text>
+</a>
+</g>
+</g>
+<!-- type~payload_list_t&#45;&gt;type~payload_t -->
+<g id="type~~graph~~TypeGraph_edge4" class="edge">
+<title>type~payload_list_t&#45;&gt;type~payload_t</title>
+<path fill="none" stroke="#00ffff" stroke-dasharray="5,2" d="M277.29,-138C250.66,-138 216.28,-138 189.74,-138"/>
+<polygon fill="#00ffff" stroke="#00ffff" points="189.62,-134.5 179.62,-138 189.62,-141.5 189.62,-134.5"/>
+<text text-anchor="middle" x="224" y="-140.4" font-family="Helvetica,sans-Serif" font-size="9.50">payloads</text>
+</g>
+<!-- type~feats_result_map_t -->
+<g id="type~~graph~~TypeGraph_node6" class="node">
+<title>type~feats_result_map_t</title>
+<g id="a_type~~graph~~TypeGraph_node6"><a xlink:href=".././type/feats_result_map_t.html" xlink:title="feats_result_map_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="376,-192 264,-192 264,-168 376,-168 376,-192"/>
+<text text-anchor="middle" x="320" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">feats_result_map_t</text>
+</a>
+</g>
+</g>
+<!-- type~task_item_t&#45;&gt;type~task_t -->
+<g id="type~~graph~~TypeGraph_edge5" class="edge">
+<title>type~task_item_t&#45;&gt;type~task_t</title>
+<path fill="none" stroke="#7f00ff" stroke-dasharray="5,2" d="M110.95,-60.3C96.1,-62.93 78.88,-65.98 63.99,-68.62"/>
+<polygon fill="#7f00ff" stroke="#7f00ff" points="63.35,-65.18 54.11,-70.37 64.57,-72.07 63.35,-65.18"/>
+<text text-anchor="middle" x="82.5" y="-69.4" font-family="Helvetica,sans-Serif" font-size="9.50">task</text>
+</g>
+<!-- type~image_t -->
+<g id="type~~graph~~TypeGraph_node8" class="node">
+<title>type~image_t</title>
+<g id="a_type~~graph~~TypeGraph_node8"><a xlink:href=".././type/image_t.html" xlink:title="image_t">
+<polygon fill="#5cb85c" stroke="#5cb85c" points="347.5,-234 292.5,-234 292.5,-210 347.5,-210 347.5,-234"/>
+<text text-anchor="middle" x="320" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">image_t</text>
+</a>
+</g>
 </g>
 </g>
 </svg>
@@ -305,22 +257,19 @@ and thus they can stop waiting for tasks to be assigned.</p></td></tr>
     </div></div></div></div>
         </div>
       </div>
-
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>FEATS was developed by Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>FEATS was developed by Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-             on 2021-10-12 15:51  
-            
-          </p>
+ on 2022-11-07 22:52            </p>
         </div>
       </div>
       <br>
@@ -347,14 +296,11 @@ and thus they can stop waiting for tasks to be assigned.</p></td></tr>
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

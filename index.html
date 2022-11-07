@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="Framework for Extensible Asynchronous Task Scheduling (FEATS)">
-    
     <meta name="author" content="Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson" >
     <link rel="icon" href="./favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="./css/pygments.css" rel="stylesheet">
     <link href="./css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/local.css" rel="stylesheet">
-    
     <link  href="./tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="./lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="./lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="./lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="./lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="./lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="./lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="./lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="./lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="./search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,37 +72,23 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
       <!-- Main component for a primary marketing message or call to action -->
       <div class="jumbotron">
         <p>Framework for Extensible Asynchronous Task Scheduling (FEATS)</p>
-        	 
 	<p> Find us on&hellip;</p>
         <p>
-			 
           <a class="btn btn-lg btn-primary" href="https://github.com/sourceryinstitute/feats" role="button">GitHub</a>
-			 
-			 
-			 
-			 
-			 
-	         
-			 
           <a class="btn btn-lg btn-danger" style="float:right" href="https://github.com/sourceryinstitute/feats" role="button">Download the Source</a>
-			 
         </p>
       </div>
 
       <div class="row" id='text'>
-		  
         <div class="col-md-8">
-		  
           <h1>FEATS</h1>
           <p><a name="top"> </a></p>
 <div align="center">
@@ -158,38 +108,32 @@ Framework for Extensible Asynchronous Task Scheduling (FEATS)
 </div>
 
 <h2 id="overview">Overview</h2>
-<p>FEATS is a project to develop a parallel <a href="https://j3-fortran.org/doc/year/18/18-007r1.pdf">Fortran 2018</a> asynchronous, task-scheduling
-framework for use in a range of applications.  Our initial target application will be
-<a href="https://oltaris.nasa.gov">OLTARIS</a>.  The aim is to assign one image per team of images the role of scheduler
-with the remaining images serving as compute images.  The scheduler hands out tasks
-in an order that respects a directed acyclic graph (DAG) of task dependencies.  </p>
+<p>FEATS is a project to develop a parallel <a href="https://j3-fortran.org/doc/year/18/18-007r1.pdf">Fortran 2018</a> asynchronous, task-scheduling framework for use in a range of applications.
+The goal is that an application developer need only define their tasks and dependencies between them,
+and the framework takes care of executing the in an efficient manner and performing the communications necessary to provide the output of previous tasks to the next task(s) that need it.</p>
 <h2 id="getting-started">Getting Started</h2>
-<p>Please see the <a href="./example">example</a> directory for a demonstration use case in which FEATS traverses
-a DAG that describes the module dependencies within FEATS itself and reports on task
-completion at each step.  In this simple example, the task completion is simply printing
-what file could have been compiled at the corresponding step.  No actual compiling happens,
-but this use case describes what would happen if FEATS were to be used to enable the
- Fortran Package Manager [<code>fpm</code>] to perform parallel builds.</p>
-<p>With <code>fpm</code>, the GNU Fortran compiler ([<code>gfortran</code>]), and <a href="https://github.com/sourceryinstitute/opencoarrays">OpenCoarrays</a> installed, build 
-FEATS and run the example program by executing the following command in a <code>bash</code>-like 
-shell:</p>
-<div class="codehilite"><pre><span></span>git clone https://github.com/sourceryinstitute/FEATS
+<p>Please see the <a href="./example">example</a> directory for a demonstration use case in which FEATS traverses a DAG that describes the module dependencies within FEATS itself and reports on task completion at each step.
+In this simple example, the task completion is simply printing what file could have been compiled at the corresponding step.
+No actual compiling happens, but this use case describes what would happen if FEATS were to be used to enable the Fortran Package Manager [<code>fpm</code>] to perform parallel builds.</p>
+<p>With <code>fpm</code>, the GNU Fortran compiler ([<code>gfortran</code>]), and <a href="https://github.com/sourceryinstitute/opencoarrays">OpenCoarrays</a> installed,
+build FEATS and run the example program by executing the following command in a <code>bash</code>-like shell:</p>
+<div class="codehilite"><pre><span></span><code>git clone https://github.com/sourceryinstitute/FEATS
 cd FEATS
-fpm run --example --compiler caf --runner &quot;cafrun -n 4&quot; 
-</pre></div>
+fpm run --example --compiler caf --runner &quot;cafrun -n 4&quot;
+</code></pre></div>
 
 <p>Change <code>4</code> above to the number of images that you would like to launch in parallel.</p>
 <h2 id="documentation">Documentation</h2>
-<p>Please visit the <a href="https://sourceryinstitute.github.io/FEATS/">FEATS GitHub Pages site</a> to see HTML documentation generated 
+<p>Please visit the <a href="https://sourceryinstitute.github.io/FEATS/">FEATS GitHub Pages site</a> to see HTML documentation generated
 with [<code>ford</code>].</p>
 <h2 id="dependencies">Dependencies</h2>
 <p>The [<code>fpm.toml</code>] manifest describes the FEATS user and developer dependencies
-and directs <code>fpm</code> to download and build the dependency packages automatically.  </p>
+and directs <code>fpm</code> to download and build the dependency packages automatically.</p>
 <h2 id="testing">Testing</h2>
 <p>To build and execute the FEATS test suite, run the following command in a
 <code>bash</code>-like shell:</p>
-<div class="codehilite"><pre><span></span>fpm test --compiler caf --runner &quot;cafrun -n 4&quot;
-</pre></div>
+<div class="codehilite"><pre><span></span><code>fpm test --compiler caf --runner &quot;cafrun -n 4&quot;
+</code></pre></div>
 
 <p>Please report any test failures or other <a href="https://github.com/sourceryinstitute/FEATS/issues">issues</a>.</p>
 <h2 id="acknowledgments">Acknowledgments</h2>
@@ -219,155 +163,84 @@ and directs <code>fpm</code> to download and build the dependency packages autom
 
 </div>
         </div>
-		  
         <div class="col-md-4">
 	  <div class="well">
           <h2>Developer Info</h2>
           <h4>Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson</h4>
           
-          
-			   
             <div class="text-center"><div class="btn-group" role="group">
-              
-              
-              
               <a class="btn btn-lg btn-primary" href="https://github.com/sourceryinstitute"><i class="fa fa-github fa-lg"></i></a>
-              
-              
-				  
-              
-              
-              
-              
             </div></div>
-            
        </div>
        </div>
-       
       </div>
-      
-      
-      
-      
-      
-      
-		
-        
       <div class="row">
-        
         <div class="col-xs-6 col-sm-3">
               <h3>Source Files</h3>
-              <ul>
-                    <li><a href='./sourcefile/application_m.f90.html'>application_m.f90</a></li>
-                  
+              <ul>                    <li><a href='./sourcefile/application_m.f90.html'>application_m.f90</a></li>
                     <li><a href='./sourcefile/application_s.f90.html'>application_s.f90</a></li>
-                  
                     <li><a href='./sourcefile/feats_result_map_m.f90.html'>feats_result_map_m.f90</a></li>
-                  
                     <li><a href='./sourcefile/final_task_m.f90.html'>final_task_m.f90</a></li>
-                  
                     <li><a href='./sourcefile/final_task_s.f90.html'>final_task_s.f90</a></li>
-                  
                     <li><a href='./sourcefile/image_m.f90.html'>image_m.f90</a></li>
-                  
                     <li><a href='./sourcefile/image_s.f90.html'>image_s.f90</a></li>
-                  
                     <li><a href='./sourcefile/mailbox_m.f90.html'>mailbox_m.f90</a></li>
-                  
                     <li><a href='./sourcefile/payload_m.f90.html'>payload_m.f90</a></li>
-                  
                     <li><a href='./sourcefile/payload_s.f90.html'>payload_s.f90</a></li>
-                  </ul>
+</ul>
           </div>
-        
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Modules</h3>
-              <ul>
-                    <li><a href='./module/application_m.html'>application_m</a></li>
-                  
+              <ul>                    <li><a href='./module/application_m.html'>application_m</a></li>
                     <li><a href='./module/feats_result_map_m.html'>feats_result_map_m</a></li>
-                  
                     <li><a href='./module/final_task_m.html'>final_task_m</a></li>
-                  
                     <li><a href='./module/image_m.html'>image_m</a></li>
-                  
                     <li><a href='./module/mailbox_m.html'>mailbox_m</a></li>
-                  
                     <li><a href='./module/payload_m.html'>payload_m</a></li>
-                  
                     <li><a href='./module/task_item_m.html'>task_item_m</a></li>
-                  
                     <li><a href='./module/task_m.html'>task_m</a></li>
-                  </ul>
+</ul>
           </div>
-          
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Procedures</h3>
-              <ul>
-                    <li><a href='./interface/application_t.html'>application_t</a></li>
-                  
+              <ul>                    <li><a href='./interface/application_t.html'>application_t</a></li>
                     <li><a href='./proc/assign_completed_to_images.html'>assign_completed_to_images</a></li>
-                  
                     <li><a href='./proc/assign_task.html'>assign_task</a></li>
-                  
                     <li><a href='./interface/dag.html'>dag</a></li>
-                  
                     <li><a href='./proc/do_work.html'>do_work</a></li>
-                  
                     <li><a href='./interface/empty_payload.html'>empty_payload</a></li>
-                  
-                    <li><a href='./interface/execute~2.html'>execute</a></li>
-                  
                     <li><a href='./interface/execute.html'>execute</a></li>
-                  
+                    <li><a href='./interface/execute~2.html'>execute</a></li>
                     <li><a href='./proc/find_next_image.html'>find_next_image</a></li>
-                  
                     <li><a href='./proc/find_next_task.html'>find_next_task</a></li>
-                  </ul>
+</ul>
           </div>
-          
-          
 		  <div class="col-xs-6 col-sm-3">
               <h3>Derived Types</h3>
-              <ul>
-                    <li><a href='./type/application_t.html'>application_t</a></li>
-                  
+              <ul>                    <li><a href='./type/application_t.html'>application_t</a></li>
                     <li><a href='./type/feats_result_map_t.html'>feats_result_map_t</a></li>
-                  
                     <li><a href='./type/final_task_t.html'>final_task_t</a></li>
-                  
                     <li><a href='./type/image_t.html'>image_t</a></li>
-                  
                     <li><a href='./type/payload_list_t.html'>payload_list_t</a></li>
-                  
                     <li><a href='./type/payload_t.html'>payload_t</a></li>
-                  
                     <li><a href='./type/task_item_t.html'>task_item_t</a></li>
-                  
                     <li><a href='./type/task_t.html'>task_t</a></li>
-                  </ul>
+</ul>
           </div>
-          
       </div>
-      
-
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>FEATS was developed by Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>FEATS was developed by Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-             on 2021-10-12 15:51  
-            
-          </p>
+ on 2022-11-07 22:52            </p>
         </div>
       </div>
       <br>
@@ -394,14 +267,11 @@ and directs <code>fpm</code> to download and build the dependency packages autom
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="./tipuesearch/tipuesearch_content.js"></script>
     <script src="./tipuesearch/tipuesearch_set.js"></script>
     <script src="./tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>

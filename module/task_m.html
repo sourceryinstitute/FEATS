@@ -4,9 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-   
    <meta name="description" content="Framework for Extensible Asynchronous Task Scheduling (FEATS)">
-    
     <meta name="author" content="Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson" >
     <link rel="icon" href="../favicon.png">
 
@@ -16,10 +14,7 @@
     <link href="../css/pygments.css" rel="stylesheet">
     <link href="../css/font-awesome.min.css" rel="stylesheet">
     <link href="../css/local.css" rel="stylesheet">
-    
     <link  href="../tipuesearch/tipuesearch.css" rel="stylesheet">
-    
-    
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -48,58 +43,27 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-        
             <li class="dropdown hidden-xs visible-sm visible-md hidden-lg">
               <a href="#" class="dropdown-toggle"
               data-toggle="dropdown" role="button"
               aria-haspopup="true"
      aria-expanded="false">Contents <span class="caret"></span></a>
         <ul class="dropdown-menu">
-          
-              
             <li><a href="../lists/files.html">Source Files</a></li>
-        
-        
-        
             <li><a href="../lists/modules.html">Modules</a></li>
-        
-            
-                                
             <li><a href="../lists/procedures.html">Procedures</a></li>
-        
-        
             <li><a href="../lists/absint.html">Abstract Interfaces</a></li>
-               
-            <li><a href="../lists/types.html">Derived Types</a></li>
-        
-               
-        
-        
+                   <li><a href="../lists/types.html">Derived Types</a></li>
+       
             </ul>
         
             </li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/files.html">Source Files</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/modules.html">Modules</a></li>
-
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/procedures.html">Procedures</a></li>
-
-
 <li class="visible-xs hidden-sm visible-lg"><a href="../lists/absint.html">Abstract Interfaces</a></li>
-                             
-<li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
-
-
-
-
+                             <li class="visible-xs hidden-sm visible-lg"><a href="../lists/types.html">Derived Types</a></li>
           </ul>
-        
         <form action="../search.html" class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Search" name="q" id="tipue_search_input" autocomplete="off" required>
@@ -108,49 +72,28 @@
         <button type="submit" class="btn btn-default">Submit</button>
 -->
         </form>
-        
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
     <div class="container">
-    
-  
   <div class="row">
     <h1>task_m 
     <small>Module</small>
-    
     </h1>
-    
-<div class="row">
+    <div class="row">
   <div class="col-lg-12">
 <div class="well well-sm">
   <ul class="list-inline" style="margin-bottom:0px;display:inline">
-     
-     
-     
-     
-     
-    
-    
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
     title=" 6.3% of total for modules and submodules.">28 statements</a>
      </li> 
-     
-     
-     
     <li><i class="fa fa-code"></i><a href="../src/task_m.f90"> Source File</a></li>
-     
-     
   </ul>
   <ol class="breadcrumb in-well text-right">
-  
-    
      <li><a href='../sourcefile/task_m.f90.html'>task_m.f90</a></li>
-    
-  
      <li class="active">task_m</li>
   </ol>
 </div>
@@ -166,68 +109,33 @@
   
   <div class="row">
     <div class="col-md-3 hidden-xs hidden-sm visible-md visible-lg">
-    
-<div id="sidebar">
-  
-<h3>Contents</h3>
+    <div id="sidebar">
+  <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#inters-0">Interfaces</a></h3></div>
   <div id="inters-0" class="panel-collapse collapse">
     <div class="list-group">
-      
-      <a class="list-group-item" href="../module/task_m.html#interface-is_final_task">is_final_task</a>
-      
+      <a class="list-group-item" href="../module/task_m.html#interface-is_final_task~2">is_final_task</a>
     </div>
   </div>
 </div>
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#absints-0">Abstract Interfaces</a></h3></div>
   <div id="absints-0" class="panel-collapse collapse">
     <div class="list-group">
-      
       <a class="list-group-item" href="../module/task_m.html#interface-execute_i">execute_i</a>
-      
     </div>
   </div>
 </div>
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-0">Derived Types</a></h3></div>
   <div id="types-0" class="panel-collapse collapse">
     <div class="list-group">
-      
       <a class="list-group-item" href="../module/task_m.html#type-task_t">task_t</a>
-      
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 </div>
 
@@ -236,25 +144,16 @@
     <div class="col-md-9" id='text'>
     <p>Define an abstract interface to tasks that the scheduler
 image assigns and that a compute image executes.</p>
-      <br>
-    
-  
-    <div class="panel panel-default">
+<br>        <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Uses</h3>
       </div>
       <ul class="list-group">
-      
       <li class="list-group-item">
   <ul class="list-inline">
-    
     <li><a href='../module/payload_m.html'>payload_m</a></li>
-    
   </ul>
       </li>
-      
-      
-      
       <li class="list-group-item">
   <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -364,29 +263,20 @@ image assigns and that a compute image executes.</p>
     </p>
     </div></div></div></div>
       </li>
-      
       </ul>
     </div>
-    
 
-    
-    
-    <div class="panel panel-default">
+        <div class="panel panel-default">
       <div class="panel-heading">
   <h3 class="panel-title">Used by</h3>
       </div>
       <ul class="list-group">
-  
   <li class="list-group-item">  
     <ul class="list-inline">
       <li><h5>Descendants:</h5></li>
-      
       <li><a href='../module/task_s.html'>task_s</a></li>
-      
     </ul>
   </li>
-  
-  
   <li class="list-group-item">
     <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -394,36 +284,21 @@ image assigns and that a compute image executes.</p>
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: module~~task_m~~UsedByGraph Pages: 1 -->
-<svg id="moduletask_mUsedByGraph" width="528pt" height="193pt"
- viewBox="0.00 0.00 528.00 193.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="module~~task_m~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 189)">
+<svg id="moduletask_mUsedByGraph" width="528pt" height="155pt"
+ viewBox="0.00 0.00 528.00 155.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="module~~task_m~~UsedByGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 151)">
 <title>module~~task_m~~UsedByGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-189 524,-189 524,4 -4,4"/>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-151 524,-151 524,4 -4,4"/>
 <!-- module~task_m -->
 <g id="module~~task_m~~UsedByGraph_node1" class="node">
 <title>module~task_m</title>
-<polygon fill="none" stroke="black" points="54,-145 0,-145 0,-121 54,-121 54,-145"/>
-<text text-anchor="middle" x="27" y="-130.6" font-family="Helvetica,sans-Serif" font-size="10.50">task_m</text>
-</g>
-<!-- module~task_s -->
-<g id="module~~task_m~~UsedByGraph_node2" class="node">
-<title>module~task_s</title>
-<g id="a_module~~task_m~~UsedByGraph_node2"><a xlink:href=".././module/task_s.html" xlink:title="task_s">
-<polygon fill="#5bc0de" stroke="#5bc0de" points="156.5,-185 102.5,-185 102.5,-161 156.5,-161 156.5,-185"/>
-<text text-anchor="middle" x="129.5" y="-170.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_s</text>
-</a>
-</g>
-</g>
-<!-- module~task_s&#45;&gt;module~task_m -->
-<g id="module~~task_m~~UsedByGraph_edge3" class="edge">
-<title>module~task_s&#45;&gt;module~task_m</title>
-<path fill="none" stroke="#ff0000" d="M102.36,-162.59C90.49,-157.87 76.28,-152.22 63.47,-147.12"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="64.6,-143.8 54.01,-143.35 62.01,-150.3 64.6,-143.8"/>
+<polygon fill="none" stroke="black" points="54,-86 0,-86 0,-62 54,-62 54,-86"/>
+<text text-anchor="middle" x="27" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50">task_m</text>
 </g>
 <!-- module~task_item_m -->
-<g id="module~~task_m~~UsedByGraph_node3" class="node">
+<g id="module~~task_m~~UsedByGraph_node2" class="node">
 <title>module~task_item_m</title>
-<g id="a_module~~task_m~~UsedByGraph_node3"><a xlink:href=".././module/task_item_m.html" xlink:title="task_item_m">
+<g id="a_module~~task_m~~UsedByGraph_node2"><a xlink:href=".././module/task_item_m.html" xlink:title="task_item_m">
 <polygon fill="#337ab7" stroke="#337ab7" points="169,-86 90,-86 90,-62 169,-62 169,-86"/>
 <text text-anchor="middle" x="129.5" y="-71.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_item_m</text>
 </a>
@@ -432,8 +307,23 @@ image assigns and that a compute image executes.</p>
 <!-- module~task_item_m&#45;&gt;module~task_m -->
 <g id="module~~task_m~~UsedByGraph_edge1" class="edge">
 <title>module~task_item_m&#45;&gt;module~task_m</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M107.68,-86.22C93.16,-94.75 73.59,-106.24 57.48,-115.7"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="55.3,-112.91 48.45,-120.99 58.85,-118.95 55.3,-112.91"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M89.93,-74C81.52,-74 72.66,-74 64.34,-74"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.18,-70.5 54.18,-74 64.18,-77.5 64.18,-70.5"/>
+</g>
+<!-- module~task_s -->
+<g id="module~~task_m~~UsedByGraph_node3" class="node">
+<title>module~task_s</title>
+<g id="a_module~~task_m~~UsedByGraph_node3"><a xlink:href=".././module/task_s.html" xlink:title="task_s">
+<polygon fill="#5bc0de" stroke="#5bc0de" points="156.5,-44 102.5,-44 102.5,-20 156.5,-20 156.5,-44"/>
+<text text-anchor="middle" x="129.5" y="-29.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_s</text>
+</a>
+</g>
+</g>
+<!-- module~task_s&#45;&gt;module~task_m -->
+<g id="module~~task_m~~UsedByGraph_edge3" class="edge">
+<title>module~task_s&#45;&gt;module~task_m</title>
+<path fill="none" stroke="#ff0000" d="M102.36,-42.93C90.49,-47.88 76.28,-53.82 63.47,-59.18"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="61.89,-56.04 54.01,-63.13 64.59,-62.5 61.89,-56.04"/>
 </g>
 <!-- module~final_task_m -->
 <g id="module~~task_m~~UsedByGraph_node4" class="node">
@@ -447,8 +337,8 @@ image assigns and that a compute image executes.</p>
 <!-- module~final_task_m&#45;&gt;module~task_m -->
 <g id="module~~task_m~~UsedByGraph_edge2" class="edge">
 <title>module~final_task_m&#45;&gt;module~task_m</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M330.21,-133.89C263.74,-133.69 128.97,-133.3 64.27,-133.11"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="64.15,-129.61 54.14,-133.08 64.13,-136.61 64.15,-129.61"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M330.22,-130.9C275.93,-126.03 174.47,-115.02 90,-95 81.42,-92.97 72.34,-90.23 63.85,-87.42"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="64.83,-84.05 54.23,-84.1 62.55,-90.67 64.83,-84.05"/>
 </g>
 <!-- module~application_m -->
 <g id="module~~task_m~~UsedByGraph_node5" class="node">
@@ -462,8 +352,8 @@ image assigns and that a compute image executes.</p>
 <!-- module~application_m&#45;&gt;module~task_item_m -->
 <g id="module~~task_m~~UsedByGraph_edge4" class="edge">
 <title>module~application_m&#45;&gt;module~task_item_m</title>
-<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M222.89,-24.01C216.99,-26.9 210.75,-30.02 205,-33 190.31,-40.62 174.19,-49.44 160.72,-56.93"/>
-<polygon fill="#00ff00" stroke="#00ff00" points="158.89,-53.95 151.87,-61.88 162.3,-60.06 158.89,-53.95"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M222.42,-24.22C216.66,-27.04 210.6,-30.08 205,-33 188.77,-41.46 185.03,-44.17 169,-53 166.64,-54.3 164.2,-55.64 161.75,-56.98"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="160.01,-53.95 152.91,-61.81 163.36,-60.09 160.01,-53.95"/>
 </g>
 <!-- module~task_item_s -->
 <g id="module~~task_m~~UsedByGraph_node6" class="node">
@@ -477,8 +367,8 @@ image assigns and that a compute image executes.</p>
 <!-- module~task_item_s&#45;&gt;module~task_item_m -->
 <g id="module~~task_m~~UsedByGraph_edge6" class="edge">
 <title>module~task_item_s&#45;&gt;module~task_item_m</title>
-<path fill="none" stroke="#00ff00" d="M211.79,-60.16C201.46,-61.92 190.04,-63.87 179.11,-65.73"/>
-<polygon fill="#00ff00" stroke="#00ff00" points="178.51,-62.28 169.24,-67.41 179.69,-69.18 178.51,-62.28"/>
+<path fill="none" stroke="#ff0000" d="M211.79,-60.16C201.46,-61.92 190.04,-63.87 179.11,-65.73"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="178.51,-62.28 169.24,-67.41 179.69,-69.18 178.51,-62.28"/>
 </g>
 <!-- module~final_task_s -->
 <g id="module~~task_m~~UsedByGraph_node7" class="node">
@@ -507,8 +397,8 @@ image assigns and that a compute image executes.</p>
 <!-- module~image_s&#45;&gt;module~task_item_m -->
 <g id="module~~task_m~~UsedByGraph_edge5" class="edge">
 <title>module~image_s&#45;&gt;module~task_item_m</title>
-<path fill="none" stroke="#00ff00" stroke-dasharray="5,2" d="M454.88,-91.51C395.36,-88.3 254.35,-80.69 179.36,-76.64"/>
-<polygon fill="#00ff00" stroke="#00ff00" points="179.41,-73.13 169.24,-76.09 179.03,-80.12 179.41,-73.13"/>
+<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M454.88,-91.51C395.36,-88.3 254.35,-80.69 179.36,-76.64"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="179.41,-73.13 169.24,-76.09 179.03,-80.12 179.41,-73.13"/>
 </g>
 <!-- module~image_s&#45;&gt;module~final_task_m -->
 <g id="module~~task_m~~UsedByGraph_edge7" class="edge">
@@ -613,324 +503,151 @@ image assigns and that a compute image executes.</p>
     </p>
     </div></div></div></div>
   </li>
-  
       </ul>
     </div>
-    
 
     <br>
 
     <section class="visible-xs visible-sm hidden-md">
-      
-<h3>Contents</h3>
+      <h3>Contents</h3>
  
-
-
-
-
-
-
-
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#inters-1">Interfaces</a></h3></div>
   <div id="inters-1" class="panel-collapse collapse">
     <div class="list-group">
-      
-      <a class="list-group-item" href="../module/task_m.html#interface-is_final_task">is_final_task</a>
-      
+      <a class="list-group-item" href="../module/task_m.html#interface-is_final_task~2">is_final_task</a>
     </div>
   </div>
 </div>
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#absints-1">Abstract Interfaces</a></h3></div>
   <div id="absints-1" class="panel-collapse collapse">
     <div class="list-group">
-      
       <a class="list-group-item" href="../module/task_m.html#interface-execute_i">execute_i</a>
-      
     </div>
   </div>
 </div>
-
-
-
 <div class="panel panel-primary">
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#types-1">Derived Types</a></h3></div>
   <div id="types-1" class="panel-collapse collapse">
     <div class="list-group">
-      
       <a class="list-group-item" href="../module/task_m.html#type-task_t">task_t</a>
-      
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
     </section>
     <br class="visible-xs visible-sm hidden-md">
 
-    
 
-    
-    
-    
     
     
     <section>
    <h2>Interfaces</h2>
-   
-     
-<div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="interface-is_final_task"></span><h3>interface 
-    
-  </h3></div>
-  
+     <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="interface-is_final_task~2"></span><h3>interface   </h3></div>
   <ul class="list-group">
-  
     <li class="list-group-item">
+    <h3>private pure module module function is_final_task(self)   <a href='../proc/is_final_task~2.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
+</h3><p>is this the final task?</p>
     
-    
-    <h3>
-private pure module module function is_final_task(self)
-    
-    
-   
-   <a href='../proc/is_final_task~2.html'><button type="button" class="btn btn-info depwarn">Implementation &rarr;</button></a>
-    
-</h3>
-    
-
-
-
-<p>is this the final task?</p>
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+<h4>Arguments</h4>      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" ></span>class(<a href='../type/task_t.html'>task_t</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>self</strong></td><td></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-      
-    
-    
-
-  
-  
-  
-  
-     <h4>Return Value <small>logical
-  </small></h4>
-  
-    
+<h4>Return Value <small>logical</small></h4>  
 
     </li>
-  
   </ul>
 </div>
 
-    
     </section>
   <br>
-    
 
-    
     <section>
      <h2>Abstract Interfaces</h2>
-   
-     
-<div class="panel panel-default">
+     <div class="panel panel-default">
   <div class="panel-heading codesum"><span class="anchor" id="interface-execute_i"></span><h3>abstract interface
-    
   </h3></div>
-  
   <ul class="list-group">
     <li class="list-group-item">
+    <h3>private function execute_i(self, arguments) result(output)</h3><p>complete the assigned task</p>
     
-    
-    <h3>
-private function execute_i(self, arguments) result(output)
-    
-    
-   
-</h3>
-    
-
-
-
-<p>complete the assigned task</p>
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
+<h4>Arguments</h4>      <table class="table table-striped varlist">
+<thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" ></span>class(<a href='../type/task_t.html'>task_t</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>self</strong></td><td></td>
-  
 </tr>
-
-  
-  
-  
-  
 <tr>
-  
   <td><span class="anchor" ></span>type(<a href='../type/payload_t.html'>payload_t</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
   <td><strong>arguments</strong>(:)</td><td></td>
-  
 </tr>
-
 </tbody>
 </table>
 
-      
-    
-    
-
-  
-  
-  
-  
-     <h4>Return Value <small>type(<a href='../type/payload_t.html'>payload_t</a>)
-  </small></h4>
-  
-    
+<h4>Return Value <small>type(<a href='../type/payload_t.html'>payload_t</a>)</small></h4>  
 
     </li>
   </ul>
 </div>
 
-    
     </section>
   <br>
-    
-    
     
     <section>
      <h2>Derived Types</h2>
-   
-     
-<div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="type-task_t"></span><h3>type, public, abstract :: <a href='../type/task_t.html'>task_t</a>
-    
-  </h3></div>
+     <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="type-task_t"></span><h3>type, public, abstract :: <a href='../type/task_t.html'>task_t</a>  </h3></div>
   <div class="panel-body">
-    
-    
     <p>encapsulate task work</p>
-    
-     
-     
-          
      
      <h4>Type-Bound Procedures</h4>
       <table class="table table-striped varlist">
       <tbody>
-      
        <tr><td>procedure(execute_i), public :: <strong><a href='../type/task_t.html#boundprocedure-execute~2'>execute</a></strong>  </td>
        <td></td></tr>
-      
        <tr><td>procedure, public :: <strong><a href='../type/task_t.html#boundprocedure-is_final_task~2'>is_final_task</a></strong>  </td>
        <td></td></tr>
-      
        </tbody>
        </table>
-     
   </div>
 </div>
 
-     
     </section>
   <br>
     
-    
-    
 
-    
-    
     
     </div>
   </div>
 
-  
     <hr>    
     </div> <!-- /container -->
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-6"><p>FEATS was developed by Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson<br>&copy; 2021 
-                                          </p>
+        <div class="col-xs-6 col-md-6"><p>FEATS was developed by Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson<br>&copy; 2022 
+</p>
         </div>
         <div class="col-xs-6 col-md-6">
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
-             on 2021-10-12 15:51  
-            
-          </p>
+ on 2022-11-07 22:52            </p>
         </div>
       </div>
       <br>
@@ -957,14 +674,11 @@ private function execute_i(self, arguments) result(output)
         extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']
       });
     </script>
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    
     
     <script src="../tipuesearch/tipuesearch_content.js"></script>
     <script src="../tipuesearch/tipuesearch_set.js"></script>
     <script src="../tipuesearch/tipuesearch.js"></script>
-    
     
   </body>
 </html>
