@@ -1,6 +1,4 @@
 module payload_m
-    use iso_fortran_env, only: int8
-
     implicit none
     private
     public :: payload_t, empty_payload
@@ -13,7 +11,7 @@ module payload_m
         !! * produce a string representation of the data, and then parse that string to recover the original data
         !! * use the `transfer` function to copy the raw bytes of the data
         private
-        integer(int8), allocatable, public :: payload_(:)
+        integer, allocatable, public :: payload_(:)
     contains
         private
         procedure, public :: raw_payload
@@ -23,7 +21,7 @@ module payload_m
     interface payload_t
         pure module function from_raw(payload) result(new_payload)
             implicit none
-            integer(int8), intent(in) :: payload(:)
+            integer, intent(in) :: payload(:)
             type(payload_t) :: new_payload
         end function
 
@@ -45,7 +43,7 @@ module payload_m
         pure module function raw_payload(self)
             implicit none
             class(payload_t), intent(in) :: self
-            integer(int8), allocatable :: raw_payload(:)
+            integer, allocatable :: raw_payload(:)
         end function
 
         pure module function string_payload(self)
