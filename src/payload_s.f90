@@ -22,8 +22,17 @@ contains
     end procedure
 
     module procedure string_payload
-        allocate(character(len=self%payload_(1)) :: string_payload)
-        string_payload = transfer(self%payload_(2:),string_payload)
+        if (allocated(self%payload_)) then
+            if (size(self%payload_) > 0) then
+                allocate(character(len=self%payload_(1)) :: string_payload)
+                if (len(string_payload) > 0) &
+                    string_payload = transfer(self%payload_(2:),string_payload)
+            else
+                allocate(character(len=0) :: string_payload)
+            end if
+        else
+            allocate(character(len=0) :: string_payload)
+        end if
     end procedure
 
 end submodule
