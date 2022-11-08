@@ -35,6 +35,7 @@ contains
                 , it( &
                         "a derived type with allocatable components", &
                         check_allocatable_components_derived_type) &
+                , it("can be communicated across images", check_comms) &
                 ])
     end function
 
@@ -140,6 +141,24 @@ contains
                 result_ = result_.and.assert_equals(dble(EXPECTED_REALS(i)), dble(retrieved_reals(i)))
             end do
         end associate
+    end function
+
+    function check_comms() result(result_)
+        type(result_t) :: result_
+
+        character(len=*), parameter :: MESSAGE = "Hello, World!"
+        type(payload_t), allocatable :: mailbox[:]
+
+        allocate(mailbox[*])
+        if (this_image() == 1) then
+            mailbox = payload_t(MESSAGE)
+        end if
+        sync all
+        if (this_image() /= 1) then
+            mailbox = mailbox[1]
+        end if
+
+        result_ = assert_equals(MESSAGE, mailbox%string_payload())
     end function
 
     pure function construct(int_data, real_data) result(example_transferable)
