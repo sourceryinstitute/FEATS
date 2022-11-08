@@ -152,7 +152,7 @@ contains
     end function
 
     pure function deserialize(raw_data) result(example_transferable)
-        integer(1), intent(in) :: raw_data(:)
+        integer, intent(in) :: raw_data(:)
         type(example_transferable_t) :: example_transferable
 
         integer, allocatable :: as_ints(:)
@@ -184,7 +184,7 @@ contains
 
     pure function serialize(self) result(raw_data)
         class(example_transferable_t), intent(in) :: self
-        integer(1), allocatable :: raw_data(:)
+        integer, allocatable :: raw_data(:)
 
         integer, allocatable :: int_portion(:)
         integer, allocatable :: real_portion(:)
