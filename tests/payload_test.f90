@@ -1,6 +1,6 @@
 module payload_test
     use payload_m, only: payload_t
-    use vegetables, only: result_t, test_item_t, assert_equals, describe, it
+    use garden, only: result_t, test_item_t, assert_equals, describe, it
 
     implicit none
     private

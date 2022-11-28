@@ -6,11 +6,11 @@ maintainer = "damian@sourceryinstitute.org"
 copyright = "2021 Sourcery Institute"
 
 [dependencies]
-assert = {git = "https://github.com/sourceryinstitute/assert", tag = "1.3.0"}
-dag = {git = "https://github.com/sourceryinstitute/dag", tag = "2.1.1"}
+assert = {git = "https://github.com/sourceryinstitute/assert", tag = "1.4.0"}
+dag = {git = "https://github.com/sourceryinstitute/dag", rev="a0561d48b8bf1bce8304b4d192c62f682358d50a" } #, tag = "3.0.0"}
 
 [dev-dependencies]
-vegetables = {git = "https://gitlab.com/everythingfunctional/vegetables", tag = "v7.0.2"}
+garden = {git = "https://gitlab.com/everythingfunctional/garden", tag = "v1.0.5"}
 
 [[test]]
 name="unit"
