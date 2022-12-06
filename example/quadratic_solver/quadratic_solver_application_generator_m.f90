@@ -1,7 +1,7 @@
 module quadratic_solver_application_generator_m
     use application_m, only: application_t
     use dag_m, only: dag_t
-    use iso_varying_string, only: varying_string, var_str
+    use iso_varying_string, only: varying_string, trim, var_str
     use legacy_m, only: square, four_a_c
     use payload_m, only: payload_t
     use task_m, only: task_t
@@ -105,7 +105,7 @@ contains
               type(varying_string) name_string(size(names))
               type(task_item_t), allocatable :: tasks(:)
 
-              name_string = var_str(names)
+              name_string = trim(var_str(names))
 
               solver = &
                   dag_t([ &
