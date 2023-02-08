@@ -120,19 +120,29 @@ contains
                       , vertex_t([two_a, minus_b_pm_square_root], name_string(division), var_str(branch)) &
                       , vertex_t([division], name_string(print), var_str(root)) &
                   ])
-              tasks = &
-              [ task_item_t(a_t(2.0)) &
-              , task_item_t(b_t(-5.0)) &
-              , task_item_t(c_t(1.0)) &
-              , task_item_t(b_squared_t()) &
-              , task_item_t(four_ac_t()) &
-              , task_item_t(square_root_t()) &
-              , task_item_t(minus_b_pm_square_root_t()) &
-              , task_item_t(two_a_t()) &
-              , task_item_t(division_t()) &
-              , task_item_t(printer_t()) &
-              ]
-              application = application_t(solver, tasks)
+              block
+                real :: a, b, c
+                if (this_image() == 1) then
+                  print *, "Enter values for a, b and c in `a*x**2 + b*x + c`:"
+                  read (*, *) a, b, c
+                end if
+                call co_broadcast(a, 1)
+                call co_broadcast(b, 1)
+                call co_broadcast(c, 1)
+                tasks = &
+                [ task_item_t(a_t(a)) &
+                , task_item_t(b_t(b)) &
+                , task_item_t(c_t(c)) &
+                , task_item_t(b_squared_t()) &
+                , task_item_t(four_ac_t()) &
+                , task_item_t(square_root_t()) &
+                , task_item_t(minus_b_pm_square_root_t()) &
+                , task_item_t(two_a_t()) &
+                , task_item_t(division_t()) &
+                , task_item_t(printer_t()) &
+                ]
+                application = application_t(solver, tasks)
+              end block
           end block
         end associate
     end function
@@ -142,6 +152,7 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        print *, "a = ", self%a
         output = payload_t(transfer(self%a, output%raw_payload()))
     end function
 
@@ -150,6 +161,7 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        print *, "b = ", self%b
         output = payload_t(transfer(self%b, output%raw_payload()))
     end function
 
@@ -158,6 +170,7 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        print *, "c = ", self%c
         output = payload_t(transfer(self%c, output%raw_payload()))
     end function
 
@@ -166,11 +179,12 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        real :: b
+        real :: b, b_squared
 
         b = transfer(arguments(1)%raw_payload(), b)
-
-        output = payload_t(transfer(square(b), output%raw_payload()))
+        b_squared = square(b)
+        print *, "b**2 = ", b
+        output = payload_t(transfer(b_squared, output%raw_payload()))
     end function
 
     function four_ac_execute(self, arguments) result(output)
@@ -178,12 +192,13 @@ contains
       type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      real :: a, c
+      real :: a, c, four_a_c
 
       a = transfer(arguments(1)%raw_payload(), a)
       c = transfer(arguments(2)%raw_payload(), c)
-
-      output = payload_t(transfer(4*a*c, output%raw_payload()))
+      four_a_c = 4*a*c
+      print *, "4*a*c = ", four_a_c
+      output = payload_t(transfer(four_a_c, output%raw_payload()))
     end function
 
     function square_root_execute(self, arguments) result(output)
@@ -191,13 +206,15 @@ contains
       type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      real :: b_squared, four_a_c
+      real :: b_squared, four_a_c, square_roots(2)
 
         b_squared = transfer(arguments(1)%raw_payload(), b_squared)
         four_a_c = transfer(arguments(2)%raw_payload(), four_a_c)
 
         associate(discriminant => b_squared - four_a_c)
-          output = payload_t(transfer([sqrt(discriminant), -sqrt(discriminant)], output%raw_payload()))
+          square_roots = [sqrt(discriminant), -sqrt(discriminant)]
+          print *, "sqrt(b**2 - 4*a*c) = ", square_roots
+          output = payload_t(transfer(square_roots, output%raw_payload()))
         end associate
     end function
 
@@ -206,12 +223,13 @@ contains
       type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      real :: b, square_root(2)
+      real :: b, square_root(2), minus_b_pm_roots(2)
 
         b = transfer(arguments(1)%raw_payload(), b)
         square_root = transfer(arguments(2)%raw_payload(), square_root)
-
-        output = payload_t(transfer(-b + square_root, output%raw_payload()))
+        minus_b_pm_roots = -b + square_root
+        print *, "-b +- sqrt(b**2 - 4*a*c) = ", minus_b_pm_roots
+        output = payload_t(transfer(minus_b_pm_roots, output%raw_payload()))
     end function
 
     function two_a_execute(self, arguments) result(output)
@@ -219,11 +237,12 @@ contains
       type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      real :: a
+      real :: a, two_a
 
       a = transfer(arguments(1)%raw_payload(), a)
-
-      output = payload_t(transfer(2*a, output%raw_payload()))
+      two_a = 2*a
+      print *, "2*a = ", two_a
+      output = payload_t(transfer(two_a, output%raw_payload()))
     end function
 
     function division_execute(self, arguments) result(output)
@@ -231,12 +250,13 @@ contains
       type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      real :: two_a, b_pm_square_root(2)
+      real :: two_a, b_pm_square_root(2), quotients(2)
 
         two_a = transfer(arguments(1)%raw_payload(), two_a)
         b_pm_square_root = transfer(arguments(2)%raw_payload(), b_pm_square_root)
-
-        output = payload_t(transfer(b_pm_square_root / two_a, output%raw_payload()))
+        quotients = b_pm_square_root / two_a
+        print *, "(-b +- sqrt(b**2 - 4*a*c)) / (2*a) = ", quotients
+        output = payload_t(transfer(quotients, output%raw_payload()))
     end function
 
     function printer_execute(self, arguments) result(output)
@@ -247,9 +267,7 @@ contains
       real :: answers(2)
 
       answers = transfer(arguments(1)%raw_payload(), answers)
-
-      print *, answers
-
+      print *, "The roots are ", answers
       output = payload_t()
     end function
 end module
