@@ -3,6 +3,8 @@ module payload_m
     private
     public :: payload_t, empty_payload
 
+    integer, parameter :: MAX_PAYLOAD_SIZE = 1000
+
     type :: payload_t
         !! A raw buffer to facilitate data transfer between  images
         !!
@@ -11,7 +13,8 @@ module payload_m
         !! * produce a string representation of the data, and then parse that string to recover the original data
         !! * use the `transfer` function to copy the raw bytes of the data
         private
-        integer, allocatable, public :: payload_(:)
+        integer, public :: payload_(MAX_PAYLOAD_SIZE)
+        integer :: payload_size = 0
     contains
         private
         procedure, public :: raw_payload
