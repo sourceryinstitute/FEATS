@@ -1,16 +1,47 @@
 @startuml
-Title "Classes in the FEATS Main Program"
+Title "Classes in FEATS"
 
 hide empty members
 
-class data_location_map_t{
-  task_numbers : integer[]
-  image_numbers : integer[]
-  location_of(task : integer) : integer
+class application_t{
+  dag : dag_t
+  task_item : task_item_t[]
+}
+note right: inv: self%dag%get_num_edges()==size(self%task_item[])
+application_t *-down- task_item_t
+
+class dag_t{
+  vertices : vertex_t[]
 }
 
+class vertex_t{
+  edges : integer[]
+}
+
+application_t *-down- dag_t
+dag_t *-down- vertex_t
+
+class image_t{
+  run(application : application_t)
+}
+
+image_t -right-> application_t : accepts
+
+class task_item_t{
+  {abstract} task : task_t
+  execute(arguments : payload_t[])
+}
+
+abstract class task_t{
+  {abstract} execute(arguments : payload_t[])
+}
+
+task_item_t *-down- task_t
+task_t -left-> payload_t : accepts
+task_item_t -left-> payload_t : accepts
+
 class payload_t{
-  payload[] : character(len=1), allocatable
+  payload : integer[]
 }
 
 object mailbox{
@@ -18,38 +49,6 @@ object mailbox{
 }
 
 mailbox *-down- payload_t
-
-abstract class task_t{
-  {abstract} execute(input_locations : data_location_map_t, mailbox)
-}
-class task_item_t{
-  {abstract} task : task_t
-  execute(input_locations : data_location_map_t, mailbox)
-}
-
-task_t -left-> data_location_map_t : accepts
-task_t -left-> mailbox : accepts
-
-task_item_t *-down- task_t
-task_item_t -left-> data_location_map_t : accepts
-task_item_t -left-> mailbox : accepts
-
-class dag_t{
-}
-
-class application_t{
-  dag : dag_t
-  task_item : task_item_t[]
-}
-note right: inv: self%dag%get_num_edges()==size(self%task_item[])
-application_t *-down- dag_t
-application_t *-down- task_item_t
-
-
-class image_t{
-  run(application : application_t) : data_location_map_t
-}
-
-application_t -left-> image_t : accepts
+image_t --> mailbox : uses
 
 @enduml
