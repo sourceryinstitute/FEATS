@@ -58,15 +58,15 @@ contains
         matrix(3,:) = [144, 12, 1]
 
         dag = dag_t( &
-            [ vertex_t([integer::], name("initial")) &
-            , vertex_t([1], name("factor")) &
-            , vertex_t([1], name("factor")) &
-            , vertex_t([1, 2], name("row_multiply")) &
-            , vertex_t([1, 3], name("row_multiply")) &
-            , vertex_t([1, 4], name("row_subtract")) &
-            , vertex_t([1, 5], name("row_subtract")) &
-            , vertex_t([1, 6, 7], name("reconstruct")) &
-            , vertex_t([8], name("print")) &
+            [ vertex_t([integer::], var_str("initial")) &
+            , vertex_t([1], var_str("factor")) &
+            , vertex_t([1], var_str("factor")) &
+            , vertex_t([1, 2], var_str("row_multiply")) &
+            , vertex_t([1, 3], var_str("row_multiply")) &
+            , vertex_t([1, 4], var_str("row_subtract")) &
+            , vertex_t([1, 5], var_str("row_subtract")) &
+            , vertex_t([1, 6, 7], var_str("reconstruct")) &
+            , vertex_t([8], var_str("print")) &
             ])
         tasks = &
             [ task_item_t(initial_t(matrix)) &
@@ -79,7 +79,7 @@ contains
             , task_item_t(reconstruct_t(step=1)) &
             , task_item_t(print_matrix_t()) &
             ]
-        application = application(dag, tasks)
+        application = application_t(dag, tasks)
     end function
 
     function initial_execute(self, arguments) result(output)
@@ -141,8 +141,8 @@ contains
 
         data_size = &
             1 &
-            + ceiling(size(self%new_row) &
-            * real(storage_size(self%new_row)) &
+            + ceiling(size(new_row) &
+            * real(storage_size(new_row)) &
             / real(storage_size(data)))
         allocate(data(data_size))
         data(1) = size(new_row)
@@ -176,8 +176,8 @@ contains
 
         data_size = &
             1 &
-            + ceiling(size(self%new_row) &
-            * real(storage_size(self%new_row)) &
+            + ceiling(size(new_row) &
+            * real(storage_size(new_row)) &
             / real(storage_size(data)))
         allocate(data(data_size))
         data(1) = size(new_row)
@@ -188,6 +188,7 @@ contains
     function reconstruct_execute(self, arguments) result(output)
         class(reconstruct_t), intent(in) :: self
         type(payload_t), intent(in) :: arguments(:)
+        type(payload_t) :: output
 
         real, allocatable :: original_matrix(:, :)
         real, allocatable :: new_matrix(:, :)
