@@ -58,15 +58,21 @@ contains
         matrix(3,:) = [144, 12, 1]
 
         dag = dag_t( &
-            [ vertex_t([integer::], var_str("initial")) &
-            , vertex_t([1], var_str("factor")) &
-            , vertex_t([1], var_str("factor")) &
-            , vertex_t([1, 2], var_str("row_multiply")) &
-            , vertex_t([1, 3], var_str("row_multiply")) &
-            , vertex_t([1, 4], var_str("row_subtract")) &
-            , vertex_t([1, 5], var_str("row_subtract")) &
-            , vertex_t([1, 6, 7], var_str("reconstruct")) &
+            [ vertex_t([integer::], var_str("initial")) &       ! 1
+            , vertex_t([1], var_str("factor")) &                ! 2
+            , vertex_t([1], var_str("factor")) &                ! 3
+            , vertex_t([1, 2], var_str("row_multiply")) &       ! 4
+            , vertex_t([1, 3], var_str("row_multiply")) &       ! 5
+            , vertex_t([1, 4], var_str("row_subtract")) &       ! 6
+            , vertex_t([1, 5], var_str("row_subtract")) &       ! 7
+            , vertex_t([1, 6, 7], var_str("reconstruct")) &     ! 8
+            , vertex_t([8], var_str("factor")) &                ! 9
+            , vertex_t([8, 9], var_str("row_multiply")) &       ! 10
+            , vertex_t([8, 10], var_str("row_subtract")) &      ! 11
+            , vertex_t([8, 11], var_str("reconstruct")) &       ! 12
+            , vertex_t([1], var_str("print")) &
             , vertex_t([8], var_str("print")) &
+            , vertex_t([12], var_str("print")) &
             ])
         tasks = &
             [ task_item_t(initial_t(matrix)) &
@@ -77,6 +83,12 @@ contains
             , task_item_t(row_subtract_t(row=2)) &
             , task_item_t(row_subtract_t(row=3)) &
             , task_item_t(reconstruct_t(step=1)) &
+            , task_item_t(calc_factor_t(row=3, step=2)) &
+            , task_item_t(row_multiply_t(step=2)) &
+            , task_item_t(row_subtract_t(row=3)) &
+            , task_item_t(reconstruct_t(step=2)) &
+            , task_item_t(print_matrix_t()) &
+            , task_item_t(print_matrix_t()) &
             , task_item_t(print_matrix_t()) &
             ]
         application = application_t(dag, tasks)
@@ -112,7 +124,7 @@ contains
 
         associate(matrix_data => arguments(1)%raw_payload())
             associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix), [n_row, n_col])
+                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
             end associate
         end associate
 
@@ -133,7 +145,7 @@ contains
 
         associate(matrix_data => arguments(1)%raw_payload())
             associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix), [n_row, n_col])
+                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
             end associate
         end associate
         factor = transfer(arguments(2)%raw_payload(), factor)
@@ -163,12 +175,12 @@ contains
 
         associate(matrix_data => arguments(1)%raw_payload())
             associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix), [n_row, n_col])
+                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
             end associate
         end associate
         associate(row_data => arguments(2)%raw_payload())
             associate(n_cols => row_data(1))
-                row = transfer(row_data(2:), row)
+                row = transfer(row_data(2:), row, n_cols)
             end associate
         end associate
 
@@ -198,7 +210,7 @@ contains
 
         associate(matrix_data => arguments(1)%raw_payload())
             associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                original_matrix = reshape(transfer(matrix_data(3:), original_matrix), [n_row, n_col])
+                original_matrix = reshape(transfer(matrix_data(3:), original_matrix, n_row*n_col), [n_row, n_col])
             end associate
         end associate
         allocate(new_matrix, mold=original_matrix)
@@ -208,7 +220,7 @@ contains
         do i = self%step+1, size(original_matrix, dim=1)
             associate(row_data => arguments(i - self%step + 1)%raw_payload())
                 associate(n_cols => row_data(1))
-                    new_matrix(i, :) = transfer(row_data(2:), new_matrix)
+                    new_matrix(i, :) = transfer(row_data(2:), new_matrix, n_cols)
                 end associate
             end associate
         end do
@@ -235,7 +247,7 @@ contains
 
         associate(matrix_data => arguments(1)%raw_payload())
             associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix), [n_row, n_col])
+                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
                 do i = 1, n_row
                     print *, matrix(i, :)
                 end do
