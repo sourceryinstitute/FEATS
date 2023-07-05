@@ -57,12 +57,20 @@ contains
 
         type(dag_t) :: dag
         type(task_item_t), allocatable :: tasks(:)
+
+        ! TODO : get to compile with
+        !          * newer gfortran (> 13)
+        !          * crayftn
+        !          * nagfor
+
+        ! TODO : read in matrix
         real :: matrix(3,3)
 
         matrix(1,:) = [25, 5, 1]
         matrix(2,:) = [64, 8, 1]
         matrix(3,:) = [144, 12, 1]
 
+        ! TODO : use loops based on matrix size to build dag and tasks
         dag = dag_t( &
             [ vertex_t([integer::], var_str("initial")) &       ! 1
             , vertex_t([1], var_str("factor")) &                ! 2
