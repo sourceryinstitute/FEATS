@@ -41,6 +41,12 @@ module lu_decomp_app_m
         procedure :: execute => reconstruct_execute
     end type
 
+    type, extends(task_t) :: back_substitute_t
+        integer :: n_rows
+    contains
+        procedure :: execute => back_substitute_execute
+    end type
+
     type, extends(task_t) :: print_matrix_t
     contains
         procedure :: execute => print_matrix_execute
@@ -70,9 +76,11 @@ contains
             , vertex_t([8, 9], var_str("row_multiply")) &       ! 10
             , vertex_t([8, 10], var_str("row_subtract")) &      ! 11
             , vertex_t([8, 11], var_str("reconstruct")) &       ! 12
+            , vertex_t([2, 3, 9], var_str("back_substitute")) & ! 13
             , vertex_t([1], var_str("print")) &
             , vertex_t([8], var_str("print")) &
             , vertex_t([12], var_str("print")) &
+            , vertex_t([13], var_str("print")) &
             ])
         tasks = &
             [ task_item_t(initial_t(matrix)) &
@@ -87,6 +95,8 @@ contains
             , task_item_t(row_multiply_t(step=2)) &
             , task_item_t(row_subtract_t(row=3)) &
             , task_item_t(reconstruct_t(step=2)) &
+            , task_item_t(back_substitute_t(n_rows=3)) &
+            , task_item_t(print_matrix_t()) &
             , task_item_t(print_matrix_t()) &
             , task_item_t(print_matrix_t()) &
             , task_item_t(print_matrix_t()) &
@@ -237,6 +247,41 @@ contains
         output = payload_t(data)
     end function
 
+    function back_substitute_execute(self, arguments) result(output)
+        class(back_substitute_t), intent(in) :: self
+        type(payload_t), intent(in) :: arguments(:)
+        type(payload_t) :: output
+
+        real, allocatable :: new_matrix(:,:)
+        integer :: row, col, f
+        integer, allocatable :: data(:)
+        integer :: data_size
+
+        allocate(new_matrix(self%n_rows, self%n_rows))
+        do row = 1, self%n_rows
+            new_matrix(row, row) = 1
+            new_matrix(row, row+1:) = 0
+        end do
+        f = 1
+        do col = 1, self%n_rows-1
+            do row = col+1, self%n_rows
+                new_matrix(row, col) = transfer(arguments(f)%raw_payload(), 1.0)
+                f = f + 1
+            end do
+        end do
+
+        data_size = &
+            2 &
+            + ceiling(size(new_matrix) &
+            * real(storage_size(new_matrix)) &
+            / real(storage_size(data)))
+        allocate(data(data_size))
+        data(1) = size(new_matrix, dim=1)
+        data(2) = size(new_matrix, dim=2)
+        data(3:) = transfer(new_matrix, data)
+        output = payload_t(data)
+    end function
+
     function print_matrix_execute(self, arguments) result(output)
         class(print_matrix_t), intent(in) :: self
         type(payload_t), intent(in) :: arguments(:)
@@ -245,6 +290,7 @@ contains
         real, allocatable :: matrix(:,:)
         integer :: i
 
+        print *, ""
         associate(matrix_data => arguments(1)%raw_payload())
             associate(n_row => matrix_data(1), n_col => matrix_data(2))
                 matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
@@ -253,5 +299,6 @@ contains
                 end do
             end associate
         end associate
+        print *, ""
     end function
 end module
