@@ -2,6 +2,7 @@ module lu_decomp_app_m
     use application_m, only: application_t
     use dag_m, only: dag_t
     use iso_varying_string, only: varying_string, trim, var_str
+    use iso_fortran_env, only: wp => real64
     use payload_m, only: payload_t
     use task_m, only: task_t
     use task_item_m, only: task_item_t
@@ -12,7 +13,7 @@ module lu_decomp_app_m
     public :: generate_application
 
     type, extends(task_t) :: initial_t
-        real, allocatable :: initial_matrix(:,:)
+        real(wp), allocatable :: initial_matrix(:,:)
     contains
         procedure :: execute => initial_execute
     end type
@@ -65,7 +66,7 @@ contains
         !          * nagfor
 
         ! TODO : read in matrix
-        real :: matrix(3,3)
+        real(wp) :: matrix(3,3)
 
         integer :: matrix_size, step, row, previous_task, latest_matrix
         integer, allocatable :: for_reconstruction(:), for_back_substitution(:)
@@ -152,8 +153,8 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        real, allocatable :: matrix(:,:)
-        real :: factor
+        real(wp), allocatable :: matrix(:,:)
+        real(wp) :: factor
 
         associate(matrix_data => arguments(1)%raw_payload())
             associate(n_row => matrix_data(1), n_col => matrix_data(2))
@@ -170,9 +171,9 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        real, allocatable :: matrix(:,:)
-        real :: factor
-        real, allocatable :: new_row(:)
+        real(wp), allocatable :: matrix(:,:)
+        real(wp) :: factor
+        real(wp), allocatable :: new_row(:)
         integer, allocatable :: data(:)
         integer :: data_size
 
@@ -200,9 +201,9 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        real, allocatable :: matrix(:,:)
-        real, allocatable :: row(:)
-        real, allocatable :: new_row(:)
+        real(wp), allocatable :: matrix(:,:)
+        real(wp), allocatable :: row(:)
+        real(wp), allocatable :: new_row(:)
         integer, allocatable :: data(:)
         integer :: data_size
 
@@ -235,8 +236,8 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        real, allocatable :: original_matrix(:, :)
-        real, allocatable :: new_matrix(:, :)
+        real(wp), allocatable :: original_matrix(:, :)
+        real(wp), allocatable :: new_matrix(:, :)
         integer :: i
         integer, allocatable :: data(:)
         integer :: data_size
@@ -275,7 +276,7 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        real, allocatable :: new_matrix(:,:)
+        real(wp), allocatable :: new_matrix(:,:)
         integer :: row, col, f
         integer, allocatable :: data(:)
         integer :: data_size
@@ -288,7 +289,7 @@ contains
         f = 1
         do col = 1, self%n_rows-1
             do row = col+1, self%n_rows
-                new_matrix(row, col) = transfer(arguments(f)%raw_payload(), 1.0)
+                new_matrix(row, col) = transfer(arguments(f)%raw_payload(), 1.0_wp)
                 f = f + 1
             end do
         end do
@@ -310,7 +311,7 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        real, allocatable :: matrix(:,:)
+        real(wp), allocatable :: matrix(:,:)
         integer :: i
 
         print *, ""
