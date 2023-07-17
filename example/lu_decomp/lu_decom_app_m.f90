@@ -57,6 +57,7 @@ contains
 
         type(dag_t) :: dag
         type(task_item_t), allocatable :: tasks(:)
+        type(vertex_t), allocatable :: vertices(:)
 
         ! TODO : get to compile with
         !          * newer gfortran (> 13)
@@ -66,49 +67,63 @@ contains
         ! TODO : read in matrix
         real :: matrix(3,3)
 
+        integer :: matrix_size, step, row, previous_task, latest_matrix
+        integer, allocatable :: for_reconstruction(:), for_back_substitution(:)
+
         matrix(1,:) = [25, 5, 1]
         matrix(2,:) = [64, 8, 1]
         matrix(3,:) = [144, 12, 1]
 
-        ! TODO : use loops based on matrix size to build dag and tasks
-        dag = dag_t( &
-            [ vertex_t([integer::], var_str("initial")) &       ! 1
-            , vertex_t([1], var_str("factor")) &                ! 2
-            , vertex_t([1], var_str("factor")) &                ! 3
-            , vertex_t([1, 2], var_str("row_multiply")) &       ! 4
-            , vertex_t([1, 3], var_str("row_multiply")) &       ! 5
-            , vertex_t([1, 4], var_str("row_subtract")) &       ! 6
-            , vertex_t([1, 5], var_str("row_subtract")) &       ! 7
-            , vertex_t([1, 6, 7], var_str("reconstruct")) &     ! 8
-            , vertex_t([8], var_str("factor")) &                ! 9
-            , vertex_t([8, 9], var_str("row_multiply")) &       ! 10
-            , vertex_t([8, 10], var_str("row_subtract")) &      ! 11
-            , vertex_t([8, 11], var_str("reconstruct")) &       ! 12
-            , vertex_t([2, 3, 9], var_str("back_substitute")) & ! 13
-            , vertex_t([1], var_str("print")) &
-            , vertex_t([8], var_str("print")) &
-            , vertex_t([12], var_str("print")) &
-            , vertex_t([13], var_str("print")) &
-            ])
-        tasks = &
-            [ task_item_t(initial_t(matrix)) &
-            , task_item_t(calc_factor_t(row=2, step=1)) &
-            , task_item_t(calc_factor_t(row=3, step=1)) &
-            , task_item_t(row_multiply_t(step=1)) &
-            , task_item_t(row_multiply_t(step=1)) &
-            , task_item_t(row_subtract_t(row=2)) &
-            , task_item_t(row_subtract_t(row=3)) &
-            , task_item_t(reconstruct_t(step=1)) &
-            , task_item_t(calc_factor_t(row=3, step=2)) &
-            , task_item_t(row_multiply_t(step=2)) &
-            , task_item_t(row_subtract_t(row=3)) &
-            , task_item_t(reconstruct_t(step=2)) &
-            , task_item_t(back_substitute_t(n_rows=3)) &
-            , task_item_t(print_matrix_t()) &
-            , task_item_t(print_matrix_t()) &
-            , task_item_t(print_matrix_t()) &
-            , task_item_t(print_matrix_t()) &
-            ]
+        matrix_size = size(matrix, dim=1)
+        previous_task = 0
+
+        tasks = [task_item_t(initial_t(matrix))]
+        vertices = [vertex_t([integer::], var_str("initial"))]
+        previous_task = previous_task + 1
+        latest_matrix = previous_task
+
+        tasks = [tasks, task_item_t(print_matrix_t())]
+        vertices = [vertices, vertex_t([latest_matrix], var_str("print"))]
+        previous_task = previous_task + 1
+
+        allocate(for_back_substitution(0))
+        do step = 1, matrix_size-1
+            for_reconstruction = [latest_matrix]
+            do row = step+1, matrix_size
+                tasks = [tasks, task_item_t(calc_factor_t(row=row, step=step))]
+                vertices = [vertices, vertex_t([latest_matrix], var_str("factor"))]
+                previous_task = previous_task + 1
+                for_back_substitution = [for_back_substitution, previous_task]
+
+                tasks = [tasks, task_item_t(row_multiply_t(step=step))]
+                vertices = [vertices, vertex_t([latest_matrix, previous_task], var_str("row_multiply"))]
+                previous_task = previous_task + 1
+
+                tasks = [tasks, task_item_t(row_subtract_t(row=row))]
+                vertices = [vertices, vertex_t([latest_matrix, previous_task], var_str("row_subtract"))]
+                previous_task = previous_task + 1
+                for_reconstruction = [for_reconstruction, previous_task]
+            end do
+            tasks = [tasks, task_item_t(reconstruct_t(step=step))]
+            vertices = [vertices, vertex_t(for_reconstruction, var_str("reconstruct"))]
+            previous_task = previous_task + 1
+            latest_matrix = previous_task
+
+            tasks = [tasks, task_item_t(print_matrix_t())]
+            vertices = [vertices, vertex_t([latest_matrix], var_str("print"))]
+            previous_task = previous_task + 1
+        end do
+        tasks = [tasks, task_item_t(back_substitute_t(n_rows=matrix_size))]
+        vertices = [vertices, vertex_t(for_back_substitution, var_str("back_substitute"))]
+        previous_task = previous_task + 1
+        deallocate(for_back_substitution)
+        latest_matrix = previous_task
+
+        tasks = [tasks, task_item_t(print_matrix_t())]
+        vertices = [vertices, vertex_t([latest_matrix], var_str("print"))]
+        previous_task = previous_task + 1
+
+        dag = dag_t(vertices)
         application = application_t(dag, tasks)
     end function
 
