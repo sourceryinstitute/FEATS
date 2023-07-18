@@ -66,16 +66,35 @@ contains
         !          * nagfor
 
         ! TODO : read in matrix
-        real(wp) :: matrix(3,3)
+        real(wp), allocatable :: matrix(:,:)
 
         integer :: matrix_size, step, row, previous_task, latest_matrix
         integer, allocatable :: for_reconstruction(:), for_back_substitution(:)
+        integer :: arg_len, fu
+        character(len=:), allocatable :: arg
 
-        matrix(1,:) = [25, 5, 1]
-        matrix(2,:) = [64, 8, 1]
-        matrix(3,:) = [144, 12, 1]
+        if (this_image() == 1) then
+            call get_command_argument(number=1, length=arg_len)
+            allocate(character(len=arg_len) :: arg)
+            call get_command_argument(number=1, value=arg)
+            read(arg, *) matrix_size
+            deallocate(arg)
+        end if
+        call co_broadcast(matrix_size, 1)
+        allocate(matrix(matrix_size, matrix_size))
+        if (this_image() == 1) then
+            call get_command_argument(number=2, length=arg_len)
+            allocate(character(len=arg_len) :: arg)
+            call get_command_argument(number=2, value=arg)
+            open(file=arg, newunit=fu, status="old")
+            deallocate(arg)
+            do row = 1, matrix_size
+                read(fu, *) matrix(:,row)
+            end do
+            close(fu)
+        end if
+        call co_broadcast(matrix, 1)
 
-        matrix_size = size(matrix, dim=1)
         previous_task = 0
 
         tasks = [task_item_t(initial_t(matrix))]
