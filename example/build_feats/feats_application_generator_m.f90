@@ -3,7 +3,6 @@ module feats_application_generator_m
   use dag_m, only : dag_t
   use iso_varying_string, only: varying_string, operator(//), trim, put_line, var_str
   use payload_m, only: payload_t, empty_payload
-  use strff, only: to_string
   use task_m, only: task_t
   use task_item_m, only: task_item_t
   use vertex_m, only : vertex_t
@@ -99,10 +98,12 @@ contains
     type(payload_t) :: output
 
     real :: rand
+    character(len=10) :: image_string
 
+    write(image_string, "(I0)") this_image()
     call put_line( &
         "Compiling: " // self%to_compile &
-        // " on image number: " // to_string(this_image()))
+        // " on image number: " // trim(image_string))
     call random_number(rand)
     call sleep(int(rand * 10))
     call put_line("Finished Compiling: " // self%to_compile)

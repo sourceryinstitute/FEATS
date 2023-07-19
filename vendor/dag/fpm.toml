@@ -6,7 +6,4 @@ maintainer = "damian@sourceryinstitute.org"
 copyright = "2020-2021 Sourcery Institute"
 
 [dependencies]
-rojff = { git = "https://gitlab.com/everythingfunctional/rojff", tag = "v1.0.0" }
-erloff = { git = "https://gitlab.com/everythingfunctional/erloff", tag = "v2.2.0" }
 iso_varying_string = { git = "https://gitlab.com/everythingfunctional/iso_varying_string", tag = "v3.0.4" }
-assert = { git = "https://github.com/sourceryinstitute/assert", tag = "1.4.0" }

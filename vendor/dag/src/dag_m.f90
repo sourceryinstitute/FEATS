@@ -5,7 +5,6 @@ module dag_m
   !! date: 2020-Nov-30
   !! license: Copyright (c) 2020, Sourcery Institute, BSD 3-clause license Copyright (c) 2018 Jacob Williams
   use vertex_m, only : vertex_t
-  use rojff, only : json_object_t
 
   implicit none
 
@@ -18,21 +17,12 @@ module dag_m
     integer, allocatable :: order(:)
   contains
     procedure :: is_sorted_and_acyclic
-    procedure :: to_json
     procedure :: num_vertices
     procedure :: dependencies_for
     procedure :: depends_on
-    procedure :: graphviz_digraph
   end type
 
   interface dag_t
-
-    module function construct_from_json(json_object) result(dag)
-      !! Construct a dag_t object from a JSON object (result contains a topologically sorted index array)
-      implicit none
-      type(json_object_t), intent(in) :: json_object
-      type(dag_t) dag
-    end function
 
     pure module function construct_from_components(vertices) result(dag)
       !! Construct a dag_t object from an array of (unsorted) vertex_t objects (result contains a topologically sorted index array)
@@ -50,13 +40,6 @@ module dag_m
       implicit none
       class(dag_t), intent(in) :: self
       logical is_sorted_and_acyclic
-    end function
-
-    module function to_json(self) result(json_object)
-      !! Result is a JSON representation of the dag_t object
-      implicit none
-      class(dag_t), intent(in) :: self
-      type(json_object_t) json_object
     end function
 
     elemental module function num_vertices(self)
@@ -80,13 +63,6 @@ module dag_m
       class(dag_t), intent(in) :: self
       integer, intent(in) :: vertex_id
       integer, allocatable :: dependency_ids(:)
-    end function
-
-    pure module function graphviz_digraph(self) result(digraph)
-      !! Result contains a Graphviz .dot file descriptoin of the dag_t object
-      implicit none
-      class(dag_t),intent(in) :: self
-      character(len=:), allocatable :: digraph
     end function
 
   end interface
