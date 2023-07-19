@@ -6,7 +6,7 @@ maintainer = "damian@sourceryinstitute.org"
 copyright = "2021 Sourcery Institute"
 
 [dependencies]
-dag = {git = "https://github.com/sourceryinstitute/dag", rev="e3f8ec61635842cc1e28d09bff34391c328fd75e" } #, tag = "3.0.0"}
+dag = { path = "vendor/dag" }
 
 [[example]]
 name="build_feats"
