@@ -19,7 +19,7 @@ module application_m
 
   interface application_t
 
-    pure module function construct(dag, tasks) result(application)
+    module function construct(dag, tasks) result(application)
       implicit none
       type(dag_t), intent(in) :: dag
       type(task_item_t), intent(in) :: tasks(:)
@@ -36,7 +36,7 @@ module application_m
       type(dag_t) :: dag
     end function
 
-    pure module function tasks(self)
+    module function tasks(self)
       implicit none
       class(application_t), intent(in) :: self
       type(task_item_t), allocatable :: tasks(:)
