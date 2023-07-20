@@ -4,7 +4,7 @@ module vertex_m
   !! version: v1.0
   !! date: 2020-Nov-30
   !! license: Copyright (c) 2020-2021, Sourcery Institute, BSD 3-clause license Copyright (c) 2018 Jacob Williams
-    use iso_varying_string, only : varying_string
+    use iso_varying_string, only : varying_string, assignment(=)
 
     implicit none
 
@@ -25,48 +25,60 @@ module vertex_m
     end type
 
     interface vertex_t
-
-      pure module function construct_from_components(edges, label, attributes) result(vertex)
+      module procedure construct_from_components
+    end interface
+contains
+    pure function construct_from_components(edges, label, attributes) result(vertex)
         !! Component-wise constructor of a vertex_t object
-        implicit none
         integer, intent(in) :: edges(:) !! vertices on which this vertex depends
         type(varying_string), intent(in) :: label !! vertex description (e.g., name)
         type(varying_string), intent(in), optional :: attributes !! Graphvizl .dot symbol description
         type(vertex_t) vertex
-      end function
 
-    end interface
+        character(len=*), parameter :: &
+        branch    = 'shape=square, fillcolor="SlateGray1", style=filled' &
+       ,external_ = 'shape=square, fillcolor="green",      style=filled' &
+       ,root      = 'shape=circle, fillcolor="white",      style=filled' &
+       ,leaf      = 'shape=circle, fillcolor="cornsilk",   style=filled'
 
-    interface
+      vertex%edges_ = edges
+      vertex%label_ = label
+      if (present(attributes)) then
+        vertex%attributes_ = attributes
+      else
+        vertex%attributes_ = branch
+      end if
+    end function
 
-      elemental module function edges_allocated(self) result(edges_array_allocated)
+      elemental function edges_allocated(self) result(edges_array_allocated)
         !! Result is .true. iff the edges component is allocated
-        implicit none
         class(vertex_t), intent(in) :: self
         logical edges_array_allocated
+
+        edges_array_allocated = allocated(self%edges_)
       end function
 
-      pure module function edges(self) result(my_edges)
+      pure function edges(self) result(my_edges)
         !! Result is the array element numbers of the vertices on which this vertex depends
-        implicit none
         class(vertex_t), intent(in) :: self
         integer :: my_edges(size(self%edges_))
+
+        my_edges = self%edges_
       end function
 
-      elemental module function label(self) result(my_label)
+      elemental function label(self) result(my_label)
         !! Vertex label getter
-        implicit none
         class(vertex_t), intent(in) :: self
         type(varying_string) my_label
+
+        my_label = self%label_
       end function
 
-      elemental module function attributes(self) result(my_attributes)
+      elemental function attributes(self) result(my_attributes)
         !! Vertex attributes getter
-        implicit none
         class(vertex_t), intent(in) :: self
         type(varying_string) my_attributes
+
+        my_attributes = self%attributes_
       end function
-
-    end interface
-
 end module vertex_m
