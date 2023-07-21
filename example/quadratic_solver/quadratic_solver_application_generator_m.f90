@@ -1,7 +1,6 @@
 module quadratic_solver_application_generator_m
     use application_m, only: application_t
     use dag_m, only: dag_t
-    use iso_varying_string, only: varying_string, trim, var_str
     use legacy_m, only: square, four_a_c
     use payload_m, only: payload_t
     use task_m, only: task_t
@@ -70,55 +69,25 @@ module quadratic_solver_application_generator_m
 contains
     function generate_application() result(application)
         type(application_t) :: application
-
-        character(len=*), parameter :: longest_name = "minus_b_pm_square_root"
-        character(len=len(longest_name)), parameter :: names(*) = &
-            [ character(len=len(longest_name)) :: "a" &
-            , "b" &
-            , "c" &
-            , "b_squared" &
-            , "four_ac" &
-            , "square_root" &
-            , "minus_b_pm_square_root" &
-            , "two_a" &
-            , "division" &
-            , "print" &
-            ]
-        associate( &
-              a => findloc(names, "a", dim=1) &
-            , b => findloc(names, "b", dim=1) &
-            , c => findloc(names, "c", dim=1) &
-            , b_squared => findloc(names, "b_squared", dim=1) &
-            , four_ac => findloc(names, "four_ac", dim=1) &
-            , square_root => findloc(names, "square_root", dim=1) &
-            , minus_b_pm_square_root => findloc(names, "minus_b_pm_square_root", dim=1) &
-            , two_a => findloc(names, "two_a", dim=1) &
-            , division => findloc(names, "division", dim=1) &
-            , print => findloc(names, "print", dim=1) &
-        )
           block
               character(len=*),           parameter :: root      = 'shape=circle,fillcolor="white",style=filled'
               character(len=*),           parameter :: branch    = 'shape=square,fillcolor="SlateGray1",style=filled'
               character(len=len(branch)), parameter :: leaf      = 'shape=circle,fillcolor="cornsilk",style=filled'
               type(dag_t) solver
-              integer i
-              type(varying_string) name_string(size(names))
               type(task_item_t), allocatable :: tasks(:)
-
-              name_string = trim(var_str(names))
 
               solver = &
                   dag_t([ &
-                        vertex_t([integer::], name_string(a), var_str(leaf)) &
-                      , vertex_t([integer::], name_string(b), var_str(leaf)) &
-                      , vertex_t([integer::], name_string(c), var_str(leaf)) &
-                      , vertex_t([b], name_string(b_squared), var_str(branch)) &
-                      , vertex_t([a, c], name_string(four_ac), var_str(branch)) &
-                      , vertex_t([b_squared, four_ac], name_string(square_root), var_str(branch)) &
-                      , vertex_t([b, square_root], name_string(minus_b_pm_square_root), var_str(branch)) &
-                      , vertex_t([a], name_string(two_a), var_str(branch)) &
-                      , vertex_t([two_a, minus_b_pm_square_root], name_string(division), var_str(branch)) &
-                      , vertex_t([division], name_string(print), var_str(root)) &
+                        vertex_t([integer::], "a", leaf) &
+                      , vertex_t([integer::], "b", leaf) &
+                      , vertex_t([integer::], "c", leaf) &
+                      , vertex_t([2], "b_squared", branch) &
+                      , vertex_t([1, 3], "four_ac", branch) &
+                      , vertex_t([4, 5], "square_root", branch) &
+                      , vertex_t([2, 6], "minus_b_pm_square_root", branch) &
+                      , vertex_t([1], "two_a", branch) &
+                      , vertex_t([8, 7], "division", branch) &
+                      , vertex_t([9], "print", root) &
                   ])
               block
                 real :: a, b, c
@@ -144,7 +113,6 @@ contains
                 application = application_t(solver, tasks)
               end block
           end block
-        end associate
     end function
 
     function a_execute(self, arguments) result(output)

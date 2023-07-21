@@ -4,8 +4,6 @@ module vertex_m
   !! version: v1.0
   !! date: 2020-Nov-30
   !! license: Copyright (c) 2020-2021, Sourcery Institute, BSD 3-clause license Copyright (c) 2018 Jacob Williams
-    use iso_varying_string, only : varying_string, assignment(=)
-
     implicit none
 
     private
@@ -15,8 +13,8 @@ module vertex_m
       !! Encapsulate a node in a graph comprised of vertices connected by dependencies (edges)
       private
       integer, allocatable :: edges_(:)
-      type(varying_string) :: label_
-      type(varying_string) :: attributes_
+      character(len=:), allocatable :: label_
+      character(len=:), allocatable :: attributes_
     contains
       procedure :: edges
       procedure :: label
@@ -31,8 +29,8 @@ contains
     pure function construct_from_components(edges, label, attributes) result(vertex)
         !! Component-wise constructor of a vertex_t object
         integer, intent(in) :: edges(:) !! vertices on which this vertex depends
-        type(varying_string), intent(in) :: label !! vertex description (e.g., name)
-        type(varying_string), intent(in), optional :: attributes !! Graphvizl .dot symbol description
+        character(len=*), intent(in) :: label !! vertex description (e.g., name)
+        character(len=*), intent(in), optional :: attributes !! Graphvizl .dot symbol description
         type(vertex_t) vertex
 
         character(len=*), parameter :: &
@@ -66,18 +64,18 @@ contains
         my_edges = self%edges_
       end function
 
-      elemental function label(self) result(my_label)
+      pure function label(self) result(my_label)
         !! Vertex label getter
         class(vertex_t), intent(in) :: self
-        type(varying_string) my_label
+        character(len=:), allocatable :: my_label
 
         my_label = self%label_
       end function
 
-      elemental function attributes(self) result(my_attributes)
+      pure function attributes(self) result(my_attributes)
         !! Vertex attributes getter
         class(vertex_t), intent(in) :: self
-        type(varying_string) my_attributes
+        character(len=:), allocatable :: my_attributes
 
         my_attributes = self%attributes_
       end function
