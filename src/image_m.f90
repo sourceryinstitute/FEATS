@@ -4,7 +4,6 @@ module image_m
     use dag_m, only: dag_t
     use final_task_m, only: final_task_t
     use iso_fortran_env, only: event_type
-    use mailbox_m, only: payload_list_t, mailbox, mailbox_entry_can_be_freed
     use payload_m, only: payload_t
     use task_item_m, only: task_item_t
 
@@ -19,6 +18,16 @@ module image_m
         private
         procedure, public :: run
     end type
+
+    type :: payload_list_t
+        type(payload_t), allocatable :: payloads(:)
+    end type
+
+    type(payload_list_t), allocatable :: mailbox[:]
+    !! storage for communicating inputs/outputs between tasks
+
+    logical, allocatable :: mailbox_entry_can_be_freed(:)[:]
+    !! used by the scheduler image to tell the worker images when they can release old data.
 
     type(event_type), allocatable :: ready_for_next_task(:)[:]
     type(event_type) task_assigned[*]
