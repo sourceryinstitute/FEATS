@@ -78,7 +78,7 @@ contains
     print *, "Compiling: " // self%to_compile &
         // " on image number: " // trim(image_string)
     call random_number(rand)
-    call sleep(int(rand * 10))
+    ! call sleep(int(rand * 10))
     print *, "Finished Compiling: " // self%to_compile
 
     output = empty_payload()

@@ -61,12 +61,12 @@ contains
         end associate
     end function
 
-    pure module function empty_payload()
+    pure function empty_payload()
         implicit none
         type(payload_t) :: empty_payload
     end function
 
-    pure module function raw_payload(self)
+    pure function raw_payload(self)
         implicit none
         class(payload_t), intent(in) :: self
         integer, allocatable :: raw_payload(:)
@@ -74,7 +74,7 @@ contains
         raw_payload = self%payload_(1:self%payload_size)
     end function
 
-    pure module function string_payload(self)
+    pure function string_payload(self)
         implicit none
         class(payload_t), intent(in) :: self
         character(len=:), allocatable :: string_payload
