@@ -2,7 +2,6 @@ module image_m
     !! Compute-image/Scheduler-image abstraction
     use application_m, only: application_t
     use dag_m, only: dag_t
-    use feats_result_map_m, only: feats_result_map_t
     use final_task_m, only: final_task_t
     use iso_fortran_env, only: event_type
     use mailbox_m, only: payload_list_t, mailbox, mailbox_entry_can_be_freed
@@ -42,11 +41,10 @@ module image_m
 
 contains
 
-    function run(self, application) result(results)
+    subroutine run(self, application)
         implicit none
         class(image_t), intent(in) :: self
         type(application_t), intent(in) :: application
-        type(feats_result_map_t), allocatable :: results
 
         logical :: tasks_left
         type(task_item_t), allocatable :: tasks(:)
@@ -79,8 +77,7 @@ contains
                 tasks_left = do_work(tasks, dag)
             end if
         end do
-        results = feats_result_map_t()
-    end function
+    end subroutine
 
     function do_work(tasks, dag) result(tasks_left)
         type(task_item_t), intent(in) :: tasks(:)
