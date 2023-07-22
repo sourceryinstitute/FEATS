@@ -17,32 +17,33 @@ module task_item_m
   end type
 
   interface task_item_t
-
-    module function constructor(task) result(new_task_item)
+    module procedure constructor
+  end interface
+contains
+    function constructor(task) result(new_task_item)
       implicit none
       type(task_item_t) new_task_item
       class(task_t), intent(in) :: task
+
+      new_task_item%task = task
     end function
 
-  end interface
-
-  interface
-
-    module function execute(self, arguments) result(output)
+    function execute(self, arguments) result(output)
       !! complete the assigned task
       implicit none
       class(task_item_t), intent(in) :: self
       type(payload_t), intent(in)    :: arguments(:)
       type(payload_t) :: output
+
+      output = self%task%execute(arguments)
     end function
 
-    pure module function is_final_task(self)
+    pure function is_final_task(self)
         !! is this the final task?
         implicit none
         class(task_item_t), intent(in) :: self
         logical :: is_final_task
+
+        is_final_task = self%task%is_final_task()
     end function
-
-  end interface
-
 end module task_item_m

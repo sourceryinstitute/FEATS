@@ -13,21 +13,19 @@ module final_task_m
         procedure :: execute
         procedure :: is_final_task
     end type
+contains
+    function execute(self, arguments) result(output)
+        implicit none
+        class(final_task_t), intent(in) :: self
+        type(payload_t), intent(in) :: arguments(:)
+        type(payload_t) :: output
+    end function
 
-    interface
+    pure function is_final_task(self)
+        implicit none
+        class(final_task_t), intent(in) :: self
+        logical :: is_final_task
 
-        module function execute(self, arguments) result(output)
-            implicit none
-            class(final_task_t), intent(in) :: self
-            type(payload_t), intent(in) :: arguments(:)
-            type(payload_t) :: output
-        end function
-
-        pure module function is_final_task(self)
-            implicit none
-            class(final_task_t), intent(in) :: self
-            logical :: is_final_task
-        end function
-
-    end interface
+        is_final_task = .true.
+    end function
 end module

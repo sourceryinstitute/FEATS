@@ -18,30 +18,32 @@ module application_m
   end type
 
   interface application_t
-
-    module function construct(dag, tasks) result(application)
+    module procedure construct
+  end interface
+contains
+    function construct(dag, tasks) result(application)
       implicit none
       type(dag_t), intent(in) :: dag
       type(task_item_t), intent(in) :: tasks(:)
       type(application_t) application
+
+      application%dag_ = dag
+      application%tasks_ = tasks
     end function
 
-  end interface
-
-  interface
-
-    pure module function dag(self)
+    pure function dag(self)
       implicit none
       class(application_t), intent(in) :: self
       type(dag_t) :: dag
+
+      dag = self%dag_
     end function
 
-    module function tasks(self)
+    function tasks(self)
       implicit none
       class(application_t), intent(in) :: self
       type(task_item_t), allocatable :: tasks(:)
+
+      tasks = self%tasks_
     end function
-
-  end interface
-
 end module application_m

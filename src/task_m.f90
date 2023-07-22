@@ -27,16 +27,13 @@ module task_m
     end function
 
   end interface
-
-  interface
-
-    pure module function is_final_task(self)
+contains
+    pure function is_final_task(self)
         !! is this the final task?
         implicit none
         class(task_t), intent(in) :: self
         logical :: is_final_task
+
+        is_final_task = .false.
     end function
-
-  end interface
-
 end module task_m
