@@ -24,13 +24,13 @@ contains
     character(len=len(longest_name)), parameter :: names(*) = &
         [ character(len=len(longest_name)) :: "assert_m" &
         , "dag_m" &
-        , "application_m" &
-        , "application_s" &
+        !, "application_m" &
+        !, "application_s" &
         , "feats_result_map_m" &
-        , "final_task_m" &
-        , "final_task_s" &
-        , "image_m" &
-        , "image_s" &
+        !, "final_task_m" &
+        !, "final_task_s" &
+        !, "image_m" &
+        !, "image_s" &
         , "mailbox_m" &
         , "payload_m" &
         , "payload_s" &
@@ -72,13 +72,13 @@ contains
         feats = dag_t(&
             [ vertex_t([integer::], name_string(assert_m), var_str(external_)) &
             , vertex_t([integer::], name_string(dag_m), var_str(external_)) &
-            , vertex_t([dag_m, task_item_m], name_string(application_m), var_str(branch)) &
-            , vertex_t([assert_m, application_m], name_string(application_s), var_str(root)) &
+            !, vertex_t([dag_m, task_item_m], name_string(application_m), var_str(branch)) &
+            !, vertex_t([assert_m, application_m], name_string(application_s), var_str(root)) &
             , vertex_t([integer::], name_string(feats_result_map_m), var_str(leaf)) &
-            , vertex_t([payload_m, task_m], name_string(final_task_m), var_str(branch)) &
-            , vertex_t([final_task_m], name_string(final_task_s), var_str(root)) &
-            , vertex_t([application_m, feats_result_map_m, payload_m], name_string(image_m), var_str(branch)) &
-            , vertex_t([dag_m, final_task_m, image_m, mailbox_m, task_item_m], name_string(image_s), var_str(root)) &
+            !, vertex_t([payload_m, task_m], name_string(final_task_m), var_str(branch)) &
+            !, vertex_t([final_task_m], name_string(final_task_s), var_str(root)) &
+            !, vertex_t([application_m, feats_result_map_m, payload_m], name_string(image_m), var_str(branch)) &
+            !, vertex_t([dag_m, final_task_m, image_m, mailbox_m, task_item_m], name_string(image_s), var_str(root)) &
             , vertex_t([payload_m], name_string(mailbox_m), var_str(branch)) &
             , vertex_t([integer::], name_string(payload_m), var_str(leaf)) &
             , vertex_t([payload_m], name_string(payload_s), var_str(root)) &
@@ -104,7 +104,7 @@ contains
         "Compiling: " // self%to_compile &
         // " on image number: " // to_string(this_image()))
     call random_number(rand)
-    call sleep(int(rand * 10))
+    call sleep(int(rand * 3))
     call put_line("Finished Compiling: " // self%to_compile)
 
     output = empty_payload()
