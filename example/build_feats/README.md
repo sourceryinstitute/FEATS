@@ -21,7 +21,7 @@ The task completion order and image/task pairings will vary from one execution
 of the first command to the next execution of the same command.
 
 ```
-fpm run --example --compiler caf --runner "cafrun -n 4"
+fpm run --example build_feats --compiler caf --runner "cafrun -n 4"
 Executing task number: 2 on image number: 3
 Executing task number: 1 on image number: 4
 Executing task number: 3 on image number: 2
