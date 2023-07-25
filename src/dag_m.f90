@@ -31,7 +31,7 @@ module dag_m
     module procedure construct_from_vertices
   end interface
 contains
-    pure function construct_from_vertices(vertices) result(dag)
+    function construct_from_vertices(vertices) result(dag)
       !! Construct a dag_t object from an array of (unsorted) vertex_t objects (result contains a topologically sorted index array)
       type(vertex_t), intent(in) :: vertices(:)
       type(dag_t) dag
