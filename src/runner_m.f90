@@ -116,7 +116,7 @@ contains
     end function
 
     function find_next_image() result(next_image)
-        integer :: next_image, i, ev_count
+        integer :: next_image, i, ev_count, task_just_completed
 
         next_image = NO_IMAGE_READY
         do i = 1, size(ready_for_next_task)
@@ -125,10 +125,9 @@ contains
             call event_query (ready_for_next_task(i), ev_count)
             if (ev_count > 0) then
                 next_image = i
-                associate (task_just_completed => (task_identifier[i]))
-                    if (task_just_completed /= no_task_assigned) &
-                        task_done(task_just_completed) = .true.
-                end associate
+                task_just_completed = (task_identifier[i])
+                if (task_just_completed /= no_task_assigned) &
+                    task_done(task_just_completed) = .true.
             end if
         end do
     end function
@@ -179,16 +178,15 @@ contains
     end function
 
     subroutine assign_completed_to_images()
-        integer :: i
+        integer :: i, task_just_completed
 
         do i = 1, size(ready_for_next_task)
             if (i == scheduler_image) cycle ! don't wait on the scheduler image
 
             event wait (ready_for_next_task(i))
-            associate (task_just_completed => (task_identifier[i]))
-                if (task_just_completed /= no_task_assigned) &
-                    task_done(task_just_completed) = .true.
-            end associate
+            task_just_completed = task_identifier[i]
+            if (task_just_completed /= no_task_assigned) &
+                task_done(task_just_completed) = .true.
             task_identifier[i] = ALL_TASKS_DONE
             event post (task_assigned[i])
         end do
