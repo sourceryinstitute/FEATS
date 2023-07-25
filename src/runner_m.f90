@@ -1,4 +1,4 @@
-module image_m
+module runner_m
     !! Compute-image/Scheduler-image abstraction
     use dag_m, only: dag_t
     use iso_fortran_env, only: event_type
@@ -6,15 +6,7 @@ module image_m
 
     implicit none
     private
-    public :: image_t
-
-    type image_t
-        !! Encapsulate compute/scheduler communication protocol
-        private
-    contains
-        private
-        procedure, public :: run
-    end type
+    public :: run
 
     type :: payload_list_t
         type(payload_t), allocatable :: payloads(:)
@@ -47,9 +39,8 @@ module image_m
 
 contains
 
-    subroutine run(self, dag)
+    subroutine run(dag)
         implicit none
-        class(image_t), intent(in) :: self
         type(dag_t), intent(in) :: dag
 
         logical :: tasks_left
