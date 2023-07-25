@@ -12,7 +12,6 @@ module task_item_m
     class(task_t), allocatable :: task
   contains
     procedure :: execute
-    procedure :: is_final_task
   end type
 
 contains
@@ -24,14 +23,5 @@ contains
       type(payload_t) :: output
 
       output = self%task%execute(arguments)
-    end function
-
-    pure function is_final_task(self)
-        !! is this the final task?
-        implicit none
-        class(task_item_t), intent(in) :: self
-        logical :: is_final_task
-
-        is_final_task = self%task%is_final_task()
     end function
 end module task_item_m

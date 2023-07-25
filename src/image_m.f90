@@ -2,7 +2,6 @@ module image_m
     !! Compute-image/Scheduler-image abstraction
     use application_m, only: application_t
     use dag_m, only: dag_t
-    use final_task_m, only: final_task_t
     use iso_fortran_env, only: event_type
     use payload_m, only: payload_t
     use task_item_m, only: task_item_t
@@ -77,7 +76,7 @@ contains
 
         tasks_left = .true.
 
-        tasks = [application%tasks(), task_item_t(final_task_t())]
+        tasks = application%tasks()
         dag = application%dag()
         do while (tasks_left)
             if (this_image() == scheduler_image) then
@@ -104,8 +103,10 @@ contains
         !    end if
         !end do free_unneeded_memory
 
-        do_assigned_task: associate(my_task    => tasks(task_identifier))
-            if (.not.my_task%is_final_task()) then
+        if (task_identifier == ALL_TASKS_DONE) then
+            tasks_left = .false.
+        else
+            do_assigned_task: associate(my_task    => tasks(task_identifier))
                 block
                     integer, allocatable :: upstream_task_nums(:)
                     integer, allocatable :: upstream_task_imagenums(:)
@@ -126,10 +127,8 @@ contains
 
                 end block
                 tasks_left = .true.
-            else
-                tasks_left = .false.
-            end if
-        end associate do_assigned_task
+            end associate do_assigned_task
+        end if
     end function
 
     function find_next_image() result(next_image)
@@ -206,7 +205,7 @@ contains
                 if (task_just_completed /= no_task_assigned) &
                     task_done(task_just_completed) = .true.
             end associate
-            task_identifier[i] = size(task_done) + 1
+            task_identifier[i] = ALL_TASKS_DONE
             event post (task_assigned[i])
         end do
     end subroutine

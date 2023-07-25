@@ -9,10 +9,8 @@ module task_m
 
   type, abstract :: task_t
     !! encapsulate task work
-    private
   contains
     procedure(execute_i), deferred :: execute
-    procedure :: is_final_task
   end type
 
   abstract interface
@@ -27,13 +25,4 @@ module task_m
     end function
 
   end interface
-contains
-    pure function is_final_task(self)
-        !! is this the final task?
-        implicit none
-        class(task_t), intent(in) :: self
-        logical :: is_final_task
-
-        is_final_task = .false.
-    end function
 end module task_m
