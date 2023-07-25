@@ -1,11 +1,9 @@
 module quadratic_solver_application_generator_m
-    use application_m, only: application_t
     use dag_m, only: dag_t
     use iso_fortran_env, only: input_unit, output_unit
     use legacy_m, only: square, four_a_c
     use payload_m, only: payload_t
     use task_m, only: task_t
-    use task_item_m, only: task_item_t
     use vertex_m, only: vertex_t
 
     implicit none
@@ -68,53 +66,32 @@ module quadratic_solver_application_generator_m
       procedure :: execute => printer_execute
     end type
 contains
-    function generate_application() result(application)
-        type(application_t) :: application
-          block
-              character(len=*),           parameter :: root      = 'shape=circle,fillcolor="white",style=filled'
-              character(len=*),           parameter :: branch    = 'shape=square,fillcolor="SlateGray1",style=filled'
-              character(len=len(branch)), parameter :: leaf      = 'shape=circle,fillcolor="cornsilk",style=filled'
-              type(dag_t) solver
-              type(task_item_t), allocatable :: tasks(:)
+    function generate_application() result(solver)
+      type(dag_t) solver
 
-              solver = &
-                  dag_t([ &
-                        vertex_t([integer::], "a", leaf) &
-                      , vertex_t([integer::], "b", leaf) &
-                      , vertex_t([integer::], "c", leaf) &
-                      , vertex_t([2], "b_squared", branch) &
-                      , vertex_t([1, 3], "four_ac", branch) &
-                      , vertex_t([4, 5], "square_root", branch) &
-                      , vertex_t([2, 6], "minus_b_pm_square_root", branch) &
-                      , vertex_t([1], "two_a", branch) &
-                      , vertex_t([8, 7], "division", branch) &
-                      , vertex_t([9], "print", root) &
-                  ])
-              block
-                real :: a, b, c
-                if (this_image() == 1) then
-                  write(output_unit, "(A)") "Enter values for a, b and c in `a*x**2 + b*x + c`:"
-                  flush(output_unit)
-                  read(input_unit, *) a, b, c
-                end if
-                call co_broadcast(a, 1)
-                call co_broadcast(b, 1)
-                call co_broadcast(c, 1)
-                tasks = &
-                [ task_item_t(a_t(a)) &
-                , task_item_t(b_t(b)) &
-                , task_item_t(c_t(c)) &
-                , task_item_t(b_squared_t()) &
-                , task_item_t(four_ac_t()) &
-                , task_item_t(square_root_t()) &
-                , task_item_t(minus_b_pm_square_root_t()) &
-                , task_item_t(two_a_t()) &
-                , task_item_t(division_t()) &
-                , task_item_t(printer_t()) &
-                ]
-                application = application_t(solver, tasks)
-              end block
-          end block
+      real :: a, b, c
+      if (this_image() == 1) then
+        write(output_unit, "(A)") "Enter values for a, b and c in `a*x**2 + b*x + c`:"
+        flush(output_unit)
+        read(input_unit, *) a, b, c
+      end if
+      call co_broadcast(a, 1)
+      call co_broadcast(b, 1)
+      call co_broadcast(c, 1)
+
+      solver = &
+          dag_t([ &
+                vertex_t([integer::], a_t(a)) &
+              , vertex_t([integer::], b_t(b)) &
+              , vertex_t([integer::], c_t(c)) &
+              , vertex_t([2], b_squared_t()) &
+              , vertex_t([1, 3], four_ac_t()) &
+              , vertex_t([4, 5], square_root_t()) &
+              , vertex_t([2, 6], minus_b_pm_square_root_t()) &
+              , vertex_t([1], two_a_t()) &
+              , vertex_t([8, 7], division_t()) &
+              , vertex_t([9], printer_t()) &
+          ])
     end function
 
     function a_execute(self, arguments) result(output)

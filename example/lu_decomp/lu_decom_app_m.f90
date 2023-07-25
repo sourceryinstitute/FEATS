@@ -1,10 +1,8 @@
 module lu_decomp_app_m
-    use application_m, only: application_t
     use dag_m, only: dag_t
     use iso_fortran_env, only: wp => real64
     use payload_m, only: payload_t
     use task_m, only: task_t
-    use task_item_m, only: task_item_t
     use vertex_m, only: vertex_t
 
     implicit none
@@ -52,19 +50,10 @@ module lu_decomp_app_m
         procedure :: execute => print_matrix_execute
     end type
 contains
-    function generate_application() result(application)
-        type(application_t) :: application
-
+    function generate_application() result(dag)
         type(dag_t) :: dag
-        type(task_item_t), allocatable :: tasks(:)
         type(vertex_t), allocatable :: vertices(:)
 
-        ! TODO : get to compile with
-        !          * newer gfortran (> 13)
-        !          * crayftn
-        !          * nagfor
-
-        ! TODO : read in matrix
         real(wp), allocatable :: matrix(:,:)
 
         integer :: matrix_size, step, row, previous_task, latest_matrix
@@ -96,54 +85,44 @@ contains
 
         previous_task = 0
 
-        tasks = [task_item_t(initial_t(matrix))]
-        vertices = [vertex_t([integer::], "initial")]
+        vertices = [vertex_t([integer::], initial_t(matrix))]
         previous_task = previous_task + 1
         latest_matrix = previous_task
 
-        tasks = [tasks, task_item_t(print_matrix_t())]
-        vertices = [vertices, vertex_t([latest_matrix], "print")]
+        vertices = [vertices, vertex_t([latest_matrix], print_matrix_t())]
         previous_task = previous_task + 1
 
         allocate(for_back_substitution(0))
         do step = 1, matrix_size-1
             for_reconstruction = [latest_matrix]
             do row = step+1, matrix_size
-                tasks = [tasks, task_item_t(calc_factor_t(row=row, step=step))]
-                vertices = [vertices, vertex_t([latest_matrix], "factor")]
+                vertices = [vertices, vertex_t([latest_matrix], calc_factor_t(row=row, step=step))]
                 previous_task = previous_task + 1
                 for_back_substitution = [for_back_substitution, previous_task]
 
-                tasks = [tasks, task_item_t(row_multiply_t(step=step))]
-                vertices = [vertices, vertex_t([latest_matrix, previous_task], "row_multiply")]
+                vertices = [vertices, vertex_t([latest_matrix, previous_task], row_multiply_t(step=step))]
                 previous_task = previous_task + 1
 
-                tasks = [tasks, task_item_t(row_subtract_t(row=row))]
-                vertices = [vertices, vertex_t([latest_matrix, previous_task], "row_subtract")]
+                vertices = [vertices, vertex_t([latest_matrix, previous_task], row_subtract_t(row=row))]
                 previous_task = previous_task + 1
                 for_reconstruction = [for_reconstruction, previous_task]
             end do
-            tasks = [tasks, task_item_t(reconstruct_t(step=step))]
-            vertices = [vertices, vertex_t(for_reconstruction, "reconstruct")]
+            vertices = [vertices, vertex_t(for_reconstruction, reconstruct_t(step=step))]
             previous_task = previous_task + 1
             latest_matrix = previous_task
 
-            tasks = [tasks, task_item_t(print_matrix_t())]
-            vertices = [vertices, vertex_t([latest_matrix], "print")]
+            vertices = [vertices, vertex_t([latest_matrix], print_matrix_t())]
             previous_task = previous_task + 1
         end do
-        tasks = [tasks, task_item_t(back_substitute_t(n_rows=matrix_size))]
-        vertices = [vertices, vertex_t(for_back_substitution, "back_substitute")]
+        vertices = [vertices, vertex_t(for_back_substitution, back_substitute_t(n_rows=matrix_size))]
         previous_task = previous_task + 1
         deallocate(for_back_substitution)
         latest_matrix = previous_task
 
-        tasks = [tasks, task_item_t(print_matrix_t())]
-        vertices = [vertices, vertex_t([latest_matrix], "print")]
+        vertices = [vertices, vertex_t([latest_matrix], print_matrix_t())]
         previous_task = previous_task + 1
 
         dag = dag_t(vertices)
-        application = application_t(dag, tasks)
     end function
 
     function initial_execute(self, arguments) result(output)

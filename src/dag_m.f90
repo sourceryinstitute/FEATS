@@ -14,7 +14,6 @@ module dag_m
 
   type :: dag_t
     !! Encapsulate a graph as an array of vertices, each storing dependency information
-    private
     type(vertex_t), allocatable :: vertices(:)
     integer, allocatable :: order(:)
   contains
@@ -29,10 +28,10 @@ module dag_m
   end type
 
   interface dag_t
-    module procedure construct_from_components
+    module procedure construct_from_vertices
   end interface
 contains
-    pure function construct_from_components(vertices) result(dag)
+    pure function construct_from_vertices(vertices) result(dag)
       !! Construct a dag_t object from an array of (unsorted) vertex_t objects (result contains a topologically sorted index array)
       type(vertex_t), intent(in) :: vertices(:)
       type(dag_t) dag
@@ -57,7 +56,7 @@ contains
           integer i, j
 
           do i = 1, num_vertices
-            associate(edges => self%vertices(self%order(i))%edges())
+            associate(edges => self%vertices(self%order(i))%edges)
               do j = 1, size(edges)
                 if (.not. any(edges(j) == self%order(1:i))) then
                   is_sorted_and_acyclic = .false.
@@ -93,7 +92,7 @@ contains
         integer v
 
         do v = 1, size(self%vertices)
-          if (any(self%vertices(v)%edges() == vertex_num)) dependencies = [dependencies, v]
+          if (any(self%vertices(v)%edges == vertex_num)) dependencies = [dependencies, v]
         end do
       end block
     end function
@@ -104,7 +103,7 @@ contains
       integer, intent(in) :: vertex_id
       integer, allocatable :: dependency_ids(:)
 
-      dependency_ids = self%vertices(vertex_id)%edges()
+      dependency_ids = self%vertices(vertex_id)%edges
     end function
 
     pure function topological_sort(dag) result(order)

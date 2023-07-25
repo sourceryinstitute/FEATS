@@ -1,10 +1,8 @@
 module image_m
     !! Compute-image/Scheduler-image abstraction
-    use application_m, only: application_t
     use dag_m, only: dag_t
     use iso_fortran_env, only: event_type
     use payload_m, only: payload_t
-    use task_item_m, only: task_item_t
 
     implicit none
     private
@@ -49,17 +47,15 @@ module image_m
 
 contains
 
-    subroutine run(self, application)
+    subroutine run(self, dag)
         implicit none
         class(image_t), intent(in) :: self
-        type(application_t), intent(in) :: application
+        type(dag_t), intent(in) :: dag
 
         logical :: tasks_left
-        type(task_item_t), allocatable :: tasks(:)
-        type(dag_t) :: dag
 
         task_identifier = no_task_assigned
-        associate(n_tasks => size(application%tasks()), n_imgs => num_images())
+        associate(n_tasks => size(dag%vertices), n_imgs => num_images())
             allocate(ready_for_next_task(n_imgs)[*])
             allocate(mailbox[*])
             allocate(mailbox%payloads(n_tasks))
@@ -76,19 +72,16 @@ contains
 
         tasks_left = .true.
 
-        tasks = application%tasks()
-        dag = application%dag()
         do while (tasks_left)
             if (this_image() == scheduler_image) then
                 tasks_left = assign_task(dag)
             else
-                tasks_left = do_work(tasks, dag)
+                tasks_left = do_work(dag)
             end if
         end do
     end subroutine
 
-    function do_work(tasks, dag) result(tasks_left)
-        type(task_item_t), intent(in) :: tasks(:)
+    function do_work(dag) result(tasks_left)
         type(dag_t),       intent(in) :: dag
         logical :: tasks_left
 
@@ -106,7 +99,7 @@ contains
         if (task_identifier == ALL_TASKS_DONE) then
             tasks_left = .false.
         else
-            do_assigned_task: associate(my_task    => tasks(task_identifier))
+            do_assigned_task: associate(my_task => dag%vertices(task_identifier)%task)
                 block
                     integer, allocatable :: upstream_task_nums(:)
                     integer, allocatable :: upstream_task_imagenums(:)
