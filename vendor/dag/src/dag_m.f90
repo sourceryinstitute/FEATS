@@ -120,14 +120,15 @@ contains
 
         do v = 1, size(dag%vertices)
           if (.not. any(v == searched_and_ordered%s)) &
-            searched_and_ordered = depth_first_search(v, [integer::], searched_and_ordered%o)
+            searched_and_ordered = depth_first_search(dag, v, [integer::], searched_and_ordered%o)
         end do
         order = searched_and_ordered%o
       end block
 
-    contains
+    end function topological_sort
 
-      pure recursive function depth_first_search(v, d, o) result(hybrid)
+      pure recursive function depth_first_search(dag, v, d, o) result(hybrid)
+        type(dag_t), intent(in) :: dag
         integer, intent(in) :: v
         integer, intent(in), dimension(:) :: d, o
         type(searched_and_ordered_t) hybrid
@@ -139,7 +140,7 @@ contains
             integer w
             do w = 1, size(dependencies)
               associate(w_dependencies => dependencies(w))
-                if (.not. any(w_dependencies == hybrid%s)) hybrid = depth_first_search(w_dependencies, [d, v], hybrid%o)
+                if (.not. any(w_dependencies == hybrid%s)) hybrid = depth_first_search(dag, w_dependencies, [d, v], hybrid%o)
               end associate
             end do
           end block
@@ -149,7 +150,5 @@ contains
         hybrid = searched_and_ordered_t(s = [v, hybrid%s], o = hybrid%o)
 
       end function
-
-    end function topological_sort
 
 end module dag_m

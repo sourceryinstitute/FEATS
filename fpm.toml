@@ -9,11 +9,6 @@ copyright = "2021 Sourcery Institute"
 dag = { path = "vendor/dag" }
 
 [[example]]
-name="build_feats"
-source-dir="example/build_feats"
-main="main.f90"
-
-[[example]]
 name="quadratic_solver"
 source-dir="example/quadratic_solver"
 main="main.f90"

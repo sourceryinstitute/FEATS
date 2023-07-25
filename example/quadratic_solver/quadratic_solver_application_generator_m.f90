@@ -1,6 +1,7 @@
 module quadratic_solver_application_generator_m
     use application_m, only: application_t
     use dag_m, only: dag_t
+    use iso_fortran_env, only: input_unit, output_unit
     use legacy_m, only: square, four_a_c
     use payload_m, only: payload_t
     use task_m, only: task_t
@@ -92,8 +93,9 @@ contains
               block
                 real :: a, b, c
                 if (this_image() == 1) then
-                  print *, "Enter values for a, b and c in `a*x**2 + b*x + c`:"
-                  read (*, *) a, b, c
+                  write(output_unit, "(A)") "Enter values for a, b and c in `a*x**2 + b*x + c`:"
+                  flush(output_unit)
+                  read(input_unit, *) a, b, c
                 end if
                 call co_broadcast(a, 1)
                 call co_broadcast(b, 1)
@@ -151,7 +153,7 @@ contains
 
         b = transfer(arguments(1)%raw_payload(), b)
         b_squared = square(b)
-        print *, "b**2 = ", b
+        print *, "b**2 = ", b_squared
         output = payload_t(transfer(b_squared, output%raw_payload()))
     end function
 
