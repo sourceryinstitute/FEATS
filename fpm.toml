@@ -5,9 +5,6 @@ author = ["Damian Rouson"]
 maintainer = "damian@sourceryinstitute.org"
 copyright = "2021 Sourcery Institute"
 
-[dependencies]
-dag = { path = "vendor/dag" }
-
 [[example]]
 name="quadratic_solver"
 source-dir="example/quadratic_solver"
