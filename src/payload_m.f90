@@ -3,7 +3,7 @@ module payload_m
     private
     public :: payload_t, empty_payload
 
-    integer, parameter :: MAX_PAYLOAD_SIZE = 100
+    integer, parameter :: MAX_PAYLOAD_SIZE = 20
 
     type :: payload_t
         !! A raw buffer to facilitate data transfer between  images

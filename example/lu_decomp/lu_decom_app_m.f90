@@ -56,9 +56,8 @@ contains
 
         real(wp), allocatable :: matrix(:,:)
 
-        integer :: matrix_size, step, row, previous_task, latest_matrix
-        integer, allocatable :: for_reconstruction(:), for_back_substitution(:)
-        integer :: arg_len, fu
+        integer :: matrix_size, step, row, num_tasks
+        integer :: arg_len, fu, i
         character(len=:), allocatable :: arg
 
         if (this_image() == 1) then
@@ -80,49 +79,46 @@ contains
                 read(fu, *) matrix(:,row)
             end do
             close(fu)
+            print *, "matrix read in"
         end if
         call co_broadcast(matrix, 1)
 
-        previous_task = 0
+        num_tasks = 4 + (matrix_size-1)*2 + sum([((matrix_size-step)*3, step=1,matrix_size-1)])
+        allocate(vertices(num_tasks))
+        if (this_image() == 1) print *, "Num tasks: ", num_tasks
 
-        vertices = [vertex_t([integer::], initial_t(matrix))]
-        previous_task = previous_task + 1
-        latest_matrix = previous_task
-
-        vertices = [vertices, vertex_t([latest_matrix], print_matrix_t())]
-        previous_task = previous_task + 1
-
-        allocate(for_back_substitution(0))
+        vertices(1) = vertex_t([integer::], initial_t(matrix))
+        vertices(2) = vertex_t([1], print_matrix_t())
         do step = 1, matrix_size-1
-            for_reconstruction = [latest_matrix]
             do row = step+1, matrix_size
-                vertices = [vertices, vertex_t([latest_matrix], calc_factor_t(row=row, step=step))]
-                previous_task = previous_task + 1
-                for_back_substitution = [for_back_substitution, previous_task]
-
-                vertices = [vertices, vertex_t([latest_matrix, previous_task], row_multiply_t(step=step))]
-                previous_task = previous_task + 1
-
-                vertices = [vertices, vertex_t([latest_matrix, previous_task], row_subtract_t(row=row))]
-                previous_task = previous_task + 1
-                for_reconstruction = [for_reconstruction, previous_task]
+                associate( &
+                        latest_matrix => 1 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1), & ! reconstructed matrix from last step
+                        task_base => sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)))
+                    vertices(3+task_base) = vertex_t([latest_matrix], calc_factor_t(row=row, step=step))
+                    vertices(4+task_base) = vertex_t([latest_matrix, 3+task_base], row_multiply_t(step=step))
+                    vertices(5+task_base) = vertex_t([latest_matrix, 4+task_base], row_subtract_t(row=row))
+                end associate
             end do
-            vertices = [vertices, vertex_t(for_reconstruction, reconstruct_t(step=step))]
-            previous_task = previous_task + 1
-            latest_matrix = previous_task
-
-            vertices = [vertices, vertex_t([latest_matrix], print_matrix_t())]
-            previous_task = previous_task + 1
+            associate(reconstruction_step => 3 + sum([(3*(matrix_size-i), i = 1, step)]) + 2*(step-1))
+                vertices(reconstruction_step) = vertex_t( &
+                    [ 1 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) &
+                    , [(5 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)) &
+                        , row=step+1, matrix_size)] &
+                    ], &
+                    reconstruct_t(step=step)) ! depends on previous reconstructed matrix and just subtracted rows
+                vertices(reconstruction_step+1) = vertex_t([reconstruction_step], print_matrix_t()) ! print the just reconstructed matrix
+            end associate
         end do
-        vertices = [vertices, vertex_t(for_back_substitution, back_substitute_t(n_rows=matrix_size))]
-        previous_task = previous_task + 1
-        deallocate(for_back_substitution)
-        latest_matrix = previous_task
+        vertices(num_tasks-1) = vertex_t( &
+            [([(3 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)) &
+                , row=step+1, matrix_size)] &
+                , step=1, matrix_size-1)] &
+            , back_substitute_t(n_rows=matrix_size)) ! depends on all "factors"
+        vertices(num_tasks) = vertex_t([num_tasks-1], print_matrix_t())
 
-        vertices = [vertices, vertex_t([latest_matrix], print_matrix_t())]
-        previous_task = previous_task + 1
-
+        if (this_image() == 1) print *, "Tasks created"
         dag = dag_t(vertices)
+        if (this_image() == 1) print *, "Dag created"
     end function
 
     function initial_execute(self, arguments) result(output)
