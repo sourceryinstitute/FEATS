@@ -57,7 +57,7 @@ contains
 
         real(wp), allocatable :: matrix(:,:)
 
-        integer :: matrix_size, step, row, num_tasks
+        integer :: matrix_size, step, row, num_tasks, latest_matrix, task_base, reconstruction_step
         integer :: arg_len, fu, i
         character(len=:), allocatable :: arg
 
@@ -92,23 +92,20 @@ contains
         vertices(2) = vertex_t([1], print_matrix_t(0))
         do step = 1, matrix_size-1
             do row = step+1, matrix_size
-                associate( &
-                        latest_matrix => 1 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1), & ! reconstructed matrix from last step
-                        task_base => sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)))
-                    vertices(3+task_base) = vertex_t([latest_matrix], calc_factor_t(row=row, step=step))
-                    vertices(4+task_base) = vertex_t([latest_matrix, 3+task_base], row_multiply_t(step=step))
-                    vertices(5+task_base) = vertex_t([latest_matrix, 4+task_base], row_subtract_t(row=row))
-                end associate
+                latest_matrix = 1 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) ! reconstructed matrix from last step
+                task_base = sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1))
+                vertices(3+task_base) = vertex_t([latest_matrix], calc_factor_t(row=row, step=step))
+                vertices(4+task_base) = vertex_t([latest_matrix, 3+task_base], row_multiply_t(step=step))
+                vertices(5+task_base) = vertex_t([latest_matrix, 4+task_base], row_subtract_t(row=row))
             end do
-            associate(reconstruction_step => 3 + sum([(3*(matrix_size-i), i = 1, step)]) + 2*(step-1))
-                vertices(reconstruction_step) = vertex_t( &
-                    [ 1 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) &
-                    , [(5 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)) &
-                        , row=step+1, matrix_size)] &
-                    ], &
-                    reconstruct_t(step=step)) ! depends on previous reconstructed matrix and just subtracted rows
-                vertices(reconstruction_step+1) = vertex_t([reconstruction_step], print_matrix_t(step)) ! print the just reconstructed matrix
-            end associate
+            reconstruction_step = 3 + sum([(3*(matrix_size-i), i = 1, step)]) + 2*(step-1)
+            vertices(reconstruction_step) = vertex_t( &
+                [ 1 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) &
+                , [(5 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)) &
+                    , row=step+1, matrix_size)] &
+                ], &
+                reconstruct_t(step=step)) ! depends on previous reconstructed matrix and just subtracted rows
+            vertices(reconstruction_step+1) = vertex_t([reconstruction_step], print_matrix_t(step)) ! print the just reconstructed matrix
         end do
         vertices(num_tasks-1) = vertex_t( &
             [([(3 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)) &
@@ -147,17 +144,18 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        integer, allocatable :: matrix_data(:)
+        integer :: n_row, n_col
         real(wp), allocatable :: matrix(:,:)
         real(wp) :: factor
 
-        associate(matrix_data => arguments(1)%raw_payload())
-            associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
-            end associate
-        end associate
+        matrix_data = arguments(1)%raw_payload()
+        n_row = matrix_data(1)
+        n_col = matrix_data(2)
+        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
 
         factor = matrix(self%row, self%step) / matrix(self%step, self%step)
-        output = payload_t(transfer(factor, output%raw_payload()))
+        output = payload_t(transfer(factor, [integer::]))
     end function
 
     function row_multiply_execute(self, arguments) result(output)
@@ -165,17 +163,18 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        integer, allocatable :: matrix_data(:)
+        integer :: n_row, n_col
         real(wp), allocatable :: matrix(:,:)
         real(wp) :: factor
         real(wp), allocatable :: new_row(:)
         integer, allocatable :: data(:)
         integer :: data_size
 
-        associate(matrix_data => arguments(1)%raw_payload())
-            associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
-            end associate
-        end associate
+        matrix_data = arguments(1)%raw_payload()
+        n_row = matrix_data(1)
+        n_col = matrix_data(2)
+        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
         factor = transfer(arguments(2)%raw_payload(), factor)
         new_row = factor * matrix(self%step, :)
 
@@ -195,22 +194,21 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        integer, allocatable :: matrix_data(:), row_data(:)
+        integer :: n_row, n_col
         real(wp), allocatable :: matrix(:,:)
         real(wp), allocatable :: row(:)
         real(wp), allocatable :: new_row(:)
         integer, allocatable :: data(:)
         integer :: data_size
 
-        associate(matrix_data => arguments(1)%raw_payload())
-            associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
-            end associate
-        end associate
-        associate(row_data => arguments(2)%raw_payload())
-            associate(n_cols => row_data(1))
-                row = transfer(row_data(2:), row, n_cols)
-            end associate
-        end associate
+        matrix_data = arguments(1)%raw_payload()
+        n_row = matrix_data(1)
+        n_col = matrix_data(2)
+        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
+        row_data = arguments(2)%raw_payload()
+        n_col = row_data(1)
+        row = transfer(row_data(2:), row, n_col)
 
         new_row = matrix(self%row, :) - row
 
@@ -230,27 +228,26 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        integer, allocatable :: matrix_data(:), row_data(:)
+        integer :: n_row, n_col
         real(wp), allocatable :: original_matrix(:, :)
         real(wp), allocatable :: new_matrix(:, :)
         integer :: i
         integer, allocatable :: data(:)
         integer :: data_size
 
-        associate(matrix_data => arguments(1)%raw_payload())
-            associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                original_matrix = reshape(transfer(matrix_data(3:), original_matrix, n_row*n_col), [n_row, n_col])
-            end associate
-        end associate
+        matrix_data = arguments(1)%raw_payload()
+        n_row = matrix_data(1)
+        n_col = matrix_data(2)
+        original_matrix = reshape(transfer(matrix_data(3:), original_matrix, n_row*n_col), [n_row, n_col])
         allocate(new_matrix, mold=original_matrix)
         do i = 1, self%step
             new_matrix(i, :) = original_matrix(i, :)
         end do
         do i = self%step+1, size(original_matrix, dim=1)
-            associate(row_data => arguments(i - self%step + 1)%raw_payload())
-                associate(n_cols => row_data(1))
-                    new_matrix(i, :) = transfer(row_data(2:), new_matrix, n_cols)
-                end associate
-            end associate
+            row_data = arguments(i - self%step + 1)%raw_payload()
+            n_col = row_data(1)
+            new_matrix(i, :) = transfer(row_data(2:), new_matrix, n_col)
         end do
 
         data_size = &
@@ -305,20 +302,21 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
+        integer, allocatable :: matrix_data(:)
+        integer :: n_row, n_col
         real(wp), allocatable :: matrix(:,:)
         integer :: i
 
         critical
             print *, ""
-            associate(matrix_data => arguments(1)%raw_payload())
-                associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                    matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
-                    print *, "Step: ", self%step
-                    do i = 1, n_row
-                        print *, matrix(i, :)
-                    end do
-                end associate
-            end associate
+            matrix_data = arguments(1)%raw_payload()
+            n_row = matrix_data(1)
+            n_col = matrix_data(2)
+            matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
+            print *, "Step: ", self%step
+            do i = 1, n_row
+                print *, matrix(i, :)
+            end do
             print *, ""
         end critical
     end function

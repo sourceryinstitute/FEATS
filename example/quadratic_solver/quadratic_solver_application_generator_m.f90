@@ -100,7 +100,7 @@ contains
         type(payload_t) :: output
 
         print *, "a = ", self%a
-        output = payload_t(transfer(self%a, output%raw_payload()))
+        output = payload_t(transfer(self%a, [integer::]))
     end function
 
     function b_execute(self, arguments) result(output)
@@ -109,7 +109,7 @@ contains
         type(payload_t) :: output
 
         print *, "b = ", self%b
-        output = payload_t(transfer(self%b, output%raw_payload()))
+        output = payload_t(transfer(self%b, [integer::]))
     end function
 
     function c_execute(self, arguments) result(output)
@@ -118,7 +118,7 @@ contains
         type(payload_t) :: output
 
         print *, "c = ", self%c
-        output = payload_t(transfer(self%c, output%raw_payload()))
+        output = payload_t(transfer(self%c, [integer::]))
     end function
 
     function b_squared_execute(self, arguments) result(output)
@@ -131,7 +131,7 @@ contains
         b = transfer(arguments(1)%raw_payload(), b)
         b_squared = square(b)
         print *, "b**2 = ", b_squared
-        output = payload_t(transfer(b_squared, output%raw_payload()))
+        output = payload_t(transfer(b_squared, [integer::]))
     end function
 
     function four_ac_execute(self, arguments) result(output)
@@ -145,7 +145,7 @@ contains
       c = transfer(arguments(2)%raw_payload(), c)
       four_a_c = 4*a*c
       print *, "4*a*c = ", four_a_c
-      output = payload_t(transfer(four_a_c, output%raw_payload()))
+      output = payload_t(transfer(four_a_c, [integer::]))
     end function
 
     function square_root_execute(self, arguments) result(output)
@@ -153,16 +153,15 @@ contains
       type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      real :: b_squared, four_a_c, square_roots(2)
+      real :: b_squared, four_a_c, square_roots(2), square
 
         b_squared = transfer(arguments(1)%raw_payload(), b_squared)
         four_a_c = transfer(arguments(2)%raw_payload(), four_a_c)
 
-        associate(discriminant => b_squared - four_a_c)
-          square_roots = [sqrt(discriminant), -sqrt(discriminant)]
-          print *, "sqrt(b**2 - 4*a*c) = ", square_roots
-          output = payload_t(transfer(square_roots, output%raw_payload()))
-        end associate
+        square = b_squared - four_a_c
+        square_roots = [sqrt(square), -sqrt(square)]
+        print *, "sqrt(b**2 - 4*a*c) = ", square_roots
+        output = payload_t(transfer(square_roots, [integer::]))
     end function
 
     function minus_b_pm_square_root_execute(self, arguments) result(output)
@@ -176,7 +175,7 @@ contains
         square_root = transfer(arguments(2)%raw_payload(), square_root)
         minus_b_pm_roots = -b + square_root
         print *, "-b +- sqrt(b**2 - 4*a*c) = ", minus_b_pm_roots
-        output = payload_t(transfer(minus_b_pm_roots, output%raw_payload()))
+        output = payload_t(transfer(minus_b_pm_roots, [integer::]))
     end function
 
     function two_a_execute(self, arguments) result(output)
@@ -189,7 +188,7 @@ contains
       a = transfer(arguments(1)%raw_payload(), a)
       two_a = 2*a
       print *, "2*a = ", two_a
-      output = payload_t(transfer(two_a, output%raw_payload()))
+      output = payload_t(transfer(two_a, [integer::]))
     end function
 
     function division_execute(self, arguments) result(output)
@@ -203,7 +202,7 @@ contains
         b_pm_square_root = transfer(arguments(2)%raw_payload(), b_pm_square_root)
         quotients = b_pm_square_root / two_a
         print *, "(-b +- sqrt(b**2 - 4*a*c)) / (2*a) = ", quotients
-        output = payload_t(transfer(quotients, output%raw_payload()))
+        output = payload_t(transfer(quotients, [integer::]))
     end function
 
     function printer_execute(self, arguments) result(output)
