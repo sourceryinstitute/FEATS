@@ -124,19 +124,7 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        integer, allocatable :: data(:)
-        integer :: data_size
-
-        data_size = &
-            2 &
-            + ceiling(size(self%initial_matrix) &
-            * real(storage_size(self%initial_matrix)) &
-            / real(storage_size(data)))
-        allocate(data(data_size))
-        data(1) = size(self%initial_matrix, dim=1)
-        data(2) = size(self%initial_matrix, dim=2)
-        data(3:) = transfer(self%initial_matrix, data)
-        output = payload_t(data)
+        output = package_matrix(self%initial_matrix)
     end function
 
     function calc_factor_execute(self, arguments) result(output)
@@ -149,11 +137,7 @@ contains
         real(wp), allocatable :: matrix(:,:)
         real(wp) :: factor
 
-        matrix_data = arguments(1)%raw_payload()
-        n_row = matrix_data(1)
-        n_col = matrix_data(2)
-        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
-
+        matrix = unpack_matrix(arguments(1))
         factor = matrix(self%row, self%step) / matrix(self%step, self%step)
         output = payload_t(transfer(factor, [integer::]))
     end function
@@ -163,30 +147,14 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        integer, allocatable :: matrix_data(:)
-        integer :: n_row, n_col
         real(wp), allocatable :: matrix(:,:)
         real(wp) :: factor
         real(wp), allocatable :: new_row(:)
-        integer, allocatable :: data(:)
-        integer :: data_size
 
-        matrix_data = arguments(1)%raw_payload()
-        n_row = matrix_data(1)
-        n_col = matrix_data(2)
-        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
+        matrix = unpack_matrix(arguments(1))
         factor = transfer(arguments(2)%raw_payload(), factor)
         new_row = factor * matrix(self%step, :)
-
-        data_size = &
-            1 &
-            + ceiling(size(new_row) &
-            * real(storage_size(new_row)) &
-            / real(storage_size(data)))
-        allocate(data(data_size))
-        data(1) = size(new_row)
-        data(2:) = transfer(new_row, data)
-        output = payload_t(data)
+        output = package_row(new_row)
     end function
 
     function row_subtract_execute(self, arguments) result(output)
@@ -194,33 +162,14 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        integer, allocatable :: matrix_data(:), row_data(:)
-        integer :: n_row, n_col
         real(wp), allocatable :: matrix(:,:)
         real(wp), allocatable :: row(:)
         real(wp), allocatable :: new_row(:)
-        integer, allocatable :: data(:)
-        integer :: data_size
 
-        matrix_data = arguments(1)%raw_payload()
-        n_row = matrix_data(1)
-        n_col = matrix_data(2)
-        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
-        row_data = arguments(2)%raw_payload()
-        n_col = row_data(1)
-        row = transfer(row_data(2:), row, n_col)
-
+        matrix = unpack_matrix(arguments(1))
+        row = unpack_row(arguments(2))
         new_row = matrix(self%row, :) - row
-
-        data_size = &
-            1 &
-            + ceiling(size(new_row) &
-            * real(storage_size(new_row)) &
-            / real(storage_size(data)))
-        allocate(data(data_size))
-        data(1) = size(new_row)
-        data(2:) = transfer(new_row, data)
-        output = payload_t(data)
+        output = package_row(new_row)
     end function
 
     function reconstruct_execute(self, arguments) result(output)
@@ -228,38 +177,19 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        integer, allocatable :: matrix_data(:), row_data(:)
-        integer :: n_row, n_col
         real(wp), allocatable :: original_matrix(:, :)
         real(wp), allocatable :: new_matrix(:, :)
         integer :: i
-        integer, allocatable :: data(:)
-        integer :: data_size
 
-        matrix_data = arguments(1)%raw_payload()
-        n_row = matrix_data(1)
-        n_col = matrix_data(2)
-        original_matrix = reshape(transfer(matrix_data(3:), original_matrix, n_row*n_col), [n_row, n_col])
+        original_matrix = unpack_matrix(arguments(1))
         allocate(new_matrix, mold=original_matrix)
         do i = 1, self%step
             new_matrix(i, :) = original_matrix(i, :)
         end do
         do i = self%step+1, size(original_matrix, dim=1)
-            row_data = arguments(i - self%step + 1)%raw_payload()
-            n_col = row_data(1)
-            new_matrix(i, :) = transfer(row_data(2:), new_matrix, n_col)
+            new_matrix(i, :) = unpack_row(arguments(i - self%step + 1))
         end do
-
-        data_size = &
-            2 &
-            + ceiling(size(new_matrix) &
-            * real(storage_size(new_matrix)) &
-            / real(storage_size(data)))
-        allocate(data(data_size))
-        data(1) = size(new_matrix, dim=1)
-        data(2) = size(new_matrix, dim=2)
-        data(3:) = transfer(new_matrix, data)
-        output = payload_t(data)
+        output = package_matrix(new_matrix)
     end function
 
     function back_substitute_execute(self, arguments) result(output)
@@ -269,8 +199,6 @@ contains
 
         real(wp), allocatable :: new_matrix(:,:)
         integer :: row, col, f
-        integer, allocatable :: data(:)
-        integer :: data_size
 
         allocate(new_matrix(self%n_rows, self%n_rows))
         do row = 1, self%n_rows
@@ -284,17 +212,7 @@ contains
                 f = f + 1
             end do
         end do
-
-        data_size = &
-            2 &
-            + ceiling(size(new_matrix) &
-            * real(storage_size(new_matrix)) &
-            / real(storage_size(data)))
-        allocate(data(data_size))
-        data(1) = size(new_matrix, dim=1)
-        data(2) = size(new_matrix, dim=2)
-        data(3:) = transfer(new_matrix, data)
-        output = payload_t(data)
+        output = package_matrix(new_matrix)
     end function
 
     function print_matrix_execute(self, arguments) result(output)
@@ -319,5 +237,67 @@ contains
             end do
             print *, ""
         end critical
+    end function
+
+    pure function package_matrix(matrix) result(payload)
+        real(wp), intent(in) :: matrix(:, :)
+        type(payload_t) :: payload
+
+        integer :: data_size
+        integer, allocatable :: data(:)
+
+        data_size = &
+            2 &
+            + ceiling(size(matrix) &
+            * real(storage_size(matrix)) &
+            / real(storage_size(data)))
+        allocate(data(data_size))
+        data(1) = size(matrix, dim=1)
+        data(2) = size(matrix, dim=2)
+        data(3:) = transfer(matrix, data)
+        payload = payload_t(data)
+    end function
+
+    pure function unpack_matrix(payload) result(matrix)
+        type(payload_t), intent(in) :: payload
+        real(wp), allocatable :: matrix(:, :)
+
+        integer, allocatable :: matrix_data(:)
+        integer :: n_row, n_col
+
+        matrix_data = payload%raw_payload()
+        n_row = matrix_data(1)
+        n_col = matrix_data(2)
+        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
+    end function
+
+    pure function package_row(row) result(payload)
+        real(wp), intent(in) :: row(:)
+        type(payload_t) :: payload
+
+        integer :: data_size
+        integer, allocatable :: data(:)
+
+        data_size = &
+            1 &
+            + ceiling(size(row) &
+            * real(storage_size(row)) &
+            / real(storage_size(data)))
+        allocate(data(data_size))
+        data(1) = size(row)
+        data(2:) = transfer(row, data)
+        payload = payload_t(data)
+    end function
+
+    pure function unpack_row(payload) result(row)
+        type(payload_t), intent(in) :: payload
+        real(wp), allocatable :: row(:)
+
+        integer, allocatable :: row_data(:)
+        integer :: n_col
+
+        row_data = payload%raw_payload()
+        n_col = row_data(1)
+        row = transfer(row_data(2:), row, n_col)
     end function
 end module
