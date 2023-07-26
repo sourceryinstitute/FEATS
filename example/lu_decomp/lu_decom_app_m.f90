@@ -46,6 +46,7 @@ module lu_decomp_app_m
     end type
 
     type, extends(task_t) :: print_matrix_t
+        integer :: step
     contains
         procedure :: execute => print_matrix_execute
     end type
@@ -88,7 +89,7 @@ contains
         if (this_image() == 1) print *, "Num tasks: ", num_tasks
 
         vertices(1) = vertex_t([integer::], initial_t(matrix))
-        vertices(2) = vertex_t([1], print_matrix_t())
+        vertices(2) = vertex_t([1], print_matrix_t(0))
         do step = 1, matrix_size-1
             do row = step+1, matrix_size
                 associate( &
@@ -106,7 +107,7 @@ contains
                         , row=step+1, matrix_size)] &
                     ], &
                     reconstruct_t(step=step)) ! depends on previous reconstructed matrix and just subtracted rows
-                vertices(reconstruction_step+1) = vertex_t([reconstruction_step], print_matrix_t()) ! print the just reconstructed matrix
+                vertices(reconstruction_step+1) = vertex_t([reconstruction_step], print_matrix_t(step)) ! print the just reconstructed matrix
             end associate
         end do
         vertices(num_tasks-1) = vertex_t( &
@@ -114,7 +115,7 @@ contains
                 , row=step+1, matrix_size)] &
                 , step=1, matrix_size-1)] &
             , back_substitute_t(n_rows=matrix_size)) ! depends on all "factors"
-        vertices(num_tasks) = vertex_t([num_tasks-1], print_matrix_t())
+        vertices(num_tasks) = vertex_t([num_tasks-1], print_matrix_t(matrix_size))
 
         if (this_image() == 1) print *, "Tasks created"
         dag = dag_t(vertices)
@@ -307,15 +308,18 @@ contains
         real(wp), allocatable :: matrix(:,:)
         integer :: i
 
-        print *, ""
-        associate(matrix_data => arguments(1)%raw_payload())
-            associate(n_row => matrix_data(1), n_col => matrix_data(2))
-                matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
-                do i = 1, n_row
-                    print *, matrix(i, :)
-                end do
+        critical
+            print *, ""
+            associate(matrix_data => arguments(1)%raw_payload())
+                associate(n_row => matrix_data(1), n_col => matrix_data(2))
+                    matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
+                    print *, "Step: ", self%step
+                    do i = 1, n_row
+                        print *, matrix(i, :)
+                    end do
+                end associate
             end associate
-        end associate
-        print *, ""
+            print *, ""
+        end critical
     end function
 end module

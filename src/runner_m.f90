@@ -45,31 +45,35 @@ contains
 
         logical :: tasks_left
 
-        task_identifier = no_task_assigned
-        associate(n_tasks => size(dag%vertices), n_imgs => num_images())
-            allocate(ready_for_next_task(n_imgs)[*])
-            allocate(mailbox[*])
-            allocate(mailbox%payloads(n_tasks))
-            sync all
-            allocate(mailbox_entry_can_be_freed(n_tasks)[*])
-            mailbox_entry_can_be_freed(n_tasks) = .false.
-            allocate(task_assignment_history(n_tasks)[*])
-            task_assignment_history = NO_IMAGE_READY
-            if (this_image() == scheduler_image) then
-                allocate(task_done(n_tasks))
-                task_done = .false.
-            end if
-        end associate
+        if (num_images() == 1) then
+            call run_single_image(dag)
+        else
+            task_identifier = no_task_assigned
+            associate(n_tasks => size(dag%vertices), n_imgs => num_images())
+                allocate(ready_for_next_task(n_imgs)[*])
+                allocate(mailbox[*])
+                allocate(mailbox%payloads(n_tasks))
+                sync all
+                allocate(mailbox_entry_can_be_freed(n_tasks)[*])
+                mailbox_entry_can_be_freed(n_tasks) = .false.
+                allocate(task_assignment_history(n_tasks)[*])
+                task_assignment_history = NO_IMAGE_READY
+                if (this_image() == scheduler_image) then
+                    allocate(task_done(n_tasks))
+                    task_done = .false.
+                end if
+            end associate
 
-        tasks_left = .true.
+            tasks_left = .true.
 
-        do while (tasks_left)
-            if (this_image() == scheduler_image) then
-                tasks_left = assign_task(dag)
-            else
-                tasks_left = do_work(dag)
-            end if
-        end do
+            do while (tasks_left)
+                if (this_image() == scheduler_image) then
+                    tasks_left = assign_task(dag)
+                else
+                    tasks_left = do_work(dag)
+                end if
+            end do
+        end if
     end subroutine
 
     function do_work(dag) result(tasks_left)
@@ -238,4 +242,20 @@ contains
       end if
 
     end function find_next_task
+
+    subroutine run_single_image(dag)
+        type(dag_t), intent(in) :: dag
+
+        type(payload_t), allocatable :: results(:)
+        integer :: i
+
+        associate(num_tasks => size(dag%vertices))
+            allocate(results(num_tasks))
+            do i = 1, size(dag%vertices)
+                associate(next_task => dag%order(i))
+                    results(next_task) = dag%vertices(next_task)%task%execute(results(dag%dependencies_for(next_task)))
+                end associate
+            end do
+        end associate
+    end subroutine
 end module
