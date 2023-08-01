@@ -238,7 +238,7 @@ contains
         if (this_image() == 1) then
             open(file=arg, newunit=fu, status="old")
             do i = 1, matrix_size
-                read(fu, *) matrix(:, i)
+                read(fu, *) matrix(i, :)
             end do
             close(fu)
         end if
