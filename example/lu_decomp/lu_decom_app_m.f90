@@ -53,40 +53,15 @@ module lu_decomp_app_m
 contains
     function generate_application() result(dag)
         type(dag_t) :: dag
+
         type(vertex_t), allocatable :: vertices(:)
-
         real(wp), allocatable :: matrix(:,:)
+        integer :: i, matrix_size, step, row, num_tasks, latest_matrix, task_base, reconstruction_step
 
-        integer :: matrix_size, step, row, num_tasks, latest_matrix, task_base, reconstruction_step
-        integer :: arg_len, fu, i
-        character(len=:), allocatable :: arg
-
-        if (this_image() == 1) then
-            call get_command_argument(number=1, length=arg_len)
-            allocate(character(len=arg_len) :: arg)
-            call get_command_argument(number=1, value=arg)
-            read(arg, *) matrix_size
-            deallocate(arg)
-        end if
-        call co_broadcast(matrix_size, 1)
-        allocate(matrix(matrix_size, matrix_size))
-        if (this_image() == 1) then
-            call get_command_argument(number=2, length=arg_len)
-            allocate(character(len=arg_len) :: arg)
-            call get_command_argument(number=2, value=arg)
-            open(file=arg, newunit=fu, status="old")
-            deallocate(arg)
-            do row = 1, matrix_size
-                read(fu, *) matrix(:,row)
-            end do
-            close(fu)
-            print *, "matrix read in"
-        end if
-        call co_broadcast(matrix, 1)
+        call read_matrix_in(matrix, matrix_size)
 
         num_tasks = 4 + (matrix_size-1)*2 + sum([((matrix_size-step)*3, step=1,matrix_size-1)])
         allocate(vertices(num_tasks))
-        if (this_image() == 1) print *, "Num tasks: ", num_tasks
 
         vertices(1) = vertex_t([integer::], initial_t(matrix))
         vertices(2) = vertex_t([1], print_matrix_t(0))
@@ -105,7 +80,8 @@ contains
                     , row=step+1, matrix_size)] &
                 ], &
                 reconstruct_t(step=step)) ! depends on previous reconstructed matrix and just subtracted rows
-            vertices(reconstruction_step+1) = vertex_t([reconstruction_step], print_matrix_t(step)) ! print the just reconstructed matrix
+            ! print the just reconstructed matrix
+            vertices(reconstruction_step+1) = vertex_t([reconstruction_step], print_matrix_t(step))
         end do
         vertices(num_tasks-1) = vertex_t( &
             [([(3 + sum([(3*(matrix_size-i), i = 1, step-1)]) + 2*(step-1) + 3*(row-(step+1)) &
@@ -114,9 +90,7 @@ contains
             , back_substitute_t(n_rows=matrix_size)) ! depends on all "factors"
         vertices(num_tasks) = vertex_t([num_tasks-1], print_matrix_t(matrix_size))
 
-        if (this_image() == 1) print *, "Tasks created"
         dag = dag_t(vertices)
-        if (this_image() == 1) print *, "Dag created"
     end function
 
     function initial_execute(self, arguments) result(output)
@@ -220,24 +194,56 @@ contains
         type(payload_t), intent(in) :: arguments(:)
         type(payload_t) :: output
 
-        integer, allocatable :: matrix_data(:)
-        integer :: n_row, n_col
         real(wp), allocatable :: matrix(:,:)
         integer :: i
 
         critical
             print *, ""
-            matrix_data = arguments(1)%raw_payload()
-            n_row = matrix_data(1)
-            n_col = matrix_data(2)
-            matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
+            matrix = unpack_matrix(arguments(1))
             print *, "Step: ", self%step
-            do i = 1, n_row
+            do i = 1, size(matrix, dim=1)
                 print *, matrix(i, :)
             end do
             print *, ""
         end critical
     end function
+
+    subroutine read_matrix_in(matrix, matrix_size)
+        real(wp), allocatable, intent(out) :: matrix(:, :)
+        integer, intent(out) :: matrix_size
+
+        integer :: arg_len, fu, i, stat
+        character(len=:), allocatable :: arg
+
+        if (this_image() == 1) then
+            if (command_argument_count() /= 1) error stop "Provide matrix file as command line argument"
+            call get_command_argument(number=1, length=arg_len)
+            allocate(character(len=arg_len) :: arg)
+            call get_command_argument(number=1, value=arg)
+
+            open(file=arg, newunit=fu, status="old")
+            matrix_size = 0
+            do
+                read(fu, *, iostat=stat)
+                if (is_iostat_end(stat)) exit
+                if (stat /= 0) error stop stat
+                matrix_size = matrix_size + 1
+            end do
+            close(fu)
+        end if
+
+        call co_broadcast(matrix_size, 1)
+        allocate(matrix(matrix_size, matrix_size))
+
+        if (this_image() == 1) then
+            open(file=arg, newunit=fu, status="old")
+            do i = 1, matrix_size
+                read(fu, *) matrix(:, i)
+            end do
+            close(fu)
+        end if
+        call co_broadcast(matrix, 1)
+    end subroutine
 
     pure function package_matrix(matrix) result(payload)
         real(wp), intent(in) :: matrix(:, :)
@@ -268,7 +274,7 @@ contains
         matrix_data = payload%raw_payload()
         n_row = matrix_data(1)
         n_col = matrix_data(2)
-        matrix = reshape(transfer(matrix_data(3:), matrix, n_row*n_col), [n_row, n_col])
+        matrix = reshape(transfer(matrix_data(3:), [real(wp)::], n_row*n_col), [n_row, n_col])
     end function
 
     pure function package_row(row) result(payload)
@@ -298,6 +304,6 @@ contains
 
         row_data = payload%raw_payload()
         n_col = row_data(1)
-        row = transfer(row_data(2:), row, n_col)
+        row = transfer(row_data(2:), [real(wp)::], n_col)
     end function
 end module
