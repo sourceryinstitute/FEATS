@@ -51,12 +51,13 @@ module lu_decomp_app_m
         procedure :: execute => print_matrix_execute
     end type
 contains
-    function generate_application() result(dag)
-        type(dag_t) :: dag
+    subroutine generate_application(dag, matrix_size)
+        type(dag_t), intent(out) :: dag
+        integer, intent(out) :: matrix_size
 
         type(vertex_t), allocatable :: vertices(:)
         real(wp), allocatable :: matrix(:,:)
-        integer :: i, matrix_size, step, row, num_tasks, latest_matrix, task_base, reconstruction_step
+        integer :: i, step, row, num_tasks, latest_matrix, task_base, reconstruction_step
 
         call read_matrix_in(matrix, matrix_size)
 
@@ -91,7 +92,7 @@ contains
         vertices(num_tasks) = vertex_t([num_tasks-1], print_matrix_t(matrix_size))
 
         dag = dag_t(vertices)
-    end function
+    end subroutine
 
     function initial_execute(self, arguments) result(output)
         class(initial_t), intent(in) :: self
@@ -197,9 +198,9 @@ contains
         real(wp), allocatable :: matrix(:,:)
         integer :: i
 
+        matrix = unpack_matrix(arguments(1))
         critical
             print *, ""
-            matrix = unpack_matrix(arguments(1))
             print *, "Step: ", self%step
             do i = 1, size(matrix, dim=1)
                 print *, matrix(i, :)

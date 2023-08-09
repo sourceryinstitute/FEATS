@@ -1,11 +1,11 @@
 program generate_matrices
     implicit none
 
-    integer, parameter :: max_size = 10
+    integer, parameter :: max_size = 100
     integer :: row, col, m_size, fu
     real, allocatable :: matrix(:, :)
     character(len=:), allocatable :: file_name
-    character(len=2) :: size_string
+    character(len=3) :: size_string
 
     call random_init(.true., .true.)
     do m_size = 1, max_size
