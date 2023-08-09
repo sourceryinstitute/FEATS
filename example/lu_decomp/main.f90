@@ -6,7 +6,7 @@ program main
   use runner_m, only: run
   implicit none
 
-  character(len=*), parameter :: timing_file = "timings.txt"
+  character(len=*), parameter :: timing_file = "timings.csv"
   type(dag_t) :: tasks
   integer :: matrix_size
   integer(int64) :: start, finish, count_rate
@@ -22,10 +22,10 @@ program main
     inquire(file=timing_file, exist=file_exists)
     if (.not.file_exists) then
       open(file=timing_file, newunit = f_unit, status="new")
-      write(f_unit, '(A)') "matrix size, num tasks, execution time"
+      write(f_unit, '(A)') "matrix size,num tasks,num images,execution time"
       close(f_unit)
     end if
     open(file=timing_file, newunit = f_unit, status="old", position = "append")
-    write(f_unit, '(I0, ",", I0, ",", G0)') matrix_size, size(tasks%vertices), real(finish-start)/real(count_rate)
+    write(f_unit, '(I0, ",", I0, ",", I0, ",", G0)') matrix_size, size(tasks%vertices), num_images(), real(finish-start)/real(count_rate)
   end if
 end program
