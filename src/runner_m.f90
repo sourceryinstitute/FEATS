@@ -247,15 +247,30 @@ contains
         type(dag_t), intent(in) :: dag
 
         type(payload_t), allocatable :: results(:)
-        integer :: i
+        logical, allocatable :: done(:)
 
         associate(num_tasks => size(dag%vertices))
-            allocate(results(num_tasks))
-            do i = 1, size(dag%vertices)
-                associate(next_task => dag%order(i))
+            allocate(results(num_tasks), done(num_tasks))
+            done = .false.
+            do while (.not. all(done))
+                associate(next_task => find_next_task())
                     results(next_task) = dag%vertices(next_task)%task%execute(results(dag%dependencies_for(next_task)))
+                    done(next_task) = .true.
                 end associate
             end do
         end associate
+    contains
+        pure function find_next_task() result(next_task)
+            integer :: next_task
+
+            integer :: task
+
+            do task = 1, size(dag%vertices)
+                if (.not.done(task) .and. all(done(dag%dependencies_for(task)))) then
+                    next_task = task
+                    return
+                end if
+            end do
+        end function
     end subroutine
 end module
