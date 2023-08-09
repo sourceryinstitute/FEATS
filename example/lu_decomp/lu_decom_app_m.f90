@@ -213,7 +213,7 @@ contains
         real(wp), allocatable, intent(out) :: matrix(:, :)
         integer, intent(out) :: matrix_size
 
-        integer :: arg_len, fu, i, stat
+        integer :: arg_len, fu, stat, i, j
         character(len=:), allocatable :: arg
 
         if (this_image() == 1) then
@@ -243,7 +243,11 @@ contains
             end do
             close(fu)
         end if
-        call co_broadcast(matrix, 1)
+        do j = 1, matrix_size
+            do i = 1, matrix_size
+                call co_broadcast(matrix(i, j), 1)
+            end do
+        end do
     end subroutine
 
     pure function package_matrix(matrix) result(payload)
