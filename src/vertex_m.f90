@@ -15,4 +15,17 @@ module vertex_m
       integer, allocatable :: edges(:)
       class(task_t), allocatable :: task
     end type
+
+    interface vertex_t
+      module procedure construct
+    end interface
+contains
+    function construct(edges, task) result(vertex)
+      integer, intent(in) :: edges(:)
+      class(task_t), intent(in) :: task
+      type(vertex_t) :: vertex
+
+      vertex%edges = edges
+      vertex%task = task
+    end function
 end module vertex_m

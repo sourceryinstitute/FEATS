@@ -26,6 +26,7 @@ program main
       close(f_unit)
     end if
     open(file=timing_file, newunit = f_unit, status="old", position = "append")
-    write(f_unit, '(I0, ",", I0, ",", I0, ",", G0)') matrix_size, size(tasks%vertices), num_images(), real(finish-start)/real(count_rate)
+    write(f_unit, '(I0, ",", I0, ",", I0, ",", G0)') &
+        matrix_size, size(tasks%vertices), num_images(), real(finish-start)/real(count_rate)
   end if
 end program
