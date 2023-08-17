@@ -26,3 +26,8 @@ main="main.f90"
 name="quadratic_solver"
 source-dir="example/quadratic_solver"
 main="main.f90"
+
+[[example]]
+name="show_lu_decomp"
+source-dir="example/show_lu_decomp"
+main="main.f90"
