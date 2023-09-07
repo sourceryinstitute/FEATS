@@ -5,23 +5,6 @@ author = ["Damian Rouson"]
 maintainer = "damian@sourceryinstitute.org"
 copyright = "2021 Sourcery Institute"
 
-[dependencies]
-assert = {git = "https://github.com/sourceryinstitute/assert", tag = "1.4.0"}
-dag = {git = "https://github.com/sourceryinstitute/dag", rev="a0561d48b8bf1bce8304b4d192c62f682358d50a" } #, tag = "3.0.0"}
-
-[dev-dependencies]
-garden = {git = "https://gitlab.com/everythingfunctional/garden", tag = "v1.0.5"}
-
-[[test]]
-name="unit"
-source-dir="tests"
-main="main.f90"
-
-[[example]]
-name="build_feats"
-source-dir="example/build_feats"
-main="main.f90"
-
 [[example]]
 name="quadratic_solver"
 source-dir="example/quadratic_solver"

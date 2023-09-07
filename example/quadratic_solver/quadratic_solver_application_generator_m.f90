@@ -1,11 +1,9 @@
 module quadratic_solver_application_generator_m
-    use application_m, only: application_t
     use dag_m, only: dag_t
-    use iso_varying_string, only: varying_string, trim, var_str
+    use iso_fortran_env, only: input_unit, output_unit
     use legacy_m, only: square, four_a_c
     use payload_m, only: payload_t
     use task_m, only: task_t
-    use task_item_m, only: task_item_t
     use vertex_m, only: vertex_t
 
     implicit none
@@ -68,83 +66,32 @@ module quadratic_solver_application_generator_m
       procedure :: execute => printer_execute
     end type
 contains
-    function generate_application() result(application)
-        type(application_t) :: application
+    function generate_application() result(solver)
+      type(dag_t) solver
 
-        character(len=*), parameter :: longest_name = "minus_b_pm_square_root"
-        character(len=len(longest_name)), parameter :: names(*) = &
-            [ character(len=len(longest_name)) :: "a" &
-            , "b" &
-            , "c" &
-            , "b_squared" &
-            , "four_ac" &
-            , "square_root" &
-            , "minus_b_pm_square_root" &
-            , "two_a" &
-            , "division" &
-            , "print" &
-            ]
-        associate( &
-              a => findloc(names, "a", dim=1) &
-            , b => findloc(names, "b", dim=1) &
-            , c => findloc(names, "c", dim=1) &
-            , b_squared => findloc(names, "b_squared", dim=1) &
-            , four_ac => findloc(names, "four_ac", dim=1) &
-            , square_root => findloc(names, "square_root", dim=1) &
-            , minus_b_pm_square_root => findloc(names, "minus_b_pm_square_root", dim=1) &
-            , two_a => findloc(names, "two_a", dim=1) &
-            , division => findloc(names, "division", dim=1) &
-            , print => findloc(names, "print", dim=1) &
-        )
-          block
-              character(len=*),           parameter :: root      = 'shape=circle,fillcolor="white",style=filled'
-              character(len=*),           parameter :: branch    = 'shape=square,fillcolor="SlateGray1",style=filled'
-              character(len=len(branch)), parameter :: leaf      = 'shape=circle,fillcolor="cornsilk",style=filled'
-              type(dag_t) solver
-              integer i
-              type(varying_string) name_string(size(names))
-              type(task_item_t), allocatable :: tasks(:)
+      real :: a, b, c
+      if (this_image() == 1) then
+        write(output_unit, "(A)") "Enter values for a, b and c in `a*x**2 + b*x + c`:"
+        flush(output_unit)
+        read(input_unit, *) a, b, c
+      end if
+      call co_broadcast(a, 1)
+      call co_broadcast(b, 1)
+      call co_broadcast(c, 1)
 
-              name_string = trim(var_str(names))
-
-              solver = &
-                  dag_t([ &
-                        vertex_t([integer::], name_string(a), var_str(leaf)) &
-                      , vertex_t([integer::], name_string(b), var_str(leaf)) &
-                      , vertex_t([integer::], name_string(c), var_str(leaf)) &
-                      , vertex_t([b], name_string(b_squared), var_str(branch)) &
-                      , vertex_t([a, c], name_string(four_ac), var_str(branch)) &
-                      , vertex_t([b_squared, four_ac], name_string(square_root), var_str(branch)) &
-                      , vertex_t([b, square_root], name_string(minus_b_pm_square_root), var_str(branch)) &
-                      , vertex_t([a], name_string(two_a), var_str(branch)) &
-                      , vertex_t([two_a, minus_b_pm_square_root], name_string(division), var_str(branch)) &
-                      , vertex_t([division], name_string(print), var_str(root)) &
-                  ])
-              block
-                real :: a, b, c
-                if (this_image() == 1) then
-                  print *, "Enter values for a, b and c in `a*x**2 + b*x + c`:"
-                  read (*, *) a, b, c
-                end if
-                call co_broadcast(a, 1)
-                call co_broadcast(b, 1)
-                call co_broadcast(c, 1)
-                tasks = &
-                [ task_item_t(a_t(a)) &
-                , task_item_t(b_t(b)) &
-                , task_item_t(c_t(c)) &
-                , task_item_t(b_squared_t()) &
-                , task_item_t(four_ac_t()) &
-                , task_item_t(square_root_t()) &
-                , task_item_t(minus_b_pm_square_root_t()) &
-                , task_item_t(two_a_t()) &
-                , task_item_t(division_t()) &
-                , task_item_t(printer_t()) &
-                ]
-                application = application_t(solver, tasks)
-              end block
-          end block
-        end associate
+      solver = &
+          dag_t([ &
+                vertex_t([integer::], a_t(a)) &
+              , vertex_t([integer::], b_t(b)) &
+              , vertex_t([integer::], c_t(c)) &
+              , vertex_t([2], b_squared_t()) &
+              , vertex_t([1, 3], four_ac_t()) &
+              , vertex_t([4, 5], square_root_t()) &
+              , vertex_t([2, 6], minus_b_pm_square_root_t()) &
+              , vertex_t([1], two_a_t()) &
+              , vertex_t([8, 7], division_t()) &
+              , vertex_t([9], printer_t()) &
+          ])
     end function
 
     function a_execute(self, arguments) result(output)
@@ -153,7 +100,7 @@ contains
         type(payload_t) :: output
 
         print *, "a = ", self%a
-        output = payload_t(transfer(self%a, output%raw_payload()))
+        output = payload_t(transfer(self%a, [integer::]))
     end function
 
     function b_execute(self, arguments) result(output)
@@ -162,7 +109,7 @@ contains
         type(payload_t) :: output
 
         print *, "b = ", self%b
-        output = payload_t(transfer(self%b, output%raw_payload()))
+        output = payload_t(transfer(self%b, [integer::]))
     end function
 
     function c_execute(self, arguments) result(output)
@@ -171,7 +118,7 @@ contains
         type(payload_t) :: output
 
         print *, "c = ", self%c
-        output = payload_t(transfer(self%c, output%raw_payload()))
+        output = payload_t(transfer(self%c, [integer::]))
     end function
 
     function b_squared_execute(self, arguments) result(output)
@@ -183,8 +130,8 @@ contains
 
         b = transfer(arguments(1)%raw_payload(), b)
         b_squared = square(b)
-        print *, "b**2 = ", b
-        output = payload_t(transfer(b_squared, output%raw_payload()))
+        print *, "b**2 = ", b_squared
+        output = payload_t(transfer(b_squared, [integer::]))
     end function
 
     function four_ac_execute(self, arguments) result(output)
@@ -198,7 +145,7 @@ contains
       c = transfer(arguments(2)%raw_payload(), c)
       four_a_c = 4*a*c
       print *, "4*a*c = ", four_a_c
-      output = payload_t(transfer(four_a_c, output%raw_payload()))
+      output = payload_t(transfer(four_a_c, [integer::]))
     end function
 
     function square_root_execute(self, arguments) result(output)
@@ -206,16 +153,15 @@ contains
       type(payload_t), intent(in) :: arguments(:)
       type(payload_t) :: output
 
-      real :: b_squared, four_a_c, square_roots(2)
+      real :: b_squared, four_a_c, square_roots(2), square
 
         b_squared = transfer(arguments(1)%raw_payload(), b_squared)
         four_a_c = transfer(arguments(2)%raw_payload(), four_a_c)
 
-        associate(discriminant => b_squared - four_a_c)
-          square_roots = [sqrt(discriminant), -sqrt(discriminant)]
-          print *, "sqrt(b**2 - 4*a*c) = ", square_roots
-          output = payload_t(transfer(square_roots, output%raw_payload()))
-        end associate
+        square = b_squared - four_a_c
+        square_roots = [sqrt(square), -sqrt(square)]
+        print *, "sqrt(b**2 - 4*a*c) = ", square_roots
+        output = payload_t(transfer(square_roots, [integer::]))
     end function
 
     function minus_b_pm_square_root_execute(self, arguments) result(output)
@@ -229,7 +175,7 @@ contains
         square_root = transfer(arguments(2)%raw_payload(), square_root)
         minus_b_pm_roots = -b + square_root
         print *, "-b +- sqrt(b**2 - 4*a*c) = ", minus_b_pm_roots
-        output = payload_t(transfer(minus_b_pm_roots, output%raw_payload()))
+        output = payload_t(transfer(minus_b_pm_roots, [integer::]))
     end function
 
     function two_a_execute(self, arguments) result(output)
@@ -242,7 +188,7 @@ contains
       a = transfer(arguments(1)%raw_payload(), a)
       two_a = 2*a
       print *, "2*a = ", two_a
-      output = payload_t(transfer(two_a, output%raw_payload()))
+      output = payload_t(transfer(two_a, [integer::]))
     end function
 
     function division_execute(self, arguments) result(output)
@@ -256,7 +202,7 @@ contains
         b_pm_square_root = transfer(arguments(2)%raw_payload(), b_pm_square_root)
         quotients = b_pm_square_root / two_a
         print *, "(-b +- sqrt(b**2 - 4*a*c)) / (2*a) = ", quotients
-        output = payload_t(transfer(quotients, output%raw_payload()))
+        output = payload_t(transfer(quotients, [integer::]))
     end function
 
     function printer_execute(self, arguments) result(output)

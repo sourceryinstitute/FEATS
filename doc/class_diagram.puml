@@ -3,42 +3,23 @@ Title "Classes in FEATS"
 
 hide empty members
 
-class application_t{
-  dag : dag_t
-  task_item : task_item_t[]
-}
-note right: inv: self%dag%get_num_edges()==size(self%task_item[])
-application_t *-down- task_item_t
-
 class dag_t{
   vertices : vertex_t[]
 }
 
 class vertex_t{
-  edges : integer[]
+  dependencies : integer[]
+  task : task_t
 }
 
-application_t *-down- dag_t
 dag_t *-down- vertex_t
 
-class image_t{
-  run(application : application_t)
-}
-
-image_t -right-> application_t : accepts
-
-class task_item_t{
-  {abstract} task : task_t
-  execute(arguments : payload_t[])
-}
-
 abstract class task_t{
-  {abstract} execute(arguments : payload_t[])
+  {abstract} execute(arguments : payload_t[]) : payload_t
 }
 
-task_item_t *-down- task_t
+vertex_t *-down- task_t
 task_t -left-> payload_t : accepts
-task_item_t -left-> payload_t : accepts
 
 class payload_t{
   payload : integer[]
@@ -49,6 +30,12 @@ object mailbox{
 }
 
 mailbox *-down- payload_t
-image_t --> mailbox : uses
+
+class runner{
+  run(dag : dag_t)
+}
+
+runner -down-> mailbox : uses
+runner -right-> dag_t : accepts
 
 @enduml
