@@ -84,25 +84,25 @@
 			 <table class="table table-striped">
 			 <thead><tr><th>Procedure</th><th>Location</th><th>Procedure Type</th><th>Description</th></tr></thead>
 			 <tbody>
-			   <tr><td><a href='../interface/application_t.html'>application_t</a></td><td><a href='../module/application_m.html'>application_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../proc/assign_completed_to_images.html'>assign_completed_to_images</a></td><td><a href='../module/image_s.html'>image_s</a></td><td>Subroutine</td><td></td></tr>
-			   <tr><td><a href='../proc/assign_task.html'>assign_task</a></td><td><a href='../module/image_s.html'>image_s</a></td><td>Function</td><td></td></tr>
-			   <tr><td><a href='../interface/dag.html'>dag</a></td><td><a href='../module/application_m.html'>application_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../proc/do_work.html'>do_work</a></td><td><a href='../module/image_s.html'>image_s</a></td><td>Function</td><td><p>It's probably better to introduce this only after some more testing -- HS</p></td></tr>
-			   <tr><td><a href='../interface/empty_payload.html'>empty_payload</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/execute~2.html'>execute</a></td><td><a href='../module/final_task_m.html'>final_task_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/execute.html'>execute</a></td><td><a href='../module/task_item_m.html'>task_item_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../proc/find_next_image.html'>find_next_image</a></td><td><a href='../module/image_s.html'>image_s</a></td><td>Function</td><td></td></tr>
-			   <tr><td><a href='../proc/find_next_task.html'>find_next_task</a></td><td><a href='../module/image_s.html'>image_s</a></td><td>Function</td><td><p>dependencies are complete</p><a href="../proc/find_next_task.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
-			   <tr><td><a href='../interface/is_final_task~3.html'>is_final_task</a></td><td><a href='../module/final_task_m.html'>final_task_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/is_final_task.html'>is_final_task</a></td><td><a href='../module/task_m.html'>task_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/is_final_task~2.html'>is_final_task</a></td><td><a href='../module/task_item_m.html'>task_item_m</a></td><td>Interface</td><td></td></tr>
+			   <tr><td><a href='../proc/assign_completed_to_images.html'>assign_completed_to_images</a></td><td><a href='../module/runner_m.html'>runner_m</a></td><td>Subroutine</td><td></td></tr>
+			   <tr><td><a href='../proc/assign_task.html'>assign_task</a></td><td><a href='../module/runner_m.html'>runner_m</a></td><td>Function</td><td></td></tr>
+			   <tr><td><a href='../proc/construct.html'>construct</a></td><td><a href='../module/vertex_m.html'>vertex_m</a></td><td>Function</td><td></td></tr>
+			   <tr><td><a href='../proc/construct_from_vertices.html'>construct_from_vertices</a></td><td><a href='../module/dag_m.html'>dag_m</a></td><td>Function</td><td><p>Construct a dag_t object from an array of (unsorted) vertex_t objects (result contains a topologically sorted index array)</p></td></tr>
+			   <tr><td><a href='../interface/dag_t.html'>dag_t</a></td><td><a href='../module/dag_m.html'>dag_m</a></td><td>Interface</td><td></td></tr>
+			   <tr><td><a href='../proc/dependencies_for.html'>dependencies_for</a></td><td><a href='../module/dag_m.html'>dag_m</a></td><td>Function</td><td><p>Result is an array of the ids on which vertex_id depends</p></td></tr>
+			   <tr><td><a href='../proc/depends_on.html'>depends_on</a></td><td><a href='../module/dag_m.html'>dag_m</a></td><td>Function</td><td><p>Result is an array of the vertex numbers that depend on on vertex vertex_num</p></td></tr>
+			   <tr><td><a href='../proc/do_work.html'>do_work</a></td><td><a href='../module/runner_m.html'>runner_m</a></td><td>Function</td><td><p>It's probably better to introduce this only after some more testing -- HS</p></td></tr>
+			   <tr><td><a href='../proc/empty_payload.html'>empty_payload</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Function</td><td></td></tr>
+			   <tr><td><a href='../proc/find_next_image.html'>find_next_image</a></td><td><a href='../module/runner_m.html'>runner_m</a></td><td>Function</td><td></td></tr>
+			   <tr><td><a href='../proc/find_next_task.html'>find_next_task</a></td><td><a href='../module/runner_m.html'>runner_m</a></td><td>Function</td><td><p>dependencies are complete</p><a href="../proc/find_next_task.html" class="pull-right"><emph>Read more&hellip;</emph></a></td></tr>
+			   <tr><td><a href='../proc/from_raw.html'>from_raw</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Function</td><td></td></tr>
+			   <tr><td><a href='../proc/from_string.html'>from_string</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Function</td><td></td></tr>
 			   <tr><td><a href='../interface/payload_t.html'>payload_t</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/raw_payload.html'>raw_payload</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/run.html'>run</a></td><td><a href='../module/image_m.html'>image_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/string_payload.html'>string_payload</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/task_item_t.html'>task_item_t</a></td><td><a href='../module/task_item_m.html'>task_item_m</a></td><td>Interface</td><td></td></tr>
-			   <tr><td><a href='../interface/tasks.html'>tasks</a></td><td><a href='../module/application_m.html'>application_m</a></td><td>Interface</td><td></td></tr>
+			   <tr><td><a href='../proc/raw_payload.html'>raw_payload</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Function</td><td></td></tr>
+			   <tr><td><a href='../proc/run.html'>run</a></td><td><a href='../module/runner_m.html'>runner_m</a></td><td>Subroutine</td><td></td></tr>
+			   <tr><td><a href='../proc/run_single_image.html'>run_single_image</a></td><td><a href='../module/runner_m.html'>runner_m</a></td><td>Subroutine</td><td></td></tr>
+			   <tr><td><a href='../proc/string_payload.html'>string_payload</a></td><td><a href='../module/payload_m.html'>payload_m</a></td><td>Function</td><td></td></tr>
+			   <tr><td><a href='../interface/vertex_t.html'>vertex_t</a></td><td><a href='../module/vertex_m.html'>vertex_m</a></td><td>Interface</td><td></td></tr>
 			 </tbody></table>
              <div class="depgraph"><?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
@@ -110,490 +110,295 @@
 <!-- Generated by graphviz version 2.43.0 (0)
  -->
 <!-- Title: call~~graph~~CallGraph Pages: 1 -->
-<svg id="callgraphCallGraph" width="588pt" height="788pt"
- viewBox="0.00 0.00 588.00 788.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<g id="call~~graph~~CallGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 784)">
+<svg id="callgraphCallGraph" width="496pt" height="599pt"
+ viewBox="0.00 0.00 496.00 599.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="call~~graph~~CallGraph" class="graph" transform="scale(1 1) rotate(0) translate(4 595)">
 <title>call~~graph~~CallGraph</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-784 584,-784 584,4 -4,4"/>
-<!-- interface~raw_payload -->
-<g id="call~~graph~~CallGraph_node1" class="node">
-<title>interface~raw_payload</title>
-<g id="a_call~~graph~~CallGraph_node1"><a xlink:href=".././interface/raw_payload.html" xlink:title="raw_payload">
-<polygon fill="#a7506f" stroke="#a7506f" points="90,-24 10,-24 10,0 90,0 90,-24"/>
-<text text-anchor="middle" x="50" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">raw_payload</text>
-</a>
-</g>
-</g>
-<!-- proc~raw_payload -->
-<g id="call~~graph~~CallGraph_node26" class="node">
-<title>proc~raw_payload</title>
-<g id="a_call~~graph~~CallGraph_node26"><a xlink:href=".././proc/raw_payload.html" xlink:title="raw_payload">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="230.5,-24 150.5,-24 150.5,0 230.5,0 230.5,-24"/>
-<text text-anchor="middle" x="190.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">raw_payload</text>
-</a>
-</g>
-</g>
-<!-- interface~raw_payload&#45;&gt;proc~raw_payload -->
-<g id="call~~graph~~CallGraph_edge1" class="edge">
-<title>interface~raw_payload&#45;&gt;proc~raw_payload</title>
-<path fill="none" stroke="#ff0000" stroke-dasharray="5,2" d="M90.32,-12C105.67,-12 123.45,-12 139.68,-12"/>
-<polygon fill="#ff0000" stroke="#ff0000" points="140.08,-15.5 150.08,-12 140.08,-8.5 140.08,-15.5"/>
-</g>
-<!-- proc~execute -->
-<g id="call~~graph~~CallGraph_node2" class="node">
-<title>proc~execute</title>
-<g id="a_call~~graph~~CallGraph_node2"><a xlink:href=".././proc/execute.html" xlink:title="execute">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="218,-66 163,-66 163,-42 218,-42 218,-66"/>
-<text text-anchor="middle" x="190.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">execute</text>
-</a>
-</g>
-</g>
-<!-- interface~application_t -->
-<g id="call~~graph~~CallGraph_node3" class="node">
-<title>interface~application_t</title>
-<g id="a_call~~graph~~CallGraph_node3"><a xlink:href=".././interface/application_t.html" xlink:title="application_t">
-<polygon fill="#a7506f" stroke="#a7506f" points="90.5,-108 9.5,-108 9.5,-84 90.5,-84 90.5,-108"/>
-<text text-anchor="middle" x="50" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">application_t</text>
-</a>
-</g>
-</g>
-<!-- proc~tasks -->
-<g id="call~~graph~~CallGraph_node4" class="node">
-<title>proc~tasks</title>
-<g id="a_call~~graph~~CallGraph_node4"><a xlink:href=".././proc/tasks.html" xlink:title="tasks">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="217.5,-150 163.5,-150 163.5,-126 217.5,-126 217.5,-150"/>
-<text text-anchor="middle" x="190.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">tasks</text>
-</a>
-</g>
-</g>
-<!-- interface~is_final_task -->
-<g id="call~~graph~~CallGraph_node5" class="node">
-<title>interface~is_final_task</title>
-<g id="a_call~~graph~~CallGraph_node5"><a xlink:href=".././interface/is_final_task.html" xlink:title="is_final_task">
-<polygon fill="#a7506f" stroke="#a7506f" points="88,-192 12,-192 12,-168 88,-168 88,-192"/>
-<text text-anchor="middle" x="50" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_final_task</text>
-</a>
-</g>
-</g>
-<!-- proc~is_final_task~2 -->
-<g id="call~~graph~~CallGraph_node28" class="node">
-<title>proc~is_final_task~2</title>
-<g id="a_call~~graph~~CallGraph_node28"><a xlink:href=".././proc/is_final_task~2.html" xlink:title="is_final_task">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="228.5,-192 152.5,-192 152.5,-168 228.5,-168 228.5,-192"/>
-<text text-anchor="middle" x="190.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_final_task</text>
-</a>
-</g>
-</g>
-<!-- interface~is_final_task&#45;&gt;proc~is_final_task~2 -->
-<g id="call~~graph~~CallGraph_edge2" class="edge">
-<title>interface~is_final_task&#45;&gt;proc~is_final_task~2</title>
-<path fill="none" stroke="#ffb300" stroke-dasharray="5,2" d="M88.12,-180C104.73,-180 124.51,-180 142.17,-180"/>
-<polygon fill="#ffb300" stroke="#ffb300" points="142.28,-183.5 152.28,-180 142.28,-176.5 142.28,-183.5"/>
-</g>
-<!-- proc~assign_completed_to_images -->
-<g id="call~~graph~~CallGraph_node6" class="node">
-<title>proc~assign_completed_to_images</title>
-<g id="a_call~~graph~~CallGraph_node6"><a xlink:href=".././proc/assign_completed_to_images.html" xlink:title="assign_completed_to_images">
-<polygon fill="#d9534f" stroke="#d9534f" points="580,-182 411,-182 411,-158 580,-158 580,-182"/>
-<text text-anchor="middle" x="495.5" y="-167.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_completed_to_images</text>
-</a>
-</g>
-</g>
-<!-- proc~dag -->
-<g id="call~~graph~~CallGraph_node7" class="node">
-<title>proc~dag</title>
-<g id="a_call~~graph~~CallGraph_node7"><a xlink:href=".././proc/dag.html" xlink:title="dag">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="217.5,-276 163.5,-276 163.5,-252 217.5,-252 217.5,-276"/>
-<text text-anchor="middle" x="190.5" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dag</text>
-</a>
-</g>
-</g>
-<!-- proc~do_work -->
-<g id="call~~graph~~CallGraph_node8" class="node">
-<title>proc~do_work</title>
-<g id="a_call~~graph~~CallGraph_node8"><a xlink:href=".././proc/do_work.html" xlink:title="do_work">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="356.5,-255 299.5,-255 299.5,-231 356.5,-231 356.5,-255"/>
-<text text-anchor="middle" x="328" y="-240.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">do_work</text>
-</a>
-</g>
-</g>
-<!-- arguments -->
-<g id="call~~graph~~CallGraph_node35" class="node">
-<title>arguments</title>
-<polygon fill="#777777" stroke="#777777" points="530.5,-308 460.5,-308 460.5,-284 530.5,-284 530.5,-308"/>
-<text text-anchor="middle" x="495.5" y="-293.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">arguments</text>
-</g>
-<!-- proc~do_work&#45;&gt;arguments -->
-<g id="call~~graph~~CallGraph_edge4" class="edge">
-<title>proc~do_work&#45;&gt;arguments</title>
-<path fill="none" stroke="#c3ff00" d="M356.77,-254.84C372.51,-261.3 392.66,-269.14 411,-275 423.58,-279.02 437.43,-282.77 450.17,-285.95"/>
-<polygon fill="#c3ff00" stroke="#c3ff00" points="449.56,-289.4 460.1,-288.38 451.22,-282.6 449.56,-289.4"/>
-</g>
-<!-- upstream_task_nums -->
-<g id="call~~graph~~CallGraph_node37" class="node">
-<title>upstream_task_nums</title>
-<polygon fill="#777777" stroke="#777777" points="557.5,-266 433.5,-266 433.5,-242 557.5,-242 557.5,-266"/>
-<text text-anchor="middle" x="495.5" y="-251.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upstream_task_nums</text>
-</g>
-<!-- proc~do_work&#45;&gt;upstream_task_nums -->
-<g id="call~~graph~~CallGraph_edge3" class="edge">
-<title>proc~do_work&#45;&gt;upstream_task_nums</title>
-<path fill="none" stroke="#c3ff00" d="M356.7,-244.84C374.98,-246.06 399.81,-247.71 423.37,-249.27"/>
-<polygon fill="#c3ff00" stroke="#c3ff00" points="423.15,-252.77 433.36,-249.94 423.61,-245.78 423.15,-252.77"/>
-</g>
-<!-- upstream_task_imagenums -->
-<g id="call~~graph~~CallGraph_node39" class="node">
-<title>upstream_task_imagenums</title>
-<polygon fill="#777777" stroke="#777777" points="574.5,-224 416.5,-224 416.5,-200 574.5,-200 574.5,-224"/>
-<text text-anchor="middle" x="495.5" y="-209.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upstream_task_imagenums</text>
-</g>
-<!-- proc~do_work&#45;&gt;upstream_task_imagenums -->
-<g id="call~~graph~~CallGraph_edge5" class="edge">
-<title>proc~do_work&#45;&gt;upstream_task_imagenums</title>
-<path fill="none" stroke="#c3ff00" d="M356.7,-237.81C374.18,-234.54 397.64,-230.14 420.26,-225.91"/>
-<polygon fill="#c3ff00" stroke="#c3ff00" points="421.03,-229.32 430.22,-224.04 419.74,-222.44 421.03,-229.32"/>
-</g>
-<!-- interface~empty_payload -->
-<g id="call~~graph~~CallGraph_node9" class="node">
-<title>interface~empty_payload</title>
-<g id="a_call~~graph~~CallGraph_node9"><a xlink:href=".././interface/empty_payload.html" xlink:title="empty_payload">
-<polygon fill="#a7506f" stroke="#a7506f" points="237.5,-318 143.5,-318 143.5,-294 237.5,-294 237.5,-318"/>
-<text text-anchor="middle" x="190.5" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">empty_payload</text>
-</a>
-</g>
-</g>
-<!-- proc~empty_payload -->
-<g id="call~~graph~~CallGraph_node19" class="node">
-<title>proc~empty_payload</title>
-<g id="a_call~~graph~~CallGraph_node19"><a xlink:href=".././proc/empty_payload.html" xlink:title="empty_payload">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="375,-318 281,-318 281,-294 375,-294 375,-318"/>
-<text text-anchor="middle" x="328" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">empty_payload</text>
-</a>
-</g>
-</g>
-<!-- interface~empty_payload&#45;&gt;proc~empty_payload -->
-<g id="call~~graph~~CallGraph_edge6" class="edge">
-<title>interface~empty_payload&#45;&gt;proc~empty_payload</title>
-<path fill="none" stroke="#96ff00" stroke-dasharray="5,2" d="M237.75,-306C248.33,-306 259.68,-306 270.63,-306"/>
-<polygon fill="#96ff00" stroke="#96ff00" points="270.96,-309.5 280.96,-306 270.96,-302.5 270.96,-309.5"/>
-</g>
-<!-- interface~task_item_t -->
-<g id="call~~graph~~CallGraph_node10" class="node">
-<title>interface~task_item_t</title>
-<g id="a_call~~graph~~CallGraph_node10"><a xlink:href=".././interface/task_item_t.html" xlink:title="task_item_t">
-<polygon fill="#a7506f" stroke="#a7506f" points="86.5,-360 13.5,-360 13.5,-336 86.5,-336 86.5,-360"/>
-<text text-anchor="middle" x="50" y="-345.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">task_item_t</text>
-</a>
-</g>
-</g>
-<!-- interface~tasks -->
-<g id="call~~graph~~CallGraph_node11" class="node">
-<title>interface~tasks</title>
-<g id="a_call~~graph~~CallGraph_node11"><a xlink:href=".././interface/tasks.html" xlink:title="tasks">
-<polygon fill="#a7506f" stroke="#a7506f" points="77,-150 23,-150 23,-126 77,-126 77,-150"/>
-<text text-anchor="middle" x="50" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">tasks</text>
-</a>
-</g>
-</g>
-<!-- interface~tasks&#45;&gt;proc~tasks -->
-<g id="call~~graph~~CallGraph_edge7" class="edge">
-<title>interface~tasks&#45;&gt;proc~tasks</title>
-<path fill="none" stroke="#3cff00" stroke-dasharray="5,2" d="M77.05,-138C98.48,-138 129.11,-138 152.99,-138"/>
-<polygon fill="#3cff00" stroke="#3cff00" points="153.1,-141.5 163.1,-138 153.1,-134.5 153.1,-141.5"/>
-</g>
-<!-- proc~assign_task -->
-<g id="call~~graph~~CallGraph_node12" class="node">
-<title>proc~assign_task</title>
-<g id="a_call~~graph~~CallGraph_node12"><a xlink:href=".././proc/assign_task.html" xlink:title="assign_task">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="364.5,-192 291.5,-192 291.5,-168 364.5,-168 364.5,-192"/>
-<text text-anchor="middle" x="328" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_task</text>
-</a>
-</g>
-</g>
-<!-- proc~assign_task&#45;&gt;proc~assign_completed_to_images -->
-<g id="call~~graph~~CallGraph_edge8" class="edge">
-<title>proc~assign_task&#45;&gt;proc~assign_completed_to_images</title>
-<path fill="none" stroke="#0eff00" d="M364.5,-177.85C375.3,-177.2 387.7,-176.45 400.47,-175.68"/>
-<polygon fill="#0eff00" stroke="#0eff00" points="400.99,-179.16 410.77,-175.06 400.57,-172.17 400.99,-179.16"/>
-</g>
-<!-- interface~run -->
-<g id="call~~graph~~CallGraph_node13" class="node">
-<title>interface~run</title>
-<g id="a_call~~graph~~CallGraph_node13"><a xlink:href=".././interface/run.html" xlink:title="run">
-<polygon fill="#a7506f" stroke="#a7506f" points="77,-234 23,-234 23,-210 77,-210 77,-234"/>
-<text text-anchor="middle" x="50" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run</text>
-</a>
-</g>
-</g>
-<!-- proc~run -->
-<g id="call~~graph~~CallGraph_node29" class="node">
-<title>proc~run</title>
-<g id="a_call~~graph~~CallGraph_node29"><a xlink:href=".././proc/run.html" xlink:title="run">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="217.5,-234 163.5,-234 163.5,-210 217.5,-210 217.5,-234"/>
-<text text-anchor="middle" x="190.5" y="-219.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run</text>
-</a>
-</g>
-</g>
-<!-- interface~run&#45;&gt;proc~run -->
-<g id="call~~graph~~CallGraph_edge9" class="edge">
-<title>interface~run&#45;&gt;proc~run</title>
-<path fill="none" stroke="#00ff1e" stroke-dasharray="5,2" d="M77.05,-222C98.48,-222 129.11,-222 152.99,-222"/>
-<polygon fill="#00ff1e" stroke="#00ff1e" points="153.1,-225.5 163.1,-222 153.1,-218.5 153.1,-225.5"/>
-</g>
-<!-- interface~payload_t -->
-<g id="call~~graph~~CallGraph_node14" class="node">
-<title>interface~payload_t</title>
-<g id="a_call~~graph~~CallGraph_node14"><a xlink:href=".././interface/payload_t.html" xlink:title="payload_t">
-<polygon fill="#a7506f" stroke="#a7506f" points="82,-318 18,-318 18,-294 82,-294 82,-318"/>
-<text text-anchor="middle" x="50" y="-303.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">payload_t</text>
-</a>
-</g>
-</g>
-<!-- interface~payload_t&#45;&gt;interface~empty_payload -->
-<g id="call~~graph~~CallGraph_edge10" class="edge">
-<title>interface~payload_t&#45;&gt;interface~empty_payload</title>
-<path fill="none" stroke="#00ff4a" stroke-dasharray="5,2" d="M82.08,-306C97.15,-306 115.72,-306 133.16,-306"/>
-<polygon fill="#00ff4a" stroke="#00ff4a" points="133.27,-309.5 143.27,-306 133.27,-302.5 133.27,-309.5"/>
-</g>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-595 492,-595 492,4 -4,4"/>
 <!-- proc~from_string -->
-<g id="call~~graph~~CallGraph_node15" class="node">
+<g id="call~~graph~~CallGraph_node1" class="node">
 <title>proc~from_string</title>
-<g id="a_call~~graph~~CallGraph_node15"><a xlink:href=".././proc/from_string.html" xlink:title="from_string">
-<polygon fill="#777777" stroke="#777777" points="86.5,-402 13.5,-402 13.5,-378 86.5,-378 86.5,-402"/>
-<text text-anchor="middle" x="50" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">from_string</text>
+<g id="a_call~~graph~~CallGraph_node1"><a xlink:href=".././proc/from_string.html" xlink:title="from_string">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="250,-108 177,-108 177,-84 250,-84 250,-108"/>
+<text text-anchor="middle" x="213.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">from_string</text>
 </a>
 </g>
 </g>
 <!-- string_as_integers -->
-<g id="call~~graph~~CallGraph_node41" class="node">
+<g id="call~~graph~~CallGraph_node22" class="node">
 <title>string_as_integers</title>
-<polygon fill="#777777" stroke="#777777" points="245,-402 136,-402 136,-378 245,-378 245,-402"/>
-<text text-anchor="middle" x="190.5" y="-387.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_as_integers</text>
+<polygon fill="#777777" stroke="#777777" points="458,-108 349,-108 349,-84 458,-84 458,-108"/>
+<text text-anchor="middle" x="403.5" y="-93.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_as_integers</text>
 </g>
 <!-- proc~from_string&#45;&gt;string_as_integers -->
-<g id="call~~graph~~CallGraph_edge11" class="edge">
+<g id="call~~graph~~CallGraph_edge1" class="edge">
 <title>proc~from_string&#45;&gt;string_as_integers</title>
-<path fill="none" stroke="#00ff78" d="M86.67,-390C98.61,-390 112.31,-390 125.74,-390"/>
-<polygon fill="#00ff78" stroke="#00ff78" points="125.92,-393.5 135.92,-390 125.92,-386.5 125.92,-393.5"/>
+<path fill="none" stroke="#ff0000" d="M250.3,-96C275.18,-96 309.01,-96 338.47,-96"/>
+<polygon fill="#ff0000" stroke="#ff0000" points="338.68,-99.5 348.68,-96 338.68,-92.5 338.68,-99.5"/>
 </g>
-<!-- proc~from_raw -->
-<g id="call~~graph~~CallGraph_node16" class="node">
-<title>proc~from_raw</title>
-<g id="a_call~~graph~~CallGraph_node16"><a xlink:href=".././proc/from_raw.html" xlink:title="from_raw">
-<polygon fill="#777777" stroke="#777777" points="81,-444 19,-444 19,-420 81,-420 81,-444"/>
-<text text-anchor="middle" x="50" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">from_raw</text>
+<!-- proc~do_work -->
+<g id="call~~graph~~CallGraph_node2" class="node">
+<title>proc~do_work</title>
+<g id="a_call~~graph~~CallGraph_node2"><a xlink:href=".././proc/do_work.html" xlink:title="do_work">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="242,-255 185,-255 185,-231 242,-231 242,-255"/>
+<text text-anchor="middle" x="213.5" y="-240.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">do_work</text>
 </a>
 </g>
 </g>
-<!-- payload -->
-<g id="call~~graph~~CallGraph_node38" class="node">
-<title>payload</title>
-<polygon fill="#777777" stroke="#777777" points="218,-444 163,-444 163,-420 218,-420 218,-444"/>
-<text text-anchor="middle" x="190.5" y="-429.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">payload</text>
+<!-- upstream_task_imagenums -->
+<g id="call~~graph~~CallGraph_node20" class="node">
+<title>upstream_task_imagenums</title>
+<polygon fill="#777777" stroke="#777777" points="482.5,-307 324.5,-307 324.5,-283 482.5,-283 482.5,-307"/>
+<text text-anchor="middle" x="403.5" y="-292.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upstream_task_imagenums</text>
 </g>
-<!-- proc~from_raw&#45;&gt;payload -->
-<g id="call~~graph~~CallGraph_edge12" class="edge">
-<title>proc~from_raw&#45;&gt;payload</title>
-<path fill="none" stroke="#00ffa4" d="M81.05,-432C102.07,-432 130.27,-432 152.64,-432"/>
-<polygon fill="#00ffa4" stroke="#00ffa4" points="152.78,-435.5 162.78,-432 152.78,-428.5 152.78,-435.5"/>
+<!-- proc~do_work&#45;&gt;upstream_task_imagenums -->
+<g id="call~~graph~~CallGraph_edge3" class="edge">
+<title>proc~do_work&#45;&gt;upstream_task_imagenums</title>
+<path fill="none" stroke="#ff5000" d="M242.35,-251.61C263.35,-258.02 292.9,-266.85 319,-274 326.79,-276.13 335.01,-278.3 343.13,-280.4"/>
+<polygon fill="#ff5000" stroke="#ff5000" points="342.4,-283.82 352.96,-282.91 344.14,-277.04 342.4,-283.82"/>
 </g>
-<!-- interface~execute~2 -->
-<g id="call~~graph~~CallGraph_node17" class="node">
-<title>interface~execute~2</title>
-<g id="a_call~~graph~~CallGraph_node17"><a xlink:href=".././interface/execute~2.html" xlink:title="execute">
-<polygon fill="#a7506f" stroke="#a7506f" points="77.5,-66 22.5,-66 22.5,-42 77.5,-42 77.5,-66"/>
-<text text-anchor="middle" x="50" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">execute</text>
+<!-- arguments -->
+<g id="call~~graph~~CallGraph_node21" class="node">
+<title>arguments</title>
+<polygon fill="#777777" stroke="#777777" points="438.5,-265 368.5,-265 368.5,-241 438.5,-241 438.5,-265"/>
+<text text-anchor="middle" x="403.5" y="-250.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">arguments</text>
+</g>
+<!-- proc~do_work&#45;&gt;arguments -->
+<g id="call~~graph~~CallGraph_edge4" class="edge">
+<title>proc~do_work&#45;&gt;arguments</title>
+<path fill="none" stroke="#ff5000" d="M242.24,-244.48C272.73,-246.1 322.15,-248.73 358.06,-250.64"/>
+<polygon fill="#ff5000" stroke="#ff5000" points="358.09,-254.14 368.26,-251.18 358.46,-247.15 358.09,-254.14"/>
+</g>
+<!-- upstream_task_nums -->
+<g id="call~~graph~~CallGraph_node23" class="node">
+<title>upstream_task_nums</title>
+<polygon fill="#777777" stroke="#777777" points="465.5,-223 341.5,-223 341.5,-199 465.5,-199 465.5,-223"/>
+<text text-anchor="middle" x="403.5" y="-208.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">upstream_task_nums</text>
+</g>
+<!-- proc~do_work&#45;&gt;upstream_task_nums -->
+<g id="call~~graph~~CallGraph_edge2" class="edge">
+<title>proc~do_work&#45;&gt;upstream_task_nums</title>
+<path fill="none" stroke="#ff5000" d="M242.24,-238.28C265.65,-234.29 300.22,-228.41 331.26,-223.13"/>
+<polygon fill="#ff5000" stroke="#ff5000" points="331.92,-226.56 341.19,-221.44 330.75,-219.66 331.92,-226.56"/>
+</g>
+<!-- proc~construct -->
+<g id="call~~graph~~CallGraph_node3" class="node">
+<title>proc~construct</title>
+<g id="a_call~~graph~~CallGraph_node3"><a xlink:href=".././proc/construct.html" xlink:title="construct">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="244.5,-297 182.5,-297 182.5,-273 244.5,-273 244.5,-297"/>
+<text text-anchor="middle" x="213.5" y="-282.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">construct</text>
 </a>
 </g>
 </g>
-<!-- interface~execute~2&#45;&gt;proc~execute -->
-<g id="call~~graph~~CallGraph_edge13" class="edge">
-<title>interface~execute~2&#45;&gt;proc~execute</title>
-<path fill="none" stroke="#00ffd1" stroke-dasharray="5,2" d="M77.7,-54C99.07,-54 129.25,-54 152.87,-54"/>
-<polygon fill="#00ffd1" stroke="#00ffd1" points="152.88,-57.5 162.88,-54 152.88,-50.5 152.88,-57.5"/>
+<!-- proc~raw_payload -->
+<g id="call~~graph~~CallGraph_node4" class="node">
+<title>proc~raw_payload</title>
+<g id="a_call~~graph~~CallGraph_node4"><a xlink:href=".././proc/raw_payload.html" xlink:title="raw_payload">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="94,-339 14,-339 14,-315 94,-315 94,-339"/>
+<text text-anchor="middle" x="54" y="-324.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">raw_payload</text>
+</a>
+</g>
+</g>
+<!-- interface~dag_t -->
+<g id="call~~graph~~CallGraph_node5" class="node">
+<title>interface~dag_t</title>
+<g id="a_call~~graph~~CallGraph_node5"><a xlink:href=".././interface/dag_t.html" xlink:title="dag_t">
+<polygon fill="#a7506f" stroke="#a7506f" points="81,-381 27,-381 27,-357 81,-357 81,-381"/>
+<text text-anchor="middle" x="54" y="-366.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dag_t</text>
+</a>
+</g>
+</g>
+<!-- proc~construct_from_vertices -->
+<g id="call~~graph~~CallGraph_node19" class="node">
+<title>proc~construct_from_vertices</title>
+<g id="a_call~~graph~~CallGraph_node19"><a xlink:href=".././proc/construct_from_vertices.html" xlink:title="construct_from_vertices">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="283,-381 144,-381 144,-357 283,-357 283,-381"/>
+<text text-anchor="middle" x="213.5" y="-366.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">construct_from_vertices</text>
+</a>
+</g>
+</g>
+<!-- interface~dag_t&#45;&gt;proc~construct_from_vertices -->
+<g id="call~~graph~~CallGraph_edge5" class="edge">
+<title>interface~dag_t&#45;&gt;proc~construct_from_vertices</title>
+<path fill="none" stroke="#bbff00" stroke-dasharray="5,2" d="M81.01,-369C95.6,-369 114.66,-369 133.72,-369"/>
+<polygon fill="#bbff00" stroke="#bbff00" points="133.97,-372.5 143.97,-369 133.97,-365.5 133.97,-372.5"/>
 </g>
 <!-- proc~find_next_image -->
-<g id="call~~graph~~CallGraph_node18" class="node">
+<g id="call~~graph~~CallGraph_node6" class="node">
 <title>proc~find_next_image</title>
-<g id="a_call~~graph~~CallGraph_node18"><a xlink:href=".././proc/find_next_image.html" xlink:title="find_next_image">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="100,-486 0,-486 0,-462 100,-462 100,-486"/>
-<text text-anchor="middle" x="50" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_next_image</text>
+<g id="a_call~~graph~~CallGraph_node6"><a xlink:href=".././proc/find_next_image.html" xlink:title="find_next_image">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="104,-423 4,-423 4,-399 104,-399 104,-423"/>
+<text text-anchor="middle" x="54" y="-408.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_next_image</text>
 </a>
 </g>
 </g>
 <!-- event_query -->
-<g id="call~~graph~~CallGraph_node40" class="node">
+<g id="call~~graph~~CallGraph_node24" class="node">
 <title>event_query</title>
-<polygon fill="#777777" stroke="#777777" points="230,-486 151,-486 151,-462 230,-462 230,-486"/>
-<text text-anchor="middle" x="190.5" y="-471.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">event_query</text>
+<polygon fill="#777777" stroke="#777777" points="253,-423 174,-423 174,-399 253,-399 253,-423"/>
+<text text-anchor="middle" x="213.5" y="-408.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">event_query</text>
 </g>
 <!-- proc~find_next_image&#45;&gt;event_query -->
-<g id="call~~graph~~CallGraph_edge14" class="edge">
+<g id="call~~graph~~CallGraph_edge6" class="edge">
 <title>proc~find_next_image&#45;&gt;event_query</title>
-<path fill="none" stroke="#00ffff" d="M100.22,-474C113.35,-474 127.53,-474 140.64,-474"/>
-<polygon fill="#00ffff" stroke="#00ffff" points="140.88,-477.5 150.88,-474 140.88,-470.5 140.88,-477.5"/>
+<path fill="none" stroke="#6bff00" d="M104.4,-411C123.28,-411 144.78,-411 163.61,-411"/>
+<polygon fill="#6bff00" stroke="#6bff00" points="163.76,-414.5 173.76,-411 163.76,-407.5 163.76,-414.5"/>
 </g>
-<!-- proc~constructor -->
-<g id="call~~graph~~CallGraph_node20" class="node">
-<title>proc~constructor</title>
-<g id="a_call~~graph~~CallGraph_node20"><a xlink:href=".././proc/constructor.html" xlink:title="constructor">
-<polygon fill="#777777" stroke="#777777" points="86.5,-528 13.5,-528 13.5,-504 86.5,-504 86.5,-528"/>
-<text text-anchor="middle" x="50" y="-513.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">constructor</text>
+<!-- proc~assign_task -->
+<g id="call~~graph~~CallGraph_node7" class="node">
+<title>proc~assign_task</title>
+<g id="a_call~~graph~~CallGraph_node7"><a xlink:href=".././proc/assign_task.html" xlink:title="assign_task">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="250,-192 177,-192 177,-168 250,-168 250,-192"/>
+<text text-anchor="middle" x="213.5" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_task</text>
 </a>
 </g>
 </g>
-<!-- interface~string_payload -->
-<g id="call~~graph~~CallGraph_node21" class="node">
-<title>interface~string_payload</title>
-<g id="a_call~~graph~~CallGraph_node21"><a xlink:href=".././interface/string_payload.html" xlink:title="string_payload">
-<polygon fill="#a7506f" stroke="#a7506f" points="95.5,-570 4.5,-570 4.5,-546 95.5,-546 95.5,-570"/>
-<text text-anchor="middle" x="50" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_payload</text>
+<!-- proc~assign_completed_to_images -->
+<g id="call~~graph~~CallGraph_node11" class="node">
+<title>proc~assign_completed_to_images</title>
+<g id="a_call~~graph~~CallGraph_node11"><a xlink:href=".././proc/assign_completed_to_images.html" xlink:title="assign_completed_to_images">
+<polygon fill="#d9534f" stroke="#d9534f" points="488,-181 319,-181 319,-157 488,-157 488,-181"/>
+<text text-anchor="middle" x="403.5" y="-166.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assign_completed_to_images</text>
 </a>
 </g>
 </g>
-<!-- proc~string_payload -->
-<g id="call~~graph~~CallGraph_node27" class="node">
-<title>proc~string_payload</title>
-<g id="a_call~~graph~~CallGraph_node27"><a xlink:href=".././proc/string_payload.html" xlink:title="string_payload">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="236,-570 145,-570 145,-546 236,-546 236,-570"/>
-<text text-anchor="middle" x="190.5" y="-555.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_payload</text>
+<!-- proc~assign_task&#45;&gt;proc~assign_completed_to_images -->
+<g id="call~~graph~~CallGraph_edge7" class="edge">
+<title>proc~assign_task&#45;&gt;proc~assign_completed_to_images</title>
+<path fill="none" stroke="#1aff00" d="M250.3,-177.91C267.06,-176.92 287.88,-175.71 308.69,-174.49"/>
+<polygon fill="#1aff00" stroke="#1aff00" points="309.11,-177.97 318.88,-173.89 308.7,-170.98 309.11,-177.97"/>
+</g>
+<!-- proc~from_raw -->
+<g id="call~~graph~~CallGraph_node8" class="node">
+<title>proc~from_raw</title>
+<g id="a_call~~graph~~CallGraph_node8"><a xlink:href=".././proc/from_raw.html" xlink:title="from_raw">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="244.5,-66 182.5,-66 182.5,-42 244.5,-42 244.5,-66"/>
+<text text-anchor="middle" x="213.5" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">from_raw</text>
 </a>
 </g>
 </g>
-<!-- interface~string_payload&#45;&gt;proc~string_payload -->
-<g id="call~~graph~~CallGraph_edge15" class="edge">
-<title>interface~string_payload&#45;&gt;proc~string_payload</title>
-<path fill="none" stroke="#0078ff" stroke-dasharray="5,2" d="M95.58,-558C108.06,-558 121.77,-558 134.77,-558"/>
-<polygon fill="#0078ff" stroke="#0078ff" points="135,-561.5 145,-558 135,-554.5 135,-561.5"/>
-</g>
-<!-- proc~execute~2 -->
-<g id="call~~graph~~CallGraph_node22" class="node">
-<title>proc~execute~2</title>
-<g id="a_call~~graph~~CallGraph_node22"><a xlink:href=".././proc/execute~2.html" xlink:title="execute">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="218,-612 163,-612 163,-588 218,-588 218,-612"/>
-<text text-anchor="middle" x="190.5" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">execute</text>
+<!-- proc~depends_on -->
+<g id="call~~graph~~CallGraph_node9" class="node">
+<title>proc~depends_on</title>
+<g id="a_call~~graph~~CallGraph_node9"><a xlink:href=".././proc/depends_on.html" xlink:title="depends_on">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="92.5,-465 15.5,-465 15.5,-441 92.5,-441 92.5,-465"/>
+<text text-anchor="middle" x="54" y="-450.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">depends_on</text>
 </a>
 </g>
 </g>
-<!-- proc~construct -->
-<g id="call~~graph~~CallGraph_node23" class="node">
-<title>proc~construct</title>
-<g id="a_call~~graph~~CallGraph_node23"><a xlink:href=".././proc/construct.html" xlink:title="construct">
-<polygon fill="#777777" stroke="#777777" points="81,-654 19,-654 19,-630 81,-630 81,-654"/>
-<text text-anchor="middle" x="50" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">construct</text>
+<!-- interface~payload_t -->
+<g id="call~~graph~~CallGraph_node10" class="node">
+<title>interface~payload_t</title>
+<g id="a_call~~graph~~CallGraph_node10"><a xlink:href=".././interface/payload_t.html" xlink:title="payload_t">
+<polygon fill="#a7506f" stroke="#a7506f" points="86,-66 22,-66 22,-42 86,-42 86,-66"/>
+<text text-anchor="middle" x="54" y="-51.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">payload_t</text>
 </a>
 </g>
 </g>
-<!-- assert -->
-<g id="call~~graph~~CallGraph_node36" class="node">
-<title>assert</title>
-<polygon fill="#777777" stroke="#777777" points="217.5,-654 163.5,-654 163.5,-630 217.5,-630 217.5,-654"/>
-<text text-anchor="middle" x="190.5" y="-639.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">assert</text>
+<!-- interface~payload_t&#45;&gt;proc~from_string -->
+<g id="call~~graph~~CallGraph_edge9" class="edge">
+<title>interface~payload_t&#45;&gt;proc~from_string</title>
+<path fill="none" stroke="#00ffd6" stroke-dasharray="5,2" d="M86.12,-62.3C109.15,-68.44 140.88,-76.9 166.79,-83.81"/>
+<polygon fill="#00ffd6" stroke="#00ffd6" points="166.2,-87.28 176.77,-86.47 168.01,-80.51 166.2,-87.28"/>
 </g>
-<!-- proc~construct&#45;&gt;assert -->
-<g id="call~~graph~~CallGraph_edge16" class="edge">
-<title>proc~construct&#45;&gt;assert</title>
-<path fill="none" stroke="#001dff" d="M81.05,-642C102.21,-642 130.64,-642 153.08,-642"/>
-<polygon fill="#001dff" stroke="#001dff" points="153.24,-645.5 163.24,-642 153.24,-638.5 153.24,-645.5"/>
+<!-- interface~payload_t&#45;&gt;proc~from_raw -->
+<g id="call~~graph~~CallGraph_edge8" class="edge">
+<title>interface~payload_t&#45;&gt;proc~from_raw</title>
+<path fill="none" stroke="#00ffd6" stroke-dasharray="5,2" d="M86.12,-54C110.73,-54 145.29,-54 172.05,-54"/>
+<polygon fill="#00ffd6" stroke="#00ffd6" points="172.25,-57.5 182.25,-54 172.25,-50.5 172.25,-57.5"/>
 </g>
-<!-- interface~is_final_task~3 -->
-<g id="call~~graph~~CallGraph_node24" class="node">
-<title>interface~is_final_task~3</title>
-<g id="a_call~~graph~~CallGraph_node24"><a xlink:href=".././interface/is_final_task~3.html" xlink:title="is_final_task">
-<polygon fill="#a7506f" stroke="#a7506f" points="88,-696 12,-696 12,-672 88,-672 88,-696"/>
-<text text-anchor="middle" x="50" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_final_task</text>
+<!-- proc~empty_payload -->
+<g id="call~~graph~~CallGraph_node16" class="node">
+<title>proc~empty_payload</title>
+<g id="a_call~~graph~~CallGraph_node16"><a xlink:href=".././proc/empty_payload.html" xlink:title="empty_payload">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="260.5,-24 166.5,-24 166.5,0 260.5,0 260.5,-24"/>
+<text text-anchor="middle" x="213.5" y="-9.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">empty_payload</text>
 </a>
 </g>
 </g>
-<!-- proc~is_final_task -->
-<g id="call~~graph~~CallGraph_node33" class="node">
-<title>proc~is_final_task</title>
-<g id="a_call~~graph~~CallGraph_node33"><a xlink:href=".././proc/is_final_task.html" xlink:title="is_final_task">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="228.5,-696 152.5,-696 152.5,-672 228.5,-672 228.5,-696"/>
-<text text-anchor="middle" x="190.5" y="-681.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_final_task</text>
+<!-- interface~payload_t&#45;&gt;proc~empty_payload -->
+<g id="call~~graph~~CallGraph_edge10" class="edge">
+<title>interface~payload_t&#45;&gt;proc~empty_payload</title>
+<path fill="none" stroke="#00ffd6" stroke-dasharray="5,2" d="M86.12,-45.7C106.52,-40.26 133.77,-33 157.73,-26.6"/>
+<polygon fill="#00ffd6" stroke="#00ffd6" points="158.67,-29.98 167.43,-24.02 156.86,-23.21 158.67,-29.98"/>
+</g>
+<!-- proc~dependencies_for -->
+<g id="call~~graph~~CallGraph_node12" class="node">
+<title>proc~dependencies_for</title>
+<g id="a_call~~graph~~CallGraph_node12"><a xlink:href=".././proc/dependencies_for.html" xlink:title="dependencies_for">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="108,-507 0,-507 0,-483 108,-483 108,-507"/>
+<text text-anchor="middle" x="54" y="-492.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dependencies_for</text>
 </a>
 </g>
 </g>
-<!-- interface~is_final_task~3&#45;&gt;proc~is_final_task -->
-<g id="call~~graph~~CallGraph_edge17" class="edge">
-<title>interface~is_final_task~3&#45;&gt;proc~is_final_task</title>
-<path fill="none" stroke="#0e00ff" stroke-dasharray="5,2" d="M88.12,-684C104.73,-684 124.51,-684 142.17,-684"/>
-<polygon fill="#0e00ff" stroke="#0e00ff" points="142.28,-687.5 152.28,-684 142.28,-680.5 142.28,-687.5"/>
-</g>
-<!-- interface~dag -->
-<g id="call~~graph~~CallGraph_node25" class="node">
-<title>interface~dag</title>
-<g id="a_call~~graph~~CallGraph_node25"><a xlink:href=".././interface/dag.html" xlink:title="dag">
-<polygon fill="#a7506f" stroke="#a7506f" points="77,-276 23,-276 23,-252 77,-252 77,-276"/>
-<text text-anchor="middle" x="50" y="-261.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">dag</text>
+<!-- proc~run -->
+<g id="call~~graph~~CallGraph_node13" class="node">
+<title>proc~run</title>
+<g id="a_call~~graph~~CallGraph_node13"><a xlink:href=".././proc/run.html" xlink:title="run">
+<polygon fill="#d9534f" stroke="#d9534f" points="81,-192 27,-192 27,-168 81,-168 81,-192"/>
+<text text-anchor="middle" x="54" y="-177.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run</text>
 </a>
 </g>
-</g>
-<!-- interface~dag&#45;&gt;proc~dag -->
-<g id="call~~graph~~CallGraph_edge18" class="edge">
-<title>interface~dag&#45;&gt;proc~dag</title>
-<path fill="none" stroke="#3c00ff" stroke-dasharray="5,2" d="M77.05,-264C98.48,-264 129.11,-264 152.99,-264"/>
-<polygon fill="#3c00ff" stroke="#3c00ff" points="153.1,-267.5 163.1,-264 153.1,-260.5 153.1,-267.5"/>
 </g>
 <!-- proc~run&#45;&gt;proc~do_work -->
-<g id="call~~graph~~CallGraph_edge20" class="edge">
+<g id="call~~graph~~CallGraph_edge13" class="edge">
 <title>proc~run&#45;&gt;proc~do_work</title>
-<path fill="none" stroke="#f000ff" d="M217.63,-226.05C237.9,-229.19 266.29,-233.59 289.07,-237.12"/>
-<polygon fill="#f000ff" stroke="#f000ff" points="288.67,-240.6 299.09,-238.67 289.74,-233.68 288.67,-240.6"/>
+<path fill="none" stroke="#0035ff" d="M81.01,-190.4C106.76,-200.7 146.42,-216.57 175.46,-228.18"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="174.28,-231.48 184.86,-231.95 176.88,-224.98 174.28,-231.48"/>
 </g>
 <!-- proc~run&#45;&gt;proc~assign_task -->
-<g id="call~~graph~~CallGraph_edge19" class="edge">
+<g id="call~~graph~~CallGraph_edge12" class="edge">
 <title>proc~run&#45;&gt;proc~assign_task</title>
-<path fill="none" stroke="#f000ff" d="M217.63,-213.9C235.75,-208.28 260.36,-200.65 281.65,-194.06"/>
-<polygon fill="#f000ff" stroke="#f000ff" points="282.96,-197.31 291.48,-191.01 280.89,-190.63 282.96,-197.31"/>
+<path fill="none" stroke="#0035ff" d="M81.01,-180C104.17,-180 138.61,-180 166.43,-180"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="166.73,-183.5 176.73,-180 166.73,-176.5 166.73,-183.5"/>
 </g>
-<!-- interface~execute -->
-<g id="call~~graph~~CallGraph_node30" class="node">
-<title>interface~execute</title>
-<g id="a_call~~graph~~CallGraph_node30"><a xlink:href=".././interface/execute.html" xlink:title="execute">
-<polygon fill="#a7506f" stroke="#a7506f" points="77.5,-612 22.5,-612 22.5,-588 77.5,-588 77.5,-612"/>
-<text text-anchor="middle" x="50" y="-597.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">execute</text>
+<!-- proc~run_single_image -->
+<g id="call~~graph~~CallGraph_node14" class="node">
+<title>proc~run_single_image</title>
+<g id="a_call~~graph~~CallGraph_node14"><a xlink:href=".././proc/run_single_image.html" xlink:title="run_single_image">
+<polygon fill="#d9534f" stroke="#d9534f" points="266.5,-150 160.5,-150 160.5,-126 266.5,-126 266.5,-150"/>
+<text text-anchor="middle" x="213.5" y="-135.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">run_single_image</text>
 </a>
 </g>
 </g>
-<!-- interface~execute&#45;&gt;proc~execute~2 -->
-<g id="call~~graph~~CallGraph_edge21" class="edge">
-<title>interface~execute&#45;&gt;proc~execute~2</title>
-<path fill="none" stroke="#ff00e1" stroke-dasharray="5,2" d="M77.7,-600C99.07,-600 129.25,-600 152.87,-600"/>
-<polygon fill="#ff00e1" stroke="#ff00e1" points="152.88,-603.5 162.88,-600 152.88,-596.5 152.88,-603.5"/>
+<!-- proc~run&#45;&gt;proc~run_single_image -->
+<g id="call~~graph~~CallGraph_edge11" class="edge">
+<title>proc~run&#45;&gt;proc~run_single_image</title>
+<path fill="none" stroke="#0035ff" d="M81.01,-173.06C101.77,-167.53 131.59,-159.58 157.58,-152.65"/>
+<polygon fill="#0035ff" stroke="#0035ff" points="158.57,-156 167.33,-150.05 156.76,-149.24 158.57,-156"/>
 </g>
-<!-- interface~is_final_task~2 -->
-<g id="call~~graph~~CallGraph_node31" class="node">
-<title>interface~is_final_task~2</title>
-<g id="a_call~~graph~~CallGraph_node31"><a xlink:href=".././interface/is_final_task~2.html" xlink:title="is_final_task">
-<polygon fill="#a7506f" stroke="#a7506f" points="88,-738 12,-738 12,-714 88,-714 88,-738"/>
-<text text-anchor="middle" x="50" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_final_task</text>
+<!-- proc~string_payload -->
+<g id="call~~graph~~CallGraph_node15" class="node">
+<title>proc~string_payload</title>
+<g id="a_call~~graph~~CallGraph_node15"><a xlink:href=".././proc/string_payload.html" xlink:title="string_payload">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="99.5,-549 8.5,-549 8.5,-525 99.5,-525 99.5,-549"/>
+<text text-anchor="middle" x="54" y="-534.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">string_payload</text>
 </a>
 </g>
-</g>
-<!-- proc~is_final_task~3 -->
-<g id="call~~graph~~CallGraph_node32" class="node">
-<title>proc~is_final_task~3</title>
-<g id="a_call~~graph~~CallGraph_node32"><a xlink:href=".././proc/is_final_task~3.html" xlink:title="is_final_task">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="228.5,-738 152.5,-738 152.5,-714 228.5,-714 228.5,-738"/>
-<text text-anchor="middle" x="190.5" y="-723.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">is_final_task</text>
-</a>
-</g>
-</g>
-<!-- interface~is_final_task~2&#45;&gt;proc~is_final_task~3 -->
-<g id="call~~graph~~CallGraph_edge22" class="edge">
-<title>interface~is_final_task~2&#45;&gt;proc~is_final_task~3</title>
-<path fill="none" stroke="#ff00b4" stroke-dasharray="5,2" d="M88.12,-726C104.73,-726 124.51,-726 142.17,-726"/>
-<polygon fill="#ff00b4" stroke="#ff00b4" points="142.28,-729.5 152.28,-726 142.28,-722.5 142.28,-729.5"/>
 </g>
 <!-- proc~find_next_task -->
-<g id="call~~graph~~CallGraph_node34" class="node">
+<g id="call~~graph~~CallGraph_node17" class="node">
 <title>proc~find_next_task</title>
-<g id="a_call~~graph~~CallGraph_node34"><a xlink:href=".././proc/find_next_task.html" xlink:title="find_next_task">
-<polygon fill="#d94e8f" stroke="#d94e8f" points="94,-780 6,-780 6,-756 94,-756 94,-780"/>
-<text text-anchor="middle" x="50" y="-765.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_next_task</text>
+<g id="a_call~~graph~~CallGraph_node17"><a xlink:href=".././proc/find_next_task.html" xlink:title="find_next_task">
+<polygon fill="#d94e8f" stroke="#d94e8f" points="98,-591 10,-591 10,-567 98,-567 98,-591"/>
+<text text-anchor="middle" x="54" y="-576.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">find_next_task</text>
 </a>
 </g>
+</g>
+<!-- interface~vertex_t -->
+<g id="call~~graph~~CallGraph_node18" class="node">
+<title>interface~vertex_t</title>
+<g id="a_call~~graph~~CallGraph_node18"><a xlink:href=".././interface/vertex_t.html" xlink:title="vertex_t">
+<polygon fill="#a7506f" stroke="#a7506f" points="81.5,-297 26.5,-297 26.5,-273 81.5,-273 81.5,-297"/>
+<text text-anchor="middle" x="54" y="-282.6" font-family="Helvetica,sans-Serif" font-size="10.50" fill="white">vertex_t</text>
+</a>
+</g>
+</g>
+<!-- interface~vertex_t&#45;&gt;proc~construct -->
+<g id="call~~graph~~CallGraph_edge14" class="edge">
+<title>interface~vertex_t&#45;&gt;proc~construct</title>
+<path fill="none" stroke="#ff00a1" stroke-dasharray="5,2" d="M81.72,-285C106.57,-285 143.95,-285 172.39,-285"/>
+<polygon fill="#ff00a1" stroke="#ff00a1" points="172.42,-288.5 182.42,-285 172.42,-281.5 172.42,-288.5"/>
 </g>
 </g>
 </svg>
@@ -670,7 +475,7 @@
           <p class="text-right">
             Documentation generated by 
             <a href="https://github.com/Fortran-FOSS-Programmers/ford">FORD</a>
- on 2023-07-24 20:14            </p>
+ on 2023-09-07 22:00            </p>
         </div>
       </div>
       <br>

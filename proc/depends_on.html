@@ -8,7 +8,7 @@
     <meta name="author" content="Damian Rouson, Robert Singleterry, Harris Snyder, and Brad Richardson" >
     <link rel="icon" href="../favicon.png">
 
-    <title>string_payload &ndash; FEATS</title>
+    <title>depends_on &ndash; FEATS</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -78,7 +78,7 @@
 
     <div class="container">
   <div class="row">
-    <h1>string_payload
+    <h1>depends_on
       <small>Function</small>
     </h1>
     <div class="row">
@@ -88,14 +88,14 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 4.2% of total for procedures.">11 statements</a>
+    title=" 4.6% of total for procedures.">12 statements</a>
      </li> 
-    <li><i class="fa fa-code"></i><a href="../src/payload_m.f90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/dag_m.f90"> Source File</a></li>
   </ul>
   <ol class="breadcrumb in-well text-right">
-     <li><a href='../sourcefile/payload_m.f90.html'>payload_m.f90</a></li>
-     <li><a href='../module/payload_m.html'>payload_m</a></li>
-     <li class="active">string_payload</li>
+     <li><a href='../sourcefile/dag_m.f90.html'>dag_m.f90</a></li>
+     <li><a href='../module/dag_m.html'>dag_m</a></li>
+     <li class="active">depends_on</li>
   </ol>
 </div>
 </div>
@@ -120,24 +120,31 @@
     </div>
     
     <div class="col-md-9" id='text'>
-    <h2>private pure function string_payload(self)</h2>
+    <h2>private pure function depends_on(self, vertex_num) result(dependencies)</h2>
     
 
+    <p>Result is an array of the vertex numbers that depend on on vertex vertex_num</p>
 
     <h3>Arguments</h3>
       <table class="table table-striped varlist">
 <thead><tr><th>Type</th><th>Intent</th><th>Optional</th><th>Attributes</th><th></th><th>Name</th><th></th></thead>
 <tbody>
 <tr>
-  <td><span class="anchor" id="variable-self~5"></span>class(<a href='../type/payload_t.html'>payload_t</a>),</td>
+  <td><span class="anchor" id="variable-self~3"></span>class(<a href='../type/dag_t.html'>dag_t</a>),</td>
 <td>intent(in)</td>
   <td></td>  <td></td><td>::</td>
   <td><strong>self</strong></td><td></td>
 </tr>
+<tr>
+  <td><span class="anchor" id="variable-vertex_num"></span>integer,</td>
+<td>intent(in)</td>
+  <td></td>  <td></td><td>::</td>
+  <td><strong>vertex_num</strong></td><td></td>
+</tr>
 </tbody>
 </table>
 
-   <h3>Return Value <small><span class="anchor" id="variable-string_payload~2"></span>character(len=:),allocatable</small></h3>
+   <h3>Return Value <small><span class="anchor" id="variable-dependencies"></span>integer,allocatable,(:)</small></h3>
     
     <br>
 
